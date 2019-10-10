@@ -7,7 +7,7 @@ namespace service
 		[HttpGet]
         public IActionResult Index()
         {
-            return Json("Hello world!");
+            return Json("Hello world, testing github-azure connection!");
         }
     }
 }
