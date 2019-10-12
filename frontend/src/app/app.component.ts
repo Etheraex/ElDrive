@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FileService } from './services/file.service';
-import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-root',
@@ -11,18 +11,33 @@ export class AppComponent {
 
 	fileName: string;
 
-	constructor(private fileService: FileService) {
-
-	}
+	constructor(private fileService: FileService) { }
 
 	onClick() {
 		this.fileService.getFiles()
-			.subscribe((response) => {
-				this.fileName = response;
-				console.log(response);
-			},
-			(error) => {
-				console.log(error);
-			});
+			.pipe(map(
+				(response) => {
+					return this.shiftByNRight([...atob(response)].slice(), 4);
+				}))
+			.subscribe(
+				(response) => {
+					this.fileName = response.toString();
+				},
+				(error) => {
+					console.log('Error' + error);
+				});
 	}
+
+	private shiftByNRight(input: string[], n: number): string {
+		if (n === 0) {
+			return input.join('');
+		}
+		const tmp = input[input.length - 1];
+		for (let i = input.length - 1; i > 0; i--) {
+			input[i] = input[i - 1];
+		}
+		input[0] = tmp;
+		return this.shiftByNRight(input.slice(), --n);
+	}
+
 }
