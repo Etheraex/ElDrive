@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace service
 {
@@ -19,13 +20,14 @@ namespace service
 		public IConfiguration Configuration { get; }
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddControllers();
+
 			services.Configure<CookiePolicyOptions>(options =>
 			{
 				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
 				options.CheckConsentNeeded = context => true;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
-
 			services.AddCors(options =>
 			{
 				options.AddPolicy(MyAllowSpecificOrigins,
@@ -36,12 +38,10 @@ namespace service
 													.AllowAnyMethod();
 				});
 			});
-
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
@@ -52,11 +52,9 @@ namespace service
 				app.UseHsts();
 			}
 			app.UseCors(MyAllowSpecificOrigins);
-			app.UseMvc(routes =>
-			{
-				routes.MapRoute(
-					name: "default",
-					template: "{controller=File}/{action=Index}/{id?}");
+			app.UseRouting();
+			app.UseEndpoints(endpoints => {
+				endpoints.MapControllerRoute("default", "{controller=File}/{action=Index}");
 			});
 		}
 	}
