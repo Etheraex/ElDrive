@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 
-namespace service
+namespace file_service
 {
 	public class FileController : Controller
 	{

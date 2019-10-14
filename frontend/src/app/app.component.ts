@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FileService } from './services/file.service';
 import { map } from 'rxjs/operators';
+import { AuthService } from './services/auth.service';
 
 @Component({
 	selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent {
 
 	fileName: string;
 
-	constructor(private fileService: FileService) { }
+	constructor(private fileService: FileService, private authService: AuthService) { }
 
 	onClick() {
 		this.fileService.getFiles()
@@ -26,6 +27,11 @@ export class AppComponent {
 				(error) => {
 					console.log('Error' + error);
 				});
+	}
+
+	onAuthentication() {
+		this.authService.authenticateUser()
+			.subscribe((response) => console.log(response));
 	}
 
 	private shiftByNRight(input: string[], n: number): string {

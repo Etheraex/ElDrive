@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
 @Injectable({
 	providedIn: 'root'
 })
-export class FileService {
+export class AuthService {
 
 	constructor(private http: HttpClient) { }
 
-	getFiles(): Observable<any> {
-		return this.http.get<string>(environment.fileController);
+	authenticateUser(): Observable<string> {
+		return this.http.get<string>(environment.authController);
 	}
 }

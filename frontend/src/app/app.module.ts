@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { FileService } from './services/file.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
 	declarations: [
@@ -13,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 		BrowserModule,
 		HttpClientModule
 	],
-	providers: [FileService],
+	providers: [FileService, AuthService],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
