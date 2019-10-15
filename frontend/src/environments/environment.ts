@@ -5,7 +5,7 @@
 export const environment = {
 	production: false,
 	fileController: 'https://localhost:5001/file',
-	authController: 'https://localhost:6001/auth'
+	authController: 'https://localhost:6001/appuser'
 };
 
 /*

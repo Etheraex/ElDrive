@@ -18,6 +18,12 @@ namespace auth_service
 		public IConfiguration Configuration { get; }
 		public void ConfigureServices(IServiceCollection services)
 		{
+			var config = new ServerConfig();
+			Configuration.Bind(config);
+			var appUsersContext = new AppUserContext(config.MongoDB);
+			var repo = new AppUserRepository(appUsersContext);
+			services.AddSingleton<IAppUserRepository>(repo);
+
 			services.AddControllers();
 
 			services.AddCors(options =>
@@ -46,7 +52,7 @@ namespace auth_service
 			app.UseCors(MyAllowSpecificOrigins);
 			app.UseRouting();
 			app.UseEndpoints(endpoints => {
-				endpoints.MapControllerRoute("default", "{controller=Auth}/{action=Index}");
+				endpoints.MapControllerRoute("default", "{controller=AppUser}/{action=Get}");
 			});
 		}
 	}
