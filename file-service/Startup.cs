@@ -25,7 +25,7 @@ namespace file_service
 				options.AddPolicy(MyAllowSpecificOrigins,
 				builder =>
 				{
-					builder.WithOrigins("http://localhost:4200")
+					builder.WithOrigins("http://localhost:4200", "http://localhost:7000")
 													.AllowAnyHeader()
 													.AllowAnyMethod();
 				});
@@ -45,8 +45,9 @@ namespace file_service
 			}
 			app.UseCors(MyAllowSpecificOrigins);
 			app.UseRouting();
-			app.UseEndpoints(endpoints => {
-				endpoints.MapControllerRoute("default", "{controller=File}/{action=Index}");
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllerRoute("default", "{controller=File}/{action=Get}/{id?}");
 			});
 		}
 	}

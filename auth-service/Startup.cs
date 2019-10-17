@@ -51,8 +51,9 @@ namespace auth_service
 			}
 			app.UseCors(MyAllowSpecificOrigins);
 			app.UseRouting();
-			app.UseEndpoints(endpoints => {
-				endpoints.MapControllerRoute("default", "{controller=AppUser}/{action=Get}");
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllerRoute("default", "{controller=AppUser}/{action=Get}/{id?}");
 			});
 		}
 	}

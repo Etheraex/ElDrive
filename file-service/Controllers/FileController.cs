@@ -1,29 +1,35 @@
 using System;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace file_service
 {
+	[Route("File")]
 	public class FileController : Controller
 	{
 		[HttpGet]
-		public IActionResult Index()
+		public IActionResult Get()
 		{
-			String humanReadableFormat = "Hello world!";
-			byte[] messageAsByteArray = Encoding.ASCII.GetBytes(humanReadableFormat);
-			ShiftByNLeft(messageAsByteArray, 4);
-			return Json(messageAsByteArray);
+			return Json(ShiftByNLeft(Encoding.ASCII.GetBytes("Hello world"), 4));
 		}
 
-		private void ShiftByNLeft(byte[] input, int n)
+		[HttpPost]
+		public IActionResult Post(byte[] encryptedData)
 		{
-			if( n == 0)
-				return;
+			return Json(Encoding.UTF8.GetString(ShiftByNLeft(encryptedData, 4)));
+		}
+
+		private byte[] ShiftByNLeft(byte[] input, int n)
+		{
+			if (n == 0)
+				return input;
 			var tmp = input[0];
-			for(int i = 0; i < input.Length - 1; i++)
-				input[i] = input[i+1];
+			for (int i = 0; i < input.Length - 1; i++)
+				input[i] = input[i + 1];
 			input[input.Length - 1] = tmp;
-			ShiftByNLeft(input, --n);
+			return ShiftByNLeft(input, --n);
 		}
 	}
 }

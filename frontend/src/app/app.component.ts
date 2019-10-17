@@ -11,10 +11,11 @@ import { AuthService } from './services/auth.service';
 export class AppComponent {
 
 	fileName: string;
+	serverResponse: string;
 
 	constructor(private fileService: FileService, private authService: AuthService) { }
 
-	onClick() {
+	getFiles() {
 		this.fileService.getFiles()
 			.pipe(map(
 				(response) => {
@@ -27,6 +28,14 @@ export class AppComponent {
 				(error) => {
 					console.log('Error' + error);
 				});
+	}
+
+	postFiles() {
+		this.fileService.postFiles(this.shiftByNRight([...'Neki probni tekst'], 4))
+			.subscribe(
+				(response) => this.serverResponse = response),
+				// tslint:disable-next-line: no-unused-expression
+				(error: any) => console.log(error);
 	}
 
 	onAuthentication() {

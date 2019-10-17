@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace auth_service
 {
     [Produces("application/json")]
+    [Route("AppUser")]
     public class AppUserController : Controller
     {
         private readonly IAppUserRepository _repo;
