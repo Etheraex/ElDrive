@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using mongo_config;
 
 namespace file_service
 {
@@ -18,6 +19,12 @@ namespace file_service
 		public IConfiguration Configuration { get; }
 		public void ConfigureServices(IServiceCollection services)
 		{
+			var config = new MongoDBConfig();
+			Configuration.Bind(config);
+			var appUsersContext = new FileContext(config);
+			var repo = new FileRepository(appUsersContext);
+			services.AddSingleton<Repository<File>>(repo);
+
 			services.AddControllers();
 
 			services.AddCors(options =>

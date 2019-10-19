@@ -5,6 +5,9 @@
 		<RootNamespace>file_service</RootNamespace>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\mongo-config\mongo-config.csproj" />
+	</ItemGroup>
 </Project>
 
 

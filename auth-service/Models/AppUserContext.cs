@@ -1,16 +1,12 @@
+using mongo_config;
 using MongoDB.Driver;
 
 namespace auth_service
 {
-	public class AppUserContext : IAppUserContext
+	public class AppUserContext : Context<AppUser>
 	{
-		private readonly IMongoDatabase _db;
-
-		public AppUserContext(MongoDBConfig config)
-		{
-			var client = new MongoClient(config.ConnectionString);
-			_db = client.GetDatabase(config.Database);
-		}
-		public IMongoCollection<AppUser> AppUsers => _db.GetCollection<AppUser>("AppUsers");
+		public AppUserContext(MongoDBConfig config) : base(config) { }
+		
+		public override IMongoCollection<AppUser> Collection => _db.GetCollection<AppUser>("AppUsers");
 	}
 }

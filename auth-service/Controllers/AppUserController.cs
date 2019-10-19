@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using mongo_config;
 
 namespace auth_service
 {
@@ -8,8 +9,8 @@ namespace auth_service
     [Route("AppUser")]
     public class AppUserController : Controller
     {
-        private readonly IAppUserRepository _repo;
-        public AppUserController(IAppUserRepository repo)
+        private readonly Repository<AppUser> _repo;
+        public AppUserController(Repository<AppUser> repo)
         {
             _repo = repo;
         }
@@ -18,14 +19,14 @@ namespace auth_service
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> Get()
         {
-            return new ObjectResult(await _repo.GetAllAppUsers());
+            return new ObjectResult(await _repo.GetAll());
         }
 
         // GET /appuser/id
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> Get(long id)
         {
-            var appUser = await _repo.GetAppUser(id);
+            var appUser = await _repo.Get(id);
             if (appUser == null)
                 return new NotFoundResult();
 
@@ -45,7 +46,7 @@ namespace auth_service
         [HttpPut("{id}")]
         public async Task<ActionResult<AppUser>> Put(long id, [FromBody] AppUser appUser)
         {
-            var appUserFromDb = await _repo.GetAppUser(id);
+            var appUserFromDb = await _repo.Get(id);
             if (appUserFromDb == null)
                 return new NotFoundResult();
             appUser.Id = appUserFromDb.Id;
@@ -58,7 +59,7 @@ namespace auth_service
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            var post = await _repo.GetAppUser(id);
+            var post = await _repo.Get(id);
             if (post == null)
                 return new NotFoundResult();
             await _repo.Delete(id);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using mongo_config;
 
 namespace auth_service
 {
@@ -18,11 +19,11 @@ namespace auth_service
 		public IConfiguration Configuration { get; }
 		public void ConfigureServices(IServiceCollection services)
 		{
-			var config = new ServerConfig();
+			var config = new MongoDBConfig();
 			Configuration.Bind(config);
-			var appUsersContext = new AppUserContext(config.MongoDB);
+			var appUsersContext = new AppUserContext(config);
 			var repo = new AppUserRepository(appUsersContext);
-			services.AddSingleton<IAppUserRepository>(repo);
+			services.AddSingleton<Repository<AppUser>>(repo);
 
 			services.AddControllers();
 
