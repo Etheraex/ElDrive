@@ -19,7 +19,7 @@ export class AppComponent {
 		this.fileService.getFiles()
 			.pipe(map(
 				(response) => {
-					return this.shiftByNRight([...atob(response)].slice(), 4);
+					return atob(response);
 				}))
 			.subscribe(
 				(response) => {
@@ -30,29 +30,9 @@ export class AppComponent {
 				});
 	}
 
-	postFiles() {
-		this.fileService.postFiles(this.shiftByNRight([...'Neki probni tekst'], 4))
-			.subscribe(
-				(response) => this.serverResponse = response),
-				// tslint:disable-next-line: no-unused-expression
-				(error: any) => console.log(error);
-	}
-
 	onAuthentication() {
 		this.authService.authenticateUser()
 			.subscribe((response) => console.log(response));
-	}
-
-	private shiftByNRight(input: string[], n: number): string {
-		if (n === 0) {
-			return input.join('');
-		}
-		const tmp = input[input.length - 1];
-		for (let i = input.length - 1; i > 0; i--) {
-			input[i] = input[i - 1];
-		}
-		input[0] = tmp;
-		return this.shiftByNRight(input.slice(), --n);
 	}
 
 }
