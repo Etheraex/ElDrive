@@ -5,28 +5,24 @@ import { Observable } from 'rxjs';
 import { ZIFile } from '../models/zifile.model';
 
 @Injectable({
-	providedIn: 'root'
+    providedIn: 'root'
 })
 export class FileService {
 
-	constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-	getFiles(): Observable<any> {
-		return this.http.get<string>(`${environment.fileController}`);
-	}
+    getFiles(): Observable<any> {
+        return this.http.get<string>(`${environment.fileController}`);
+    }
 
-	postFile(data: ArrayBuffer): Observable<any> {
-		const uint8 = new Uint8Array(data);
-		console.log(uint8);
-		const b64encoded = btoa(String.fromCharCode.apply(null, uint8));
-		console.log(b64encoded);
-		// const formData = new FormData();
-		// formData.append('encryptedData', b64encoded);
-		const file = new ZIFile();
-		file.data = b64encoded;
-		file.id = 1;
-		file.name = 'Test fajl';
-		file.userHash = 'Test user hash';
-		return this.http.post(`${environment.fileController}`, file);
-	}
+    postFile(data: ArrayBuffer): Observable<any> {
+        const uint8 = new Uint8Array(data);
+        const b64encoded = btoa(String.fromCharCode.apply(null, uint8));
+        const file = new ZIFile();
+        file.data = b64encoded;
+        file.id = 1;
+        file.name = 'Test fajl';
+        file.userHash = 'Test user hash';
+        return this.http.post(`${environment.fileController}`, file);
+    }
 }

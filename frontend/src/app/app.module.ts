@@ -8,15 +8,15 @@ import { AuthService } from './services/auth.service';
 import { FileInputComponent } from './components/file-input/file-input.component';
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		FileInputComponent
-	],
-	imports: [
-		BrowserModule,
-		HttpClientModule
-	],
-	providers: [FileService, AuthService],
-	bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        FileInputComponent
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule
+    ],
+    providers: [FileService, AuthService],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

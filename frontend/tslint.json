@@ -1,7 +1,7 @@
 {
 	"extends": "tslint:recommended",
 	"rules": {
-		"indent": [ true, "tabs", 1 ],
+		"indent": [ true, "spaces", 4 ],
 		"array-type": false,
 		"arrow-parens": false,
 		"deprecation": {
