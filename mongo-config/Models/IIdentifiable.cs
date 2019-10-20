@@ -2,6 +2,6 @@ namespace mongo_config
 {
 	public interface IIdentifiable
 	{
-		long Id { get; set; }
+		long? Id { get; set; }
 	}
 }

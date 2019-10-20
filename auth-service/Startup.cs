@@ -23,7 +23,7 @@ namespace auth_service
 			Configuration.Bind(config);
 			var appUsersContext = new AppUserContext(config);
 			var repo = new AppUserRepository(appUsersContext);
-			services.AddSingleton<Repository<AppUser>>(repo);
+			services.AddSingleton<AppUserRepository>(repo);
 
 			services.AddControllers();
 

@@ -9,8 +9,8 @@ namespace auth_service
 	[Route("AppUser")]
 	public class AppUserController : Controller
 	{
-		private readonly Repository<AppUser> _repo;
-		public AppUserController(Repository<AppUser> repo)
+		private readonly AppUserRepository _repo;
+		public AppUserController(AppUserRepository repo)
 		{
 			_repo = repo;
 		}
@@ -64,6 +64,19 @@ namespace auth_service
 				return new NotFoundResult();
 			await _repo.Delete(id);
 			return new OkResult();
+		}
+
+		[Route("[action]")]
+		[HttpPost]
+		public async Task<IActionResult> Login([FromBody] AppUser appUser)
+		{
+			var appUserFromDb = await _repo.GetByName(appUser.Name);
+			if(appUserFromDb == null)
+				return new UnauthorizedObjectResult("Incorect username provided");
+			if(appUserFromDb.Password == appUser.Password)
+				return new OkObjectResult(appUserFromDb);
+			
+			return new UnauthorizedObjectResult("Incorrect password provided");
 		}
 	}
 }
