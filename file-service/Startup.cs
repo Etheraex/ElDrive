@@ -23,7 +23,7 @@ namespace file_service
 			Configuration.Bind(config);
 			var appUsersContext = new FileContext(config);
 			var repo = new FileRepository(appUsersContext);
-			services.AddSingleton<Repository<File>>(repo);
+			services.AddSingleton<FileRepository>(repo);
 
 			services.AddControllers();
 

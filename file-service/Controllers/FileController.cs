@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using mongo_config;
 
 namespace file_service
 {
@@ -10,8 +8,8 @@ namespace file_service
 	[Route("File")]
 	public class FileController : Controller
 	{
-		private readonly Repository<File> _repo;
-		public FileController(Repository<File> repo)
+		private readonly FileRepository _repo;
+		public FileController(FileRepository repo)
 		{
 			_repo = repo;
 		}
