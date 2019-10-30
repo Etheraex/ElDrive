@@ -1,0 +1,24 @@
+<form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+    <div>
+        <mat-form-field style="width:100%">
+            <input matInput placeholder="Name" formControlName="name">
+            <mat-error *ngIf="formInput.name.invalid && formInput.name.touched">
+                Invalid value for name.
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field style="width:100%">
+            <input matInput [type]="'password'" placeholder="Password" formControlName="password">
+            <mat-hint>
+                Password must contain atleast 8 characters, one letter and one number.
+            </mat-hint>
+            <mat-error *ngIf="formInput.password.invalid && formInput.password.touched">
+                Invalid value for password.
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Login</button>
+    </div>
+</form>
