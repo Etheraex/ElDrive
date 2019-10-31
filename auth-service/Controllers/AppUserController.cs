@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using mongo_config;
+using MongoDB.Bson;
 
 namespace auth_service
 {
@@ -37,6 +38,7 @@ namespace auth_service
 		[HttpPost]
 		public async Task<ActionResult<AppUser>> Post([FromBody] AppUser appUser)
 		{
+			appUser.InternalId = new ObjectId(Guid.NewGuid().ToString("N"));
 			appUser.Id = await _repo.GetNextId();
 			await _repo.Create(appUser);
 			return new OkObjectResult(appUser);

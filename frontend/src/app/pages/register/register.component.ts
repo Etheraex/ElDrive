@@ -1,7 +1,11 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AppUser } from 'src/app/models/appuser.model';
+
+import * as crypto from 'crypto-js';
+
+import { AuthService } from 'src/app/services/auth.service';
+import { AppUser, loggedInUser } from 'src/app/models/appuser.model';
 
 @Component({
     selector: 'app-register',
@@ -9,9 +13,9 @@ import { AppUser } from 'src/app/models/appuser.model';
     styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-
+    
     registerForm: FormGroup;
-    constructor(private authService: AuthService, private formBuilder: FormBuilder) { }
+    constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
@@ -30,10 +34,11 @@ export class RegisterComponent implements OnInit {
         const newUser = new AppUser();
 
         newUser.name = this.formInput.name.value;
-        newUser.password = this.formInput.password.value;
+        newUser.password = crypto.SHA256(this.formInput.password.value).toString(crypto.enc.Base64);
         this.authService.register(newUser)
             .subscribe(response => {
-                console.log(response);
+                loggedInUser.login(response);
+                this.router.navigate(['/register']);
             });
     }
 }

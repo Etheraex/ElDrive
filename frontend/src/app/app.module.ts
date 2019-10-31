@@ -1,14 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
-import { FileService } from './services/file.service';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from './services/auth.service';
-import { FileInputComponent } from './components/file-input/file-input.component';
-import { LoginComponent } from './components/login/login.component';
-import { FileListComponent } from './components/file-list/file-list.component';
-import { RegisterComponent } from './components/register/register.component';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +10,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatToolbarModule } from '@angular/material/toolbar'
+
+import { AppComponent } from './app.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { FileService } from './services/file.service';
+import { AuthService } from './services/auth.service';
+import { LoginComponent } from './pages/login/login.component';
+import { FileInputComponent } from './pages/file-input/file-input.component';
+import { FileListComponent } from './pages/file-list/file-list.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
@@ -32,7 +34,8 @@ const appRoutes: Routes = [
         FileInputComponent,
         LoginComponent,
         FileListComponent,
-        RegisterComponent
+        RegisterComponent,
+        NavbarComponent
     ],
     imports: [
         BrowserModule,
@@ -46,6 +49,7 @@ const appRoutes: Routes = [
         MatSelectModule,
         MatCheckboxModule,
         MatChipsModule,
+        MatToolbarModule,
         ReactiveFormsModule
     ],
     providers: [FileService, AuthService],

@@ -1,7 +1,12 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+import * as crypto from "crypto-js";
+
+import { AuthService } from 'src/app/services/auth.service';
 import { AppUser } from 'src/app/models/appuser.model';
+import { loggedInUser } from 'src/app/models/appuser.model'
 
 @Component({
     selector: 'app-login',
@@ -11,7 +16,7 @@ import { AppUser } from 'src/app/models/appuser.model';
 export class LoginComponent implements OnInit {
 
     loginForm: FormGroup;
-    constructor(private authService: AuthService, private formBuilder: FormBuilder) { }
+    constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
@@ -30,10 +35,11 @@ export class LoginComponent implements OnInit {
         const loginUser = new AppUser();
 
         loginUser.name = this.formInput.name.value;
-        loginUser.password = this.formInput.password.value;
+        loginUser.password = crypto.SHA256(this.formInput.password.value).toString(crypto.enc.Base64);
         this.authService.login(loginUser)
             .subscribe(response => {
-                console.log(response);
+                loggedInUser.login(response);
+                this.router.navigate(['/upload']);
             });
     }
 }
