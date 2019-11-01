@@ -13,7 +13,7 @@ import { loggedInUser } from 'src/app/models/appuser.model';
                         <button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/files']">My files</button>
                         <button class="logout" *ngIf="isLoggedIn" mat-button (click)="logout()">Log out</button>
                     </span>
-                    <span class="title">ZI i NBP Dropbox simulation project</span>
+                    <span class="title">ZI and NBP Dropbox simulation project</span>
                 </mat-toolbar>`,
     styles: [
             `.title {
