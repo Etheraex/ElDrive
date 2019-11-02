@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from 'src/app/services/file.service';
+import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 
 @Component({
     selector: 'app-file-input',
@@ -10,8 +11,13 @@ export class FileInputComponent implements OnInit {
 
     fileData: File = null;
     byteArray: ArrayBuffer;
+    encryptedMessage: string;
 
-    constructor(private fileService: FileService) { }
+    set message(value) {
+        this.encryptMessage(value);
+    }
+
+    constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService) { }
 
     fileProgress(fileInput: any) {
         this.fileData = fileInput.target.files[0] as File;
@@ -29,6 +35,10 @@ export class FileInputComponent implements OnInit {
                 console.log(response);
                 alert('SUCCESS !!');
             });
+    }
+    
+    encryptMessage(msg: string){
+        this.encryptedMessage = this.cryptoService.SimpleSubstitution(msg);
     }
 
     ngOnInit() {

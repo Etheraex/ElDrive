@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +20,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { FileInputComponent } from './pages/file-input/file-input.component';
 import { FileListComponent } from './pages/file-list/file-list.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { CryptoAlgorithmsService } from './services/crypto.service';
 
 const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
@@ -40,6 +41,8 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         HttpClientModule,
+        ReactiveFormsModule,
+        FormsModule,
         RouterModule.forRoot(
             appRoutes
         ),
@@ -49,10 +52,9 @@ const appRoutes: Routes = [
         MatSelectModule,
         MatCheckboxModule,
         MatChipsModule,
-        MatToolbarModule,
-        ReactiveFormsModule
+        MatToolbarModule
     ],
-    providers: [FileService, AuthService],
+    providers: [FileService, AuthService, CryptoAlgorithmsService],
     bootstrap: [AppComponent],
     exports: [
         ReactiveFormsModule
