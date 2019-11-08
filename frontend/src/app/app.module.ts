@@ -26,7 +26,7 @@ import { AuthGuard } from './services/authguard.service';
 const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'files/:userId', component: FileListComponent, canActivate: [AuthGuard] },
+    { path: 'files', component: FileListComponent, canActivate: [AuthGuard] },
     { path: 'upload', component: FileInputComponent, canActivate: [AuthGuard] },
     { path: '**', redirectTo: '/register', pathMatch: 'full' }
 ];

@@ -37,9 +37,13 @@ export class LoginComponent implements OnInit {
         loginUser.name = this.formInput.name.value;
         loginUser.password = crypto.SHA256(this.formInput.password.value).toString(crypto.enc.Base64);
         this.authService.login(loginUser)
-            .subscribe(response => {
-                loggedInUser.login(response);
-                this.router.navigate(['/upload']);
-            });
+            .subscribe(
+                response => {
+                    loggedInUser.login(response);
+                    this.router.navigate(['/upload']);
+                },
+                error => {
+                    alert('Error: ' + error.error);
+                });
     }
 }

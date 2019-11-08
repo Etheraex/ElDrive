@@ -10,7 +10,7 @@ import { loggedInUser } from 'src/app/models/appuser.model';
                         <button *ngIf="!isLoggedIn" mat-button [routerLink]="[ '/register' ]">Register</button>
                         <button *ngIf="!isLoggedIn" mat-button [routerLink]="[ '/login' ]">Login</button>
                         <button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/upload' ]">Upload file</button>
-                        <button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/files']">My files</button>
+                        <button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/files' ]">My files</button>
                         <button class="logout" *ngIf="isLoggedIn" mat-button (click)="logout()">Log out</button>
                     </span>
                     <span class="title">ZI and NBP Dropbox simulation project</span>
