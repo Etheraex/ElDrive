@@ -21,12 +21,13 @@ import { FileInputComponent } from './pages/file-input/file-input.component';
 import { FileListComponent } from './pages/file-list/file-list.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { CryptoAlgorithmsService } from './services/crypto.service';
+import { AuthGuard } from './services/authguard.service';
 
 const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'files/:userId', component: FileListComponent },
-    { path: 'upload', component: FileInputComponent },
+    { path: 'files/:userId', component: FileListComponent, canActivate: [AuthGuard] },
+    { path: 'upload', component: FileInputComponent, canActivate: [AuthGuard] },
     { path: '**', redirectTo: '/register', pathMatch: 'full' }
 ];
 @NgModule({
@@ -54,7 +55,7 @@ const appRoutes: Routes = [
         MatChipsModule,
         MatToolbarModule
     ],
-    providers: [FileService, AuthService, CryptoAlgorithmsService],
+    providers: [FileService, AuthService, CryptoAlgorithmsService, AuthGuard],
     bootstrap: [AppComponent],
     exports: [
         ReactiveFormsModule

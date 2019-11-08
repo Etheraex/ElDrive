@@ -21,9 +21,9 @@ namespace file_service
 		{
 			var config = new MongoDBConfig();
 			Configuration.Bind(config);
-			var appUsersContext = new FileContext(config);
-			var repo = new FileRepository(appUsersContext);
-			services.AddSingleton<FileRepository>(repo);
+			var appUsersContext = new ZIFileContext(config);
+			var repo = new ZIFileRepository(appUsersContext);
+			services.AddSingleton<ZIFileRepository>(repo);
 
 			services.AddControllers();
 
@@ -54,7 +54,7 @@ namespace file_service
 			app.UseRouting();
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllerRoute("default", "{controller=File}/{action=Get}/{id?}");
+				endpoints.MapControllerRoute("default", "{controller=ZIFile}/{action=Get}/{id?}");
 			});
 		}
 	}

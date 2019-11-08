@@ -4,7 +4,7 @@
 
 export const environment = {
 	production: false,
-	fileController: 'https://localhost:5001/file',
+	fileController: 'https://localhost:5001/zifile',
 	authController: 'https://localhost:6001/appuser'
 };
 
