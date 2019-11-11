@@ -11,13 +11,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FileService } from './services/file.service';
 import { AuthService } from './services/auth.service';
 import { LoginComponent } from './pages/login/login.component';
-import { FileInputComponent } from './pages/file-input/file-input.component';
 import { FileListComponent } from './pages/file-list/file-list.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { CryptoAlgorithmsService } from './services/crypto.service';
@@ -27,13 +27,11 @@ const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
     { path: 'files', component: FileListComponent, canActivate: [AuthGuard] },
-    { path: 'upload', component: FileInputComponent, canActivate: [AuthGuard] },
     { path: '**', redirectTo: '/register', pathMatch: 'full' }
 ];
 @NgModule({
     declarations: [
         AppComponent,
-        FileInputComponent,
         LoginComponent,
         FileListComponent,
         RegisterComponent,
@@ -53,7 +51,8 @@ const appRoutes: Routes = [
         MatSelectModule,
         MatCheckboxModule,
         MatChipsModule,
-        MatToolbarModule
+        MatToolbarModule,
+        MatIconModule
     ],
     providers: [FileService, AuthService, CryptoAlgorithmsService, AuthGuard],
     bootstrap: [AppComponent],

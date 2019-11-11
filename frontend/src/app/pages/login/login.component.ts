@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 response => {
                     loggedInUser.login(response);
-                    this.router.navigate(['/upload']);
+                    this.router.navigate(['/files']);
                 },
                 error => {
                     alert('Error: ' + error.error);
