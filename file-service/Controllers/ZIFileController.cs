@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,6 +67,13 @@ namespace file_service
                 return new NotFoundResult();
             await _repo.Delete(id);
             return new OkResult();
+        }
+
+        [Route("[action]")]
+        [HttpPost("{hash}")]
+        public async Task<ActionResult<IEnumerable<ZIFile>>> LoadFiles([FromBody] string hash)
+        {
+            return await _repo.GetByHashName(hash);
         }
     }
 }

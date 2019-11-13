@@ -5,8 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as crypto from "crypto-js";
 
 import { AuthService } from 'src/app/services/auth.service';
-import { AppUser } from 'src/app/models/appuser.model';
-import { loggedInUser } from 'src/app/models/appuser.model'
+import { appUser } from 'src/app/models/appuser.model';
 
 @Component({
     selector: 'app-login',
@@ -32,14 +31,12 @@ export class LoginComponent implements OnInit {
     onLoginSubmit(): void {
         if (this.loginForm.invalid)
             return;
-        const loginUser = new AppUser();
-
-        loginUser.name = this.formInput.name.value;
-        loginUser.password = crypto.SHA256(this.formInput.password.value).toString(crypto.enc.Base64);
-        this.authService.login(loginUser)
+        appUser.name = this.formInput.name.value;
+        appUser.password = crypto.SHA256(this.formInput.password.value).toString(crypto.enc.Base64);
+        this.authService.login(appUser)
             .subscribe(
                 response => {
-                    loggedInUser.login(response);
+                    appUser.token = response;
                     this.router.navigate(['/files']);
                 },
                 error => {

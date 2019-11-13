@@ -1,8 +1,9 @@
 import { Router } from '@angular/router';
 import { Component, DoCheck } from '@angular/core';
 
-import { loggedInUser } from 'src/app/models/appuser.model';
 import { FileService } from 'src/app/services/file.service';
+import { appUser } from 'src/app/models/appuser.model';
+import { ZIFile } from 'src/app/models/zifile.model';
 
 @Component({
     selector: 'navbar',
@@ -38,7 +39,7 @@ import { FileService } from 'src/app/services/file.service';
 })
 export class NavbarComponent implements DoCheck {
 
-    private _isLoggedIn: boolean;
+    private _isLoggedIn: boolean = false;
 
     fileData: File = null;
     byteArray: ArrayBuffer;
@@ -50,9 +51,7 @@ export class NavbarComponent implements DoCheck {
         this._isLoggedIn = value;
     }
 
-    constructor(private router: Router, private fileService: FileService) {
-        this.isLoggedIn = loggedInUser.id ? true : false;
-    }
+    constructor(private router: Router, private fileService: FileService) { }
 
     fileProgress(fileInput: any) {
         this.fileData = fileInput.target.files[0] as File;
@@ -66,7 +65,15 @@ export class NavbarComponent implements DoCheck {
     }
 
     upload() {
-        this.fileService.postFile(this.byteArray)
+        const file = new ZIFile();
+        file.name = 'Test 3';
+        file.hash = appUser.token;
+        
+        const uint8 = new Uint8Array(this.byteArray);
+        const b64encoded = btoa(String.fromCharCode.apply(null, uint8));
+        file.data = b64encoded;
+        
+        this.fileService.postFile(file)
             .subscribe(response => {
                 console.log(response);
             });
@@ -78,11 +85,11 @@ export class NavbarComponent implements DoCheck {
     }
 
     ngDoCheck(): void {
-        this.isLoggedIn = loggedInUser.id ? true : false;
+        this.isLoggedIn = appUser.token ? true : false;
     }
 
     private logout(): void {
-        loggedInUser.logout();
-        this.router.navigate(['/register']);
+        appUser.token = undefined;
+        this.router.navigate(['/login']);
     }
 }

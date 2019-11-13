@@ -11,11 +11,11 @@ export class AuthService {
 
     constructor(private http: HttpClient) { }
 
-    login(loginInfo: AppUser): Observable<AppUser> {
-        return this.http.post(`${environment.authController}/login`, loginInfo) as Observable<AppUser>;
+    login(loginInfo: AppUser): Observable<string> {
+        return this.http.post(`${environment.authController}/login`, loginInfo) as Observable<string>;
     }
 
-    register(registerInfo: AppUser): Observable<AppUser> {
-        return this.http.post(`${environment.authController}`, registerInfo) as Observable<AppUser>;
+    register(registerInfo: AppUser): Observable<string> {
+        return this.http.post(`${environment.authController}`, registerInfo) as Observable<string>;
     }
 }

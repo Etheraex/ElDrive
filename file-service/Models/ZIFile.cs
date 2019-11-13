@@ -10,14 +10,19 @@ namespace file_service
 	{
 		[JsonIgnore]
 		[BsonId]
+		// MongoDB needs this property, with this exact name
 		public ObjectId InternalId { get; set; }
+
+		public long? Id { get; set; }
 
 		[JsonIgnore]
 		public String Path { get; set; }
-		public long? Id { get; set; }
+
 		[BsonIgnore]
 		public byte[] Data { get; set; }
+
 		public String Name { get; set; }
-		public String UserHash { get; set; }
+
+		public String Hash { get; set; }
 	}
 }

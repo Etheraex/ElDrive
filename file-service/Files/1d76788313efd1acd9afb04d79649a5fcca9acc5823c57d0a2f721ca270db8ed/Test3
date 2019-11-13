@@ -1,0 +1,117 @@
+void CGrafikaView::OnDraw(CDC* pDC)
+{
+	CGrafikaDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	
+	CPen GreenPen(PS_SOLID, 1 , RGB(102, 255, 102));
+	CBrush brush;
+	brush.CreateHatchBrush(HS_VERTICAL, RGB(0, 255, 0));
+	CRect rect;
+	GetClientRect(&rect);
+	pDC->SetMapMode(MM_ISOTROPIC);
+	pDC->SetWindowExt(100, -100);
+	pDC->SetViewportExt(rect.right, rect.bottom);
+	pDC->SetWindowOrg(-10,10);
+	pDC->SelectObject(GreenPen);
+	
+
+
+	//Prva figura, cetiri osmougla i jedan trapez
+	pDC->SetWindowOrg(-20, 20);  
+	CBrush cetka(HS_HORIZONTAL, RGB(255, 0, 0)); 
+	pDC->SelectObject(cetka);	
+	POINT Trapez[] = { { 3, -20 }, { 7 , -66 }, { -7, -66 }, { -3, -20 } }; 
+	pDC->Polygon(Trapez, 4);	
+	cetka.DeleteObject();	
+
+
+	CPen GreenPen1(PS_SOLID, 1, RGB(102, 255, 102)); 
+	CBrush cetka1(RGB(255, 0, 0));
+	pDC->SelectObject(cetka1);
+	pDC->SelectObject(GreenPen1);
+	pDC->SetWindowOrg(-20, 80);
+	POINT Sestougao1[] = { { 10, 0} , { 5 , -9 } , { -5 , -9 }, { -10, 0} , { -5, 9 } , { 5, 9} };
+	pDC->Polygon(Sestougao1, 6);
+	POINT Sestougao[] = { { 2, 0} , { 1 , -2 } , { -1 , -2 }, { -2, 0} , { -1, 2 } , { 1, 2} };
+	pDC->Polygon(Sestougao, 6);
+	cetka1.DeleteObject();
+	
+	
+
+	pDC->SetWindowOrg(-20, 40);
+	CBrush cetka2(RGB(255, 0, 0));
+	pDC->SelectObject(cetka2);
+	POINT Sestougao2[] = { { 7, 0} , { 4 , -6 } , { -3 , -6 }, { -7, 0} , { -4, 6 } , { 3, 6} };
+	pDC->Polygon(Sestougao2, 6);
+	POINT Sestougao3[] = { { 2, 0} , { 1 , -2 } , { -1 , -2 }, { -2, 0} , { -1, 2 } , { 1, 2} };
+	pDC->Polygon(Sestougao3, 6);
+	cetka2.DeleteObject();
+
+	//Druga figura, cetiri kvadrata i trapez
+	pDC->SetWindowOrg(-40, 15);
+	CPen BluePen(PS_SOLID, 1, RGB(0, 0, 255));
+	CBrush cetka4(RGB(255, 102, 255));
+	pDC->SelectObject(cetka4);
+	pDC->SelectObject(BluePen);
+	POINT Trapez1[] = { { -20, 6 }, { 25 , 3 }, { 25, -3 }, { -20, -6 } };
+	pDC->Polygon(Trapez1, 4);
+	cetka4.DeleteObject();
+	BluePen.DeleteObject();
+
+	CPen GreenPen21(PS_SOLID, 0, RGB(0, 0, 255));
+	CBrush cetkaCrvena(RGB(0, 0, 255));
+	pDC->SelectObject(cetkaCrvena);
+	pDC->SelectObject(GreenPen21);
+	pDC->SetWindowOrg(-20, 15);
+	POINT Kvadrat1[] = { { 10, 0} , {0 , -10} , { -10 , 0 }, { 0, 10 } };
+	pDC->Polygon(Kvadrat1, 4);	
+	cetkaCrvena.DeleteObject();
+	GreenPen21.DeleteObject();
+
+	
+	CBrush cetkaZuta(RGB(0, 0, 255));
+	pDC->SelectObject(cetkaZuta);
+	pDC->SelectObject(GreenPen21);
+	pDC->SetWindowOrg(-70, 15);
+	POINT Kvadrat3[] = { { 8, 0} , {0 , -8} , { -8 , 0 }, { 0, 8 } };
+	pDC->Polygon(Kvadrat3, 4);
+	
+	cetkaZuta.DeleteObject();
+	GreenPen21.DeleteObject();
+
+
+	//Treca figura, dole stalak i gore nesto
+
+	//stalak
+	CPen ZutaOlovka(PS_SOLID, 1, RGB(255, 255, 51));
+	pDC->SelectObject(ZutaOlovka);
+	pDC->SetWindowOrg(-90, 80);
+	POINT Kvadrat5[] = { { -18, -10 } , {-18 , -2} , { 18 , -2 }, { 18, -10 } };
+	pDC->Polygon(Kvadrat5, 4);
+
+	CBrush roze(RGB(255, 51, 255));
+	pDC->SelectObject(roze);
+	POINT Trapez2[] = { { -12, -2 } , {-6 , 3 } ,{-6 , 8 } , { -5, 12}, { 0 , 15 }, { 5, 12 }, { 6, 8 }, { 6 , 3 }, { 12, -2 } };
+	pDC->Polygon(Trapez2, 10);
+	roze.DeleteObject();
+	
+
+	ZutaOlovka.DeleteObject();
+
+	//ovo iznad
+	CPen PlavaOlovka(PS_SOLID, 1, RGB(102, 255, 255));
+	pDC->SelectObject(PlavaOlovka);
+	pDC->SetWindowOrg(-90,	30);
+	CBrush crvena(HS_HORIZONTAL, RGB(255, 0, 0));
+	pDC->SelectObject(crvena);
+	POINT Rucica[] = { { 0, 0 }, { 2, 0 }, { 9, -6 }, { 15, 0 }, { 17, 0 }, { 9, -8 } };
+	pDC->Polygon(Rucica, 6);
+	pDC->SetWindowOrg(-95, 34);
+	pDC->Ellipse(-8, 0, 0, 8);
+	PlavaOlovka.DeleteObject();
+	crvena.DeleteObject();
+	
+}

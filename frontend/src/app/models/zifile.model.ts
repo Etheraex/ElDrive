@@ -1,6 +1,6 @@
 export class ZIFile {
-    id: number;
+    id?: number;
     name: string;
-    data: string;
-    userHash: string;
+    hash: string;
+    data?: string;
 }
