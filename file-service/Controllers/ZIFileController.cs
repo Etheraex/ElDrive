@@ -70,10 +70,15 @@ namespace file_service
         }
 
         [Route("[action]")]
-        [HttpPost("{hash}")]
-        public async Task<ActionResult<IEnumerable<ZIFile>>> LoadFiles([FromBody] string hash)
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<ZIFile>>> LoadFiles([FromBody] Test test)
         {
-            return await _repo.GetByHashName(hash);
+            return await _repo.GetByHashName(test.Hash);
         }
+    }
+
+    public class Test
+    {
+        public String Hash { get; set; }
     }
 }
