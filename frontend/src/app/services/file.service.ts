@@ -13,10 +13,9 @@ export class FileService {
     constructor(private http: HttpClient) { }
 
     getFiles(): Observable<Array<ZIFile>> {
-        const test = new Test();
-        test.hash = appUser.token;
-        // const hash = { hash: appUser.token };
-        return this.http.post<Array<ZIFile>>(`${environment.fileController}/loadfiles`, test);
+        const postData = new PostData();
+        postData.payload = appUser.token;
+        return this.http.post<Array<ZIFile>>(`${environment.fileController}/loadfiles`, postData);
     }
 
     postFile(file: ZIFile): Observable<any> {
@@ -24,6 +23,6 @@ export class FileService {
     }
 }
 
-class Test{
-    hash: string;
+class PostData {
+    payload: string;
 }

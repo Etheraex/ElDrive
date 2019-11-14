@@ -43,7 +43,7 @@ export class NavbarComponent implements DoCheck {
 
     fileData: File = null;
     byteArray: ArrayBuffer;
-    
+
     get isLoggedIn(): boolean {
         return this._isLoggedIn;
     }
@@ -66,13 +66,13 @@ export class NavbarComponent implements DoCheck {
 
     upload() {
         const file = new ZIFile();
-        file.name = 'Test 3';
+        file.name = this.fileData.name;
         file.hash = appUser.token;
-        
+
         const uint8 = new Uint8Array(this.byteArray);
         const b64encoded = btoa(String.fromCharCode.apply(null, uint8));
         file.data = b64encoded;
-        
+
         this.fileService.postFile(file)
             .subscribe(response => {
                 console.log(response);

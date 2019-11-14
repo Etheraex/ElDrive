@@ -1,3 +1,28 @@
-<div *ngFor="let item of files">
-    {{item.name}}
+<div *ngIf="displayFiles" class="container">
+    <br>
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+    <table mat-table [dataSource]="displayFiles" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef class="left"> No. </th>
+            <td mat-cell *matCellDef="let element" class="left"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef class="middle"> Name </th>
+            <td mat-cell *matCellDef="let element" class="middle"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element" class="action-link" class="right">
+                <button mat-button color="primary" (click)="onDownload()">Download</button>
+                <button mat-button color="warn" (click)="onDelete()">Delete</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 </div>

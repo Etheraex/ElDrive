@@ -12,6 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
         MatCheckboxModule,
         MatChipsModule,
         MatToolbarModule,
-        MatIconModule
+        MatIconModule,
+        MatTableModule
     ],
     providers: [FileService, AuthService, CryptoAlgorithmsService, AuthGuard],
     bootstrap: [AppComponent],

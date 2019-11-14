@@ -71,14 +71,14 @@ namespace file_service
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<ZIFile>>> LoadFiles([FromBody] Test test)
+        public async Task<ActionResult<IEnumerable<ZIFile>>> LoadFiles([FromBody] PostData data)
         {
-            return await _repo.GetByHashName(test.Hash);
+            return await _repo.GetByHashName(data.Payload);
         }
     }
 
-    public class Test
+    public class PostData
     {
-        public String Hash { get; set; }
+        public String Payload { get; set; }
     }
 }
