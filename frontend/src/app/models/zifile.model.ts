@@ -3,4 +3,5 @@ export class ZIFile {
     name: string;
     hash: string;
     data?: string;
+    lastModified: Date;
 }

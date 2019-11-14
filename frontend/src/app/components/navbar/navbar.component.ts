@@ -67,6 +67,7 @@ export class NavbarComponent implements DoCheck {
     upload() {
         const file = new ZIFile();
         file.name = this.fileData.name;
+        file.lastModified = new Date(this.fileData.lastModified);
         file.hash = appUser.token;
 
         const uint8 = new Uint8Array(this.byteArray);

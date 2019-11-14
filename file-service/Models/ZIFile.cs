@@ -24,5 +24,7 @@ namespace file_service
 		public String Name { get; set; }
 
 		public String Hash { get; set; }
+
+		public DateTime LastModified { get; set; }
 	}
 }

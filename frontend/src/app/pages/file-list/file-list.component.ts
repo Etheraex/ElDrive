@@ -10,9 +10,8 @@ import { ZIFile } from 'src/app/models/zifile.model';
 })
 export class FileListComponent implements OnInit {
 
-	files: ZIFile[];
 	displayFiles: MatTableDataSource<ZIFile>;
-	displayedColumns: string[] = ["id", "name", "action"];
+	displayedColumns: string[] = ["id", "name", "lastModified", "action"];
 
 	constructor(private fileService: FileService) { }
 
@@ -23,7 +22,6 @@ export class FileListComponent implements OnInit {
 	getFiles() {
 		this.fileService.getFiles().subscribe(
 			response => {
-				this.files = response;
 				this.displayFiles = new MatTableDataSource(response as ZIFile[]);
 			});
 	}
