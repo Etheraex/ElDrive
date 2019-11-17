@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -23,13 +22,8 @@ import { FileListComponent } from './pages/file-list/file-list.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { CryptoAlgorithmsService } from './services/crypto.service';
 import { AuthGuard } from './services/authguard.service';
+import { AppRoutingModule } from './app-routing.module';
 
-const appRoutes: Routes = [
-    { path: 'register', component: RegisterComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'files', component: FileListComponent, canActivate: [AuthGuard] },
-    { path: '**', redirectTo: '/register', pathMatch: 'full' }
-];
 @NgModule({
     declarations: [
         AppComponent,
@@ -43,9 +37,7 @@ const appRoutes: Routes = [
         HttpClientModule,
         ReactiveFormsModule,
         FormsModule,
-        RouterModule.forRoot(
-            appRoutes
-        ),
+        AppRoutingModule,
         BrowserAnimationsModule,
         MatInputModule,
         MatButtonModule,
