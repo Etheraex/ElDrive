@@ -13,17 +13,14 @@ export class FileListComponent implements OnInit {
 	displayFiles: MatTableDataSource<ZIFile>;
 	displayedColumns: string[] = ["id", "name", "lastModified", "action"];
 
-	constructor(private fileService: FileService) { }
-
-	ngOnInit() {
-		this.getFiles();
+	constructor(private fileService: FileService) {
+		this.fileService.files.subscribe(response => {
+			this.displayFiles = new MatTableDataSource(response);
+		});
 	}
 
-	getFiles() {
-		this.fileService.getFiles().subscribe(
-			response => {
-				this.displayFiles = new MatTableDataSource(response as ZIFile[]);
-			});
+	ngOnInit() {
+		this.fileService.getFiles();
 	}
 
 	applyFilter(filterValue: string) {
@@ -34,7 +31,7 @@ export class FileListComponent implements OnInit {
 		console.log("download");
 	}
 
-	onDelete() {
-		console.log("delete");
+	onDelete(id: number) {
+		this.fileService.deleteFile(id).subscribe(() => this.fileService.getFiles());
 	}
 }

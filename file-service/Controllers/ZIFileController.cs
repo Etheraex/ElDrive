@@ -38,7 +38,7 @@ namespace file_service
         [HttpPost]
         public async Task<ActionResult<ZIFile>> Post([FromBody] ZIFile file)
         {
-            this._repo.SaveToFile(file);
+            this._repo.SaveBytesToFileSystem(file);
             file.Id = await _repo.GetNextId();
             await _repo.Create(file);
             return new OkObjectResult(file);
@@ -62,9 +62,10 @@ namespace file_service
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            var post = await _repo.Get(id);
-            if (post == null)
+            var fileFromDB = await _repo.Get(id);
+            if (fileFromDB == null)
                 return new NotFoundResult();
+            this._repo.DeleteFileFromFileSystem(fileFromDB);
             await _repo.Delete(id);
             return new OkResult();
         }

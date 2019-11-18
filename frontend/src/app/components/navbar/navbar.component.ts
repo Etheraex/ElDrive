@@ -75,9 +75,7 @@ export class NavbarComponent implements DoCheck {
         file.data = b64encoded;
 
         this.fileService.postFile(file)
-            .subscribe(response => {
-                console.log(response);
-            });
+            .subscribe(() => this.fileService.getFiles());
     }
 
     onChooseFile() {
