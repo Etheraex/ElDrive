@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Text.Json.Serialization;
 using mongo_config;
 using MongoDB.Bson;
@@ -19,12 +20,17 @@ namespace file_service
 		public String Path { get; set; }
 
 		[BsonIgnore]
-		public byte[] Data { get; set; }
+		public String Data { get; set; }
 
 		public String Name { get; set; }
 
 		public String Hash { get; set; }
 
 		public DateTime LastModified { get; set; }
+
+		public byte[] GetFileBytes()
+		{
+			return Encoding.ASCII.GetBytes(this.Data);
+		}
 	}
 }

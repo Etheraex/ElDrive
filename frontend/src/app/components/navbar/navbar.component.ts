@@ -4,6 +4,7 @@ import { Component, DoCheck } from '@angular/core';
 import { FileService } from 'src/app/services/file.service';
 import { appUser } from 'src/app/models/appuser.model';
 import { ZIFile } from 'src/app/models/zifile.model';
+import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 
 @Component({
 	selector: 'navbar',
@@ -51,7 +52,7 @@ export class NavbarComponent implements DoCheck {
 		this._isLoggedIn = value;
 	}
 
-	constructor(private router: Router, private fileService: FileService) { }
+	constructor(private router: Router, private fileService: FileService, private cryptoService: CryptoAlgorithmsService) { }
 
 	fileProgress(fileInput: any) {
 		this.fileData = fileInput.target.files[0] as File;
@@ -71,9 +72,10 @@ export class NavbarComponent implements DoCheck {
 		file.hash = appUser.token;
 
 		const uint8 = new Uint8Array(this.byteArray);
-		const b64encoded = btoa(String.fromCharCode.apply(null, uint8));
-		file.data = b64encoded;
-
+		file.data = this.cryptoService.SimpleSubstitutionEncrypt(String.fromCharCode.apply(null, uint8));
+		const test = this.cryptoService.SimpleSubstitutionDecrypt(file.data);
+		console.log(file.data);
+		console.log(test);
 		this.fileService.postFile(file)
 			.subscribe(() => this.fileService.getFiles());
 	}

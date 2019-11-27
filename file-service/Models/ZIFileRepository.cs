@@ -14,7 +14,7 @@ namespace file_service
 		{
 			System.IO.Directory.CreateDirectory("Files/" + file.Hash.Replace(" ", ""));
 			file.Path = "Files/" + file.Hash.Replace(" ", "") + "/" + file.Name.Replace(" ", "");
-			System.IO.File.WriteAllBytes(file.Path, file.Data);
+			System.IO.File.WriteAllBytes(file.Path, file.GetFileBytes());
 		}
 
 		public void DeleteFileFromFileSystem(ZIFile file)
