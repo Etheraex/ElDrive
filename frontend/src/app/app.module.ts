@@ -25,33 +25,33 @@ import { AuthGuard } from './services/authguard.service';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        LoginComponent,
-        FileListComponent,
-        RegisterComponent,
-        NavbarComponent
-    ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        FormsModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatInputModule,
-        MatButtonModule,
-        MatSelectModule,
-        MatCheckboxModule,
-        MatChipsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatTableModule
-    ],
-    providers: [FileService, AuthService, CryptoAlgorithmsService, AuthGuard],
-    bootstrap: [AppComponent],
-    exports: [
-        ReactiveFormsModule
-    ]
+	declarations: [
+		AppComponent,
+		LoginComponent,
+		FileListComponent,
+		RegisterComponent,
+		NavbarComponent
+	],
+	imports: [
+		BrowserModule,
+		HttpClientModule,
+		ReactiveFormsModule,
+		FormsModule,
+		AppRoutingModule,
+		BrowserAnimationsModule,
+		MatInputModule,
+		MatButtonModule,
+		MatSelectModule,
+		MatCheckboxModule,
+		MatChipsModule,
+		MatToolbarModule,
+		MatIconModule,
+		MatTableModule
+	],
+	providers: [FileService, AuthService, CryptoAlgorithmsService, AuthGuard],
+	bootstrap: [AppComponent],
+	exports: [
+		ReactiveFormsModule
+	]
 })
 export class AppModule { }

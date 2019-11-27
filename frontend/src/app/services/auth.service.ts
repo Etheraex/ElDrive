@@ -5,17 +5,17 @@ import { Observable } from 'rxjs';
 import { AppUser } from '../models/appuser.model';
 
 @Injectable({
-    providedIn: 'root'
+	providedIn: 'root'
 })
 export class AuthService {
 
-    constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) { }
 
-    login(loginInfo: AppUser): Observable<string> {
-        return this.http.post(`${environment.authController}/login`, loginInfo) as Observable<string>;
-    }
+	login(loginInfo: AppUser): Observable<string> {
+		return this.http.post(`${environment.authController}/login`, loginInfo) as Observable<string>;
+	}
 
-    register(registerInfo: AppUser): Observable<string> {
-        return this.http.post(`${environment.authController}`, registerInfo) as Observable<string>;
-    }
+	register(registerInfo: AppUser): Observable<string> {
+		return this.http.post(`${environment.authController}`, registerInfo) as Observable<string>;
+	}
 }

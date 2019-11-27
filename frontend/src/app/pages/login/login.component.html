@@ -1,31 +1,31 @@
 <div class="login-form">
-    <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
-        <div>
-            <mat-form-field class="login-form-item">
-                <input matInput placeholder="Name" formControlName="name">
-                <mat-error *ngIf="formInput.name.invalid && formInput.name.touched">
-                    Please enter your name.
-                </mat-error>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field class="login-form-item">
-                <input matInput [type]="'password'" placeholder="Password" formControlName="password">
-                <mat-error *ngIf="formInput.password.invalid && formInput.password.touched">
-                    Please enter yout password.
-                </mat-error>
-            </mat-form-field>
-        </div>
-        <br>
-        <div>
-            <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Login</button>
-        </div>
-    </form>
-    <br>
-    <br>
-    <br>
-    <div>
-        <span>Don't have an account? &nbsp; </span>
-        <button mat-button color="primary" [routerLink]="[ '/register']">Register</button>
-    </div>
+	<form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+		<div>
+			<mat-form-field class="login-form-item">
+				<input matInput placeholder="Name" formControlName="name">
+				<mat-error *ngIf="formInput.name.invalid && formInput.name.touched">
+					Please enter your name.
+				</mat-error>
+			</mat-form-field>
+		</div>
+		<div>
+			<mat-form-field class="login-form-item">
+				<input matInput [type]="'password'" placeholder="Password" formControlName="password">
+				<mat-error *ngIf="formInput.password.invalid && formInput.password.touched">
+					Please enter yout password.
+				</mat-error>
+			</mat-form-field>
+		</div>
+		<br>
+		<div>
+			<button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Login</button>
+		</div>
+	</form>
+	<br>
+	<br>
+	<br>
+	<div>
+		<span>Don't have an account? &nbsp; </span>
+		<button mat-button color="primary" [routerLink]="[ '/register']">Register</button>
+	</div>
 </div>

@@ -1,7 +1,7 @@
 export class ZIFile {
-    id?: number;
-    name: string;
-    hash: string;
-    data?: string;
-    lastModified: Date;
+	id?: number;
+	name: string;
+	hash: string;
+	data?: string;
+	lastModified: Date;
 }
