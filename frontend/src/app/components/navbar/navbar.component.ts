@@ -70,12 +70,12 @@ export class NavbarComponent implements DoCheck {
 		file.name = this.fileData.name;
 		file.lastModified = new Date(this.fileData.lastModified);
 		file.hash = appUser.token;
-
 		const uint8 = new Uint8Array(this.byteArray);
-		file.data = this.cryptoService.SimpleSubstitutionEncrypt(String.fromCharCode.apply(null, uint8));
-		const test = this.cryptoService.SimpleSubstitutionDecrypt(file.data);
-		console.log(file.data);
-		console.log(test);
+		uint8.forEach( x => {
+			file.data += String.fromCharCode(x);
+		});
+
+		file.data = this.cryptoService.SimpleSubstitutionEncrypt(file.data);
 		this.fileService.postFile(file)
 			.subscribe(() => this.fileService.getFiles());
 	}
