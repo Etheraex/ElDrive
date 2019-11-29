@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 
+export const Algorithms: String[] = [
+	"SimpleSubstitution",
+	"One-Time-Pad"
+];
+
 @Injectable({
 	providedIn: 'root'
 })

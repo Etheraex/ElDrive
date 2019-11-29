@@ -1,0 +1,10 @@
+<h1 mat-dialog-title [align]="'center'">Choose encryption</h1>
+<div class="mat-dialog-content">
+	<mat-select>
+		<mat-option *ngFor="let item of data; let i = index" value="item">{{item}}</mat-option>
+	</mat-select>
+</div>
+<div mat-dialog-actions [align]="'center'">
+	<button mat-raised-button color="warn" (click)="onNoClick()">Abort</button>
+	<button mat-raised-button color="primary" [mat-dialog-close]="'Test'">Choose file</button>
+</div>

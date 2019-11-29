@@ -23,6 +23,8 @@ import { RegisterComponent } from './pages/register/register.component';
 import { CryptoAlgorithmsService } from './services/crypto.service';
 import { AuthGuard } from './services/authguard.service';
 import { AppRoutingModule } from './app-routing.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
 	declarations: [
@@ -30,7 +32,8 @@ import { AppRoutingModule } from './app-routing.module';
 		LoginComponent,
 		FileListComponent,
 		RegisterComponent,
-		NavbarComponent
+		NavbarComponent,
+		DialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -46,9 +49,13 @@ import { AppRoutingModule } from './app-routing.module';
 		MatChipsModule,
 		MatToolbarModule,
 		MatIconModule,
-		MatTableModule
+		MatTableModule,
+		MatDialogModule,
 	],
-	providers: [FileService, AuthService, CryptoAlgorithmsService, AuthGuard],
+	entryComponents: [
+		DialogComponent
+	],
+	providers: [FileService, AuthService, CryptoAlgorithmsService, AuthGuard,],
 	bootstrap: [AppComponent],
 	exports: [
 		ReactiveFormsModule

@@ -4,7 +4,9 @@ import { Component, DoCheck } from '@angular/core';
 import { FileService } from 'src/app/services/file.service';
 import { appUser } from 'src/app/models/appuser.model';
 import { ZIFile } from 'src/app/models/zifile.model';
-import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
+import { CryptoAlgorithmsService, Algorithms } from 'src/app/services/crypto.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
 	selector: 'navbar',
@@ -12,7 +14,7 @@ import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
                     <span>
                         <button *ngIf="!isLoggedIn" mat-button [routerLink]="[ '/register' ]">Register</button>
                         <button *ngIf="!isLoggedIn" mat-button [routerLink]="[ '/login' ]">Login</button>
-                        <button *ngIf="isLoggedIn" mat-button (click)="onChooseFile()">
+                        <button *ngIf="isLoggedIn" mat-button (click)="onClick()">
                             <mat-icon>file_upload</mat-icon>
                             Upload file
                             </button>
@@ -25,7 +27,8 @@ import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
                     <span class="title">ZI and NBP Dropbox simulation project</span>
                 </mat-toolbar>
                 
-                <input id="fileUpload" type="file" hidden (change)="fileProgress($event)" />`,
+				<input id="fileUpload" type="file" hidden (change)="fileProgress($event)" />
+				`,
 	styles: [
 		`.title {
                 position: absolute;
@@ -52,7 +55,7 @@ export class NavbarComponent implements DoCheck {
 		this._isLoggedIn = value;
 	}
 
-	constructor(private router: Router, private fileService: FileService, private cryptoService: CryptoAlgorithmsService) { }
+	constructor(private router: Router, private fileService: FileService, private cryptoService: CryptoAlgorithmsService, public dialog: MatDialog) { }
 
 	fileProgress(fileInput: any) {
 		this.fileData = fileInput.target.files[0] as File;
@@ -65,13 +68,17 @@ export class NavbarComponent implements DoCheck {
 		};
 	}
 
+	onClick() {
+		this.openDialog();
+	}
+
 	upload() {
 		const file = new ZIFile();
 		file.name = this.fileData.name;
 		file.lastModified = new Date(this.fileData.lastModified);
 		file.hash = appUser.token;
 		const uint8 = new Uint8Array(this.byteArray);
-		uint8.forEach( x => {
+		uint8.forEach(x => {
 			file.data += String.fromCharCode(x);
 		});
 
@@ -80,7 +87,7 @@ export class NavbarComponent implements DoCheck {
 			.subscribe(() => this.fileService.getFiles());
 	}
 
-	onChooseFile() {
+	chooseFile() {
 		const fileUpload = document.getElementById('fileUpload') as HTMLInputElement;
 		fileUpload.click();
 	}
@@ -92,5 +99,17 @@ export class NavbarComponent implements DoCheck {
 	private logout(): void {
 		appUser.token = undefined;
 		this.router.navigate(['/login']);
+	}
+
+	openDialog(): void {
+		const dialogRef = this.dialog.open(DialogComponent, {
+			width: '300px',
+			data: Algorithms
+		});
+
+		dialogRef.afterClosed().subscribe(value => {
+			if (value)
+				this.chooseFile();
+		});
 	}
 }
