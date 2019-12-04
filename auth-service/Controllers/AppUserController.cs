@@ -10,6 +10,12 @@ namespace auth_service
 	[Route("AppUser")]
 	public class AppUserController : Controller
 	{
+		private ServicePlan[] AvailablePlans =
+		{
+			new ServicePlan("Free", 1.0),
+			new ServicePlan("Basic", 10.0),
+			new ServicePlan("Advanced", 100.0)
+		};
 		private readonly AppUserRepository _repo;
 		public AppUserController(AppUserRepository repo)
 		{
@@ -43,7 +49,6 @@ namespace auth_service
 			appUser.Id = await _repo.GetNextId();
 			await _repo.Create(appUser);
 			return new OkObjectResult(_repo.CreateNameHash(appUser));
-
 		}
 
 		// PUT /appuser/id
@@ -78,8 +83,10 @@ namespace auth_service
 			if (appUserFromDb == null)
 				return new UnauthorizedObjectResult("Incorect username provided");
 			if (appUserFromDb.Password == appUser.Password)
-				return new OkObjectResult(_repo.CreateNameHash(appUserFromDb));
-
+			{
+				appUserFromDb.Hash = _repo.CreateNameHash(appUserFromDb);
+				return new OkObjectResult(appUserFromDb);
+			}
 			return new UnauthorizedObjectResult("Incorrect password provided");
 		}
 	}

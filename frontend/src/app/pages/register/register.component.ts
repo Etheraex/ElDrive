@@ -6,6 +6,7 @@ import * as crypto from 'crypto-js';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { appUser } from 'src/app/models/appuser.model';
+import { availablePlans } from 'src/app/models/serviceplan.model';
 
 @Component({
 	selector: 'app-register',
@@ -33,10 +34,12 @@ export class RegisterComponent implements OnInit {
 			return;
 		appUser.name = this.formInput.name.value;
 		appUser.password = crypto.SHA256(this.formInput.password.value).toString(crypto.enc.Base64);
+		appUser.plan = availablePlans.Free;
+		appUser.usedSpace = 0.0;
 		this.authService.register(appUser)
 			.subscribe(
 				response => {
-					appUser.token = response;
+					appUser.hash = response;
 					this.router.navigate(['/files']);
 				});
 	}

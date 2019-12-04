@@ -5,11 +5,13 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { FileListComponent } from './pages/file-list/file-list.component';
 import { AuthGuard } from './services/authguard.service';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 const appRoutes: Routes = [
 	{ path: 'register', component: RegisterComponent },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'files', component: FileListComponent, canActivate: [AuthGuard] },
+	{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 	{ path: '**', redirectTo: '/register', pathMatch: 'full' }
 ];
 @NgModule({

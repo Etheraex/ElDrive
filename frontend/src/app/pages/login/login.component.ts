@@ -36,7 +36,9 @@ export class LoginComponent implements OnInit {
 		this.authService.login(appUser)
 			.subscribe(
 				response => {
-					appUser.token = response;
+					appUser.plan = response.plan;
+					appUser.usedSpace = response.usedSpace;
+					appUser.hash = response.hash;
 					this.router.navigate(['/files']);
 				},
 				error => {

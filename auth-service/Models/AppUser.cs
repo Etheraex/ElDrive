@@ -15,8 +15,9 @@ namespace auth_service
 		public String Name { get; set; }
 		public String Password { get; set; }
 
-		[JsonIgnore]
 		[BsonIgnore]
-		public String NameHash { get; set; }
+		public String Hash { get; set; }
+		public ServicePlan Plan { get; set; }
+		public double UsedSpace { get; set; }
 	}
 }

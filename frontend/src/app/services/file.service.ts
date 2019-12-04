@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable, Subscribable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ZIFile } from '../models/zifile.model';
 import { appUser } from '../models/appuser.model';
 
@@ -16,7 +16,7 @@ export class FileService {
 
 	getFiles(): void {
 		const postData = new PostData();
-		postData.payload = appUser.token;
+		postData.payload = appUser.hash;
 		this.http.post<Array<ZIFile>>(`${environment.fileController}/loadfiles`, postData).subscribe(response => {
 			this.files.next(response);
 		});

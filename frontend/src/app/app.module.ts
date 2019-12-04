@@ -25,6 +25,7 @@ import { AuthGuard } from './services/authguard.service';
 import { AppRoutingModule } from './app-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 @NgModule({
 	declarations: [
@@ -33,7 +34,8 @@ import { DialogComponent } from './components/dialog/dialog.component';
 		FileListComponent,
 		RegisterComponent,
 		NavbarComponent,
-		DialogComponent
+		DialogComponent,
+		ProfileComponent
 	],
 	imports: [
 		BrowserModule,
