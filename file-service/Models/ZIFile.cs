@@ -14,7 +14,7 @@ namespace file_service
 		// MongoDB needs this property, with this exact name
 		public ObjectId InternalId { get; set; }
 
-		public long? Id { get; set; }
+		public String Id { get; set; }
 
 		[JsonIgnore]
 		public String Path { get; set; }
@@ -27,10 +27,17 @@ namespace file_service
 		public String Hash { get; set; }
 
 		public DateTime LastModified { get; set; }
+		public EncryptionAlgorithms Encryption { get; set; }
+		public String EncryptionKey { get; set; }
 
 		public byte[] GetFileBytes()
 		{
 			return Encoding.ASCII.GetBytes(this.Data);
+		}
+
+		public void SaveFileBytes(byte[] data)
+		{
+			this.Data = Encoding.ASCII.GetString(data);
 		}
 	}
 }

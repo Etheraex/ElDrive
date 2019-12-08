@@ -4,6 +4,7 @@ import { ZIFile } from '../models/zifile.model';
 import { appUser } from '../models/appuser.model';
 import { FileService } from './file.service';
 import { CryptoAlgorithmsService } from './crypto.service';
+import { EncryptionAlgorithms } from '../models/encryptionalgorithms.enum';
 
 @Injectable({
 	providedIn: 'root'
@@ -23,7 +24,6 @@ export class UploadService {
 	beginUpload(fileInput: any) {
 		this.fileData = fileInput.target.files[0] as File;
 		if (this.check()) {
-			console.log("da");
 			const reader = new FileReader();
 			reader.readAsArrayBuffer(this.fileData);
 			reader.onloadend = () => {
@@ -39,6 +39,8 @@ export class UploadService {
 		file.name = this.fileData.name;
 		file.lastModified = new Date(this.fileData.lastModified);
 		file.hash = appUser.hash;
+		/* should be based on user choice not hard coded to SimpleSubstitution */
+		file.encryption = EncryptionAlgorithms.SimpleSubsitution;
 		const uint8 = new Uint8Array(this.byteArray);
 		uint8.forEach(x => {
 			file.data += String.fromCharCode(x);

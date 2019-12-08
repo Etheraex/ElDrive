@@ -16,37 +16,38 @@ namespace file_service
 			_repo = repo;
 		}
 
-		// GET /file
+		// GET /zifile
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<ZIFile>>> Get()
 		{
 			return new ObjectResult(await _repo.GetAll());
 		}
 
-		// GET /file/id
+		// GET /zifile/id
 		[HttpGet("{id}")]
-		public async Task<ActionResult<ZIFile>> Get(long id)
+		public async Task<ActionResult<ZIFile>> Get(String id)
 		{
 			var file = await _repo.Get(id);
 			if (file == null)
 				return new NotFoundResult();
 
+			file.SaveFileBytes(this._repo.LoadDataFromFileSystem(file.Path));
 			return new ObjectResult(file);
 		}
 
-		// POST /file
+		// POST /zifile
 		[HttpPost]
 		public async Task<ActionResult<ZIFile>> Post([FromBody] ZIFile file)
 		{
 			this._repo.SaveBytesToFileSystem(file);
-			file.Id = await _repo.GetNextId();
+			file.Id = Guid.NewGuid().ToString("N");
 			await _repo.Create(file);
 			return new OkObjectResult(file);
 		}
 
-		// PUT /file/id
+		// PUT /zifile/id
 		[HttpPut("{id}")]
-		public async Task<ActionResult<ZIFile>> Put(long id, [FromBody] ZIFile file)
+		public async Task<ActionResult<ZIFile>> Put(String id, [FromBody] ZIFile file)
 		{
 			var fileFromDb = await _repo.Get(id);
 			if (fileFromDb == null)
@@ -58,9 +59,9 @@ namespace file_service
 			return new OkObjectResult(file);
 		}
 
-		// DELETE /file/id
+		// DELETE /zifile/id
 		[HttpDelete("{id}")]
-		public async Task<IActionResult> Delete(long id)
+		public async Task<IActionResult> Delete(String id)
 		{
 			var fileFromDB = await _repo.Get(id);
 			if (fileFromDB == null)

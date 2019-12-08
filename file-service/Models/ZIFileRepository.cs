@@ -17,6 +17,11 @@ namespace file_service
 			System.IO.File.WriteAllBytes(file.Path, file.GetFileBytes());
 		}
 
+		public Byte[] LoadDataFromFileSystem(String path)
+		{
+			return System.IO.File.ReadAllBytes(path);
+		}
+		
 		public void DeleteFileFromFileSystem(ZIFile file)
 		{
 			System.IO.File.Delete(file.Path);

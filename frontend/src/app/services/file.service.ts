@@ -26,9 +26,12 @@ export class FileService {
 		return this.http.post(`${environment.fileController}`, file);
 	}
 
-	deleteFile(id: number): Observable<any> {
-		console.log('da')
+	deleteFile(id: string): Observable<any> {
 		return this.http.delete(`${environment.fileController}/${id}`);
+	}
+
+	downloadFile(id: string): Observable<ZIFile> {
+		return this.http.get<ZIFile>(`${environment.fileController}/${id}`);
 	}
 }
 

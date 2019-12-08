@@ -11,7 +11,7 @@ namespace auth_service
 		[JsonIgnore]
 		[BsonId]
 		public ObjectId? InternalId { get; set; }
-		public long? Id { get; set; }
+		public String Id { get; set; }
 		public String Name { get; set; }
 		public String Password { get; set; }
 

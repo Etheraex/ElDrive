@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Bson;
@@ -21,7 +22,7 @@ namespace mongo_config
 								.ToListAsync();
 		}
 
-		public Task<T> Get(long id)
+		public Task<T> Get(String id)
 		{
 			FilterDefinition<T> filter = Builders<T>.Filter.Eq(m => m.Id, id);
 			return _context.Collection
@@ -42,17 +43,12 @@ namespace mongo_config
 			return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
 		}
 
-		public async Task<bool> Delete(long id)
+		public async Task<bool> Delete(String id)
 		{
 			FilterDefinition<T> filter = Builders<T>.Filter.Eq(m => m.Id, id);
 			DeleteResult deleteResult = await _context.Collection
 													  .DeleteOneAsync(filter);
 			return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
-		}
-
-		public async Task<long> GetNextId()
-		{
-			return await _context.Collection.CountDocumentsAsync(new BsonDocument()) + 1;
 		}
 	}
 }

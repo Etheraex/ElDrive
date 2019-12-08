@@ -1,7 +1,9 @@
+using System;
+
 namespace mongo_config
 {
 	public interface IIdentifiable
 	{
-		long? Id { get; set; }
+		String Id { get; set; }
 	}
 }

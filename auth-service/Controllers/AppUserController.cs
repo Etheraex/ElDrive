@@ -31,7 +31,7 @@ namespace auth_service
 
 		// GET /appuser/id
 		[HttpGet("{id}")]
-		public async Task<ActionResult<AppUser>> Get(long id)
+		public async Task<ActionResult<AppUser>> Get(String id)
 		{
 			var appUser = await _repo.Get(id);
 			if (appUser == null)
@@ -46,14 +46,14 @@ namespace auth_service
 		public async Task<ActionResult<String>> Post([FromBody] AppUser appUser)
 		{
 			appUser.InternalId = new ObjectId(Guid.NewGuid().ToString("N"));
-			appUser.Id = await _repo.GetNextId();
+			appUser.Id = Guid.NewGuid().ToString("N");
 			await _repo.Create(appUser);
 			return new OkObjectResult(_repo.CreateNameHash(appUser));
 		}
 
 		// PUT /appuser/id
 		[HttpPut("{id}")]
-		public async Task<ActionResult<AppUser>> Put(long id, [FromBody] AppUser appUser)
+		public async Task<ActionResult<AppUser>> Put(String id, [FromBody] AppUser appUser)
 		{
 			var appUserFromDb = await _repo.Get(id);
 			if (appUserFromDb == null)
@@ -66,7 +66,7 @@ namespace auth_service
 
 		// DELETE /appuser/id
 		[HttpDelete("{id}")]
-		public async Task<IActionResult> Delete(long id)
+		public async Task<IActionResult> Delete(String id)
 		{
 			var post = await _repo.Get(id);
 			if (post == null)
