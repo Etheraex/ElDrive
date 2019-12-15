@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
 		this.authService.login(appUser)
 			.subscribe(
 				response => {
+					appUser.id = response.id;
 					appUser.plan = response.plan;
 					appUser.usedSpace = response.usedSpace;
 					appUser.hash = response.hash;

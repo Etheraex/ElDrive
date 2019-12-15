@@ -8,4 +8,5 @@ export class ZIFile {
 	lastModified: Date;
 	encryption: EncryptionAlgorithms;
 	encryptionKey: string;
+	size: number;
 }

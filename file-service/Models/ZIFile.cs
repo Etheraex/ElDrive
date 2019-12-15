@@ -25,7 +25,7 @@ namespace file_service
 		public String Name { get; set; }
 
 		public String Hash { get; set; }
-
+		public double Size { get; set; }
 		public DateTime LastModified { get; set; }
 		public EncryptionAlgorithms Encryption { get; set; }
 		public String EncryptionKey { get; set; }

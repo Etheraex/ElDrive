@@ -18,4 +18,8 @@ export class AuthService {
 	register(registerInfo: AppUser): Observable<string> {
 		return this.http.post(`${environment.authController}`, registerInfo) as Observable<string>;
 	}
+
+	updateUser(userInfo: AppUser): Observable<AppUser> {
+		return this.http.put(`${environment.authController}/${userInfo.id}`, userInfo) as Observable<AppUser>;
+	}
 }

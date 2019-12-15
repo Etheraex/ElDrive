@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FileService } from 'src/app/services/file.service';
 import { ZIFile } from 'src/app/models/zifile.model';
 import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { appUser } from 'src/app/models/appuser.model';
 
 @Component({
 	selector: 'app-file-list',
@@ -13,9 +15,9 @@ import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 export class FileListComponent implements OnInit {
 
 	displayFiles: MatTableDataSource<ZIFile>;
-	displayedColumns: string[] = ["name", "lastModified", "action"];
+	displayedColumns: string[] = ["name", "lastModified", "size", "action"];
 
-	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService) {
+	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService) {
 		this.fileService.files.subscribe(response => {
 			this.displayFiles = new MatTableDataSource(response);
 		});
@@ -64,7 +66,17 @@ export class FileListComponent implements OnInit {
 		}
 	}
 
-	onDelete(id: string) {
-		this.fileService.deleteFile(id).subscribe(() => this.fileService.getFiles());
+	onDelete(id: string, size: number) {
+		this.fileService.deleteFile(id).subscribe(() => {
+			this.fileService.getFiles();
+			this.updateUserFreeSpace(size);
+		});
+	}
+
+	updateUserFreeSpace(size: number) {
+		appUser.usedSpace -= size;
+		if (appUser.usedSpace < 0)
+			appUser.usedSpace = 0;
+		this.authService.updateUser(appUser).subscribe();
 	}
 }

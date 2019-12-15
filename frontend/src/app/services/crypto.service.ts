@@ -19,6 +19,7 @@ export class CryptoAlgorithmsService {
 		this.generateAlphabetMap();
 	}
 
+	//#region SimpleSubsitution
 	public generateAlphabetMap(): void {
 		const plainAlphabetMap = new Map<string, string>();
 		const shufledAlphabetMap = new Map<string, string>();
@@ -54,7 +55,9 @@ export class CryptoAlgorithmsService {
 		});
 		return output;
 	}
+	//#endregion
 
+	//#region OneTimePad
 	private CircularTraverse(data: string): string {
 		if (!this.counter) {
 			this.counter = 0;
@@ -71,4 +74,6 @@ export class CryptoAlgorithmsService {
 		[...(data)].forEach(char => output += String.fromCharCode(char.codePointAt(0) ^ this.CircularTraverse(pad).codePointAt(0)));
 		return output;
 	}
+	//#endregion
+
 }
