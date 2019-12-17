@@ -1,9 +1,21 @@
-<div>
-	<form [formGroup]="userForm" class="profile-form">
+<div class="profile-container">
+	<form [formGroup]="userForm">
 		<div>
-			<mat-form-field class="login-form-item">
+			<mat-form-field class="profile-item">
 				<input matInput placeholder="Name" formControlName="name">
 			</mat-form-field>
 		</div>
+		<div>
+			<mat-form-field class="profile-item">
+				<input matInput placeholder="Plan" formControlName="plan">
+			</mat-form-field>
+		</div>
+		<div>
+			<mat-form-field class="profile-item">
+				<input matInput placeholder="Used space" formControlName="usedSpace">
+			</mat-form-field>
+		</div>
 	</form>
+	<button mat-raised-button color="primary" (click)="openPlanPopup()">Choose different plan</button>
+	<br>
 </div>

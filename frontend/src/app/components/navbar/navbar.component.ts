@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { appUser } from 'src/app/models/appuser.model';
 import { Algorithms } from 'src/app/services/crypto.service';
-import { DialogComponent } from '../dialog/dialog.component';
+import { EncryptionDialogComponent } from '../encryption-dialog/encryption-dialog.component';
 import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
@@ -74,7 +74,7 @@ export class NavbarComponent implements DoCheck {
 	}
 
 	openDialog(): void {
-		const dialogRef = this.dialog.open(DialogComponent, {
+		const dialogRef = this.dialog.open(EncryptionDialogComponent, {
 			width: '300px',
 			data: Algorithms
 		});

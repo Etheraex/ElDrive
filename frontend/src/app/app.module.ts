@@ -24,8 +24,10 @@ import { CryptoAlgorithmsService } from './services/crypto.service';
 import { AuthGuard } from './services/authguard.service';
 import { AppRoutingModule } from './app-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DialogComponent } from './components/dialog/dialog.component';
+import { EncryptionDialogComponent } from './components/encryption-dialog/encryption-dialog.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { PlanDialogComponent } from './components/plan-dialog/plan-dialog.component';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
 	declarations: [
@@ -34,8 +36,9 @@ import { ProfileComponent } from './pages/profile/profile.component';
 		FileListComponent,
 		RegisterComponent,
 		NavbarComponent,
-		DialogComponent,
-		ProfileComponent
+		EncryptionDialogComponent,
+		ProfileComponent,
+		PlanDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -53,9 +56,11 @@ import { ProfileComponent } from './pages/profile/profile.component';
 		MatIconModule,
 		MatTableModule,
 		MatDialogModule,
+		MatRippleModule
 	],
 	entryComponents: [
-		DialogComponent
+		EncryptionDialogComponent,
+		PlanDialogComponent
 	],
 	providers: [FileService, AuthService, CryptoAlgorithmsService, AuthGuard,],
 	bootstrap: [AppComponent],
