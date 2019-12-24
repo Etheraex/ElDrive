@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import * as gen from 'random-seed';
 export const Algorithms: String[] = [
 	"SimpleSubstitution",
 	"One-Time-Pad"
@@ -67,11 +67,13 @@ export class CryptoAlgorithmsService {
 		return retval;
 	}
 
-	public OneTimePad(data: string, pad: string): string { //do not accept pad, create random
 
+	public OneTimePad(data: string, pad: string): string { //do not accept pad, create random
 		let output = "";
+		let rand = gen.create(pad);
+		console.log(rand(255));
 		this.counter = null;
-		[...(data)].forEach(char => output += String.fromCharCode(char.codePointAt(0) ^ this.CircularTraverse(pad).codePointAt(0)));
+		[...(data)].forEach((char, index) => output += String.fromCharCode(char.codePointAt(0) ^ gen.create(pad+index)(255)));
 		return output;
 	}
 	//#endregion
