@@ -47,14 +47,16 @@ export class UploadService {
 		uint8.forEach(x => {
 			file.data += String.fromCharCode(x);
 		});
-
-		file.data = this.cryptoService.SimpleSubstitutionEncrypt(file.data);
-		this.fileService.postFile(file)
-			.subscribe(() => {
-				this.fileService.getFiles();
-				this.authService.updateUser(appUser).subscribe();
-				file.data = "";
-			});
+	
+		console.log("here we go");
+		file.data = this.cryptoService.SHA_1(file.data);
+		console.log(file.data);
+		// this.fileService.postFile(file)
+		// 	.subscribe(() => {
+		// 		this.fileService.getFiles();
+		// 		this.authService.updateUser(appUser).subscribe();
+		// 		file.data = "";
+		// 	});
 	}
 
 	check(): boolean {
