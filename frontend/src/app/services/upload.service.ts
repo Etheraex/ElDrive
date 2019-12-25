@@ -48,8 +48,9 @@ export class UploadService {
 			file.data += String.fromCharCode(x);
 		});
 	
-		file.data = this.cryptoService.SHA_1(file.data);
+		file.data = this.cryptoService.SHA_2(file.data);
 		console.log(file.data);
+		
 		// this.fileService.postFile(file)
 		// 	.subscribe(() => {
 		// 		this.fileService.getFiles();

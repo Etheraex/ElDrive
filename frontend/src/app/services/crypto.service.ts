@@ -14,7 +14,6 @@ export class CryptoAlgorithmsService {
 	private shufledAlphabet = 'V=O5!&YSZayUP-*8`%<ql?+M"3khp/,jD6RX$#(Go.Kv}\\|BTb4~JgH;>nLcftdwmCIs)N^0Q[: \'WrieF]9x7_@1AE{z2u';
 	private plainAlphabetMap: Map<string, string>;
 	private shufledAlphabetMap: Map<string, string>;
-	private counter: number;
 
 	constructor() {
 		this.generateAlphabetMap();
@@ -59,26 +58,11 @@ export class CryptoAlgorithmsService {
 	//#endregion
 
 	//#region OneTimePad
-	private CircularTraverse(data: string): string {
-		if (!this.counter) {
-			this.counter = 0;
-		}
-		const retval = data[(this.counter) % data.length];
-		this.counter++;
-		return retval;
-	}
-
-
 	public OneTimePad(data: string, pad: string): string { //change to string.charcodeat
 		let output = "";
-		let rand = gen.create(pad);
-		console.log(rand(255));
-		this.counter = null;
 		[...(data)].forEach((char, index) => output += String.fromCharCode(char.codePointAt(0) ^ gen.create(pad + index)(255)));
 		return output;
 	}
-
-
 	//#endregion
 
 	//#region SHA_1
@@ -112,51 +96,12 @@ export class CryptoAlgorithmsService {
 		return binary;
 	}
 
-	private rawToBinary(raw) {
-		var binary = new Array(raw.length >> 2);
-		for (var i = 0, il = binary.length; i < il; i++) {
-			binary[i] = 0;
-		}
-		for (i = 0, il = raw.length * 8; i < il; i += 8) {
-			binary[i >> 5] |= (raw.charCodeAt(i / 8) & 0xFF) << (24 - i % 32);
-		}
-		return binary;
-	}
-
-	private BreakChunk(data: string): Array<number> {
-		let retval = Array<number>();
-		let counter = 0;
-		let internal = "";
-		[...data].forEach(x => {
-			internal += x;
-			counter += 8;
-			if (counter == 32) {
-				let innerRetVal = "";
-				[...this.StringToBigEndian(internal)].forEach(x => {
-					innerRetVal += this.dec2bin(x.charCodeAt(0), 32);
-				});
-				retval.push(parseInt(innerRetVal, 2));
-				counter = 0;
-				internal = "";
-			}
-		});
-		return retval;
-	}
-
-	private StringToBigEndian(data: string): string {
-		let charCodes = [];
-		[...data].forEach(x => {
-			charCodes.push(x.charCodeAt(0));
-		});
-		let retval = "";
-		for (let i = 0; i < 4; i++) {
-			retval += String.fromCharCode(charCodes[3 - i]);
-		}
-		return retval;
-	}
-
 	private LeftRotate(n: number, count: number): number {
 		return (n << count) | (n >>> (32 - count));
+	}
+
+	private RightRotate(n: number, count: number): number {
+		return ((n >>> count) | (n << 32 - count));
 	}
 
 	private _add(x, y) {
@@ -188,7 +133,7 @@ export class CryptoAlgorithmsService {
 			d = h3;
 			e = h4;
 
-			for (var j = 0; j < 16; j++) //change this to be reasonable
+			for (var j = 0; j < 16; j++)
 				w[j] = bin[i + j];
 
 			for (let j = 16; j < 80; j++)
@@ -232,4 +177,100 @@ export class CryptoAlgorithmsService {
 		return retval;
 	}
 	//#endregion
+
+	//#region SHA-2
+	public SHA_2(data: string): string {
+		let h0 = 0x6a09e667;
+		let h1 = 0xbb67ae85;
+		let h2 = 0x3c6ef372;
+		let h3 = 0xa54ff53a;
+		let h4 = 0x510e527f;
+		let h5 = 0x9b05688c;
+		let h6 = 0x1f83d9ab;
+		let h7 = 0x5be0cd19;
+
+		const k =
+			[
+				0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+				0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+				0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+				0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+				0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+				0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+				0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+				0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+			];
+
+		let a, b, c, d, e, f, g, h, ch, temp1, temp2, s0, s1, maj;
+		let w = new Array(64);
+		let len = data.length * 8;
+		let bin = this.ChunkMessage(data);
+
+		// Always append bit 1 to message when working with files
+		bin[len >> 5] |= 0x80 << (24 - len % 32);
+		// Appends k zeros using JS undefined and then appends message length in big-endian
+		bin[((len + 64 >> 9) << 4) + 15] = len;
+
+		// For each 512bit chunk
+		for (let i = 0; i < bin.length; i += 16) {
+			for (let j = 0; j < 64; j++)
+				if (w[j] === undefined)
+					w[j] = 0;
+
+			for (var j = 0; j < 16; j++)
+				w[j] = bin[i + j];
+
+			for (let j = 16; j < 64; j++) {
+				s0 = this.RightRotate(w[j - 15], 7) ^ this.RightRotate(w[j - 15], 18) ^ (w[j - 15] >>> 3);
+				s1 = this.RightRotate(w[j - 2], 17) ^ this.RightRotate(w[j - 2], 19) ^ (w[j - 2] >>> 10);
+				w[j] = this._add(this._add(this._add(w[j - 16], s0), w[j - 7]), s1);
+			}
+
+			a = h0;
+			b = h1;
+			c = h2;
+			d = h3;
+			e = h4;
+			f = h5;
+			g = h6;
+			h = h7;
+
+			for (let j = 0; j < 64; j++) {
+				s1 = this.RightRotate(e, 6) ^ this.RightRotate(e, 11) ^ this.RightRotate(e, 25);
+				ch = (e & f) ^ ((~e) & g);
+				temp1 = this._add(this._add(this._add(h, s1), this._add(ch, k[j])), w[j]);
+				s0 = this.RightRotate(a, 2) ^ this.RightRotate(a, 13) ^ this.RightRotate(a, 22);
+				maj = (a & b) ^ (a & c) ^ (b & c);
+				temp2 = this._add(s0, maj);
+
+				h = g;
+				g = f;
+				f = e;
+				e = this._add(d, temp1);
+				d = c;
+				c = b;
+				b = a;
+				a = this._add(temp1, temp2);
+			}
+
+			h0 = this._add(h0, a);
+			h1 = this._add(h1, b);
+			h2 = this._add(h2, c);
+			h3 = this._add(h3, d);
+			h4 = this._add(h4, e);
+			h5 = this._add(h5, f);
+			h6 = this._add(h6, g);
+			h7 = this._add(h7, h)
+		}
+
+		return this.BinaryToHex(this.dec2bin(h0, 32) +
+			this.dec2bin(h1, 32) +
+			this.dec2bin(h2, 32) +
+			this.dec2bin(h3, 32) +
+			this.dec2bin(h4, 32) +
+			this.dec2bin(h5, 32) +
+			this.dec2bin(h6, 32) +
+			this.dec2bin(h7, 32));
+	}
+	//#region 
 }
