@@ -3,7 +3,9 @@ import * as gen from 'random-seed';
 
 export const Algorithms: String[] = [
 	"SimpleSubstitution",
-	"One-Time-Pad"
+	"One-Time-Pad",
+	"TEA",
+	"Knapsack"
 ];
 
 @Injectable({
@@ -272,7 +274,7 @@ export class CryptoAlgorithmsService {
 			this.dec2bin(h6, 32) +
 			this.dec2bin(h7, 32));
 	}
-	//#region
+	//#endregion
 
 	//#region TEA
 	private TEAChunk(data: string): Array<any> {
@@ -291,7 +293,7 @@ export class CryptoAlgorithmsService {
 		k = this.TEAChunk(k);
 		let delta = 0x9e3779b9;
 		let chunks = this.TEAChunk(data);
-		
+
 		for (let j = 0; j < chunks.length; j += 2) {
 			let sum = 0xc6ef3720;
 			let v0 = chunks[j], v1 = chunks[j + 1];
@@ -304,8 +306,8 @@ export class CryptoAlgorithmsService {
 			chunks[j] = v0;
 			chunks[j + 1] = v1;
 		}
-	
-		if(chunks[chunks.length-1]==0)
+
+		if (chunks[chunks.length - 1] == 0)
 			chunks.pop();
 
 		return this.ReturnToString(chunks);
@@ -314,7 +316,7 @@ export class CryptoAlgorithmsService {
 	public TEAEncrypt(data, k): string {
 		k = this.TEAChunk(k);
 		let delta = 0x9e3779b9;
-		
+
 		let chunks = this.TEAChunk(data);
 		if (chunks.length % 2)
 			chunks.push(0);
@@ -344,5 +346,47 @@ export class CryptoAlgorithmsService {
 		});
 		return data;
 	}
-	//#region 
+	//#endregion 
+
+	//#region Knapsack
+	private P = [2, 3, 7, 14, 30, 57, 120, 251];
+	private n = 491;
+	private m = 41;
+	private im = 12;
+	private J = [82, 123, 287, 83, 248, 373, 10, 471];
+
+	public KnapsackEncrypt(data) {
+		let retval = [];
+		[...data].forEach(x => {
+			let C = 0;
+			let bin = this.dec2bin(x.charCodeAt(0), 8);
+			[...bin].forEach((el, index) => {
+				C += this.J[index] * parseInt(el);
+			});
+			retval.push(C);
+		});
+		return retval;
+	}
+
+	public KnapsackDecrypt(encryptedData) {
+		let retval = [];
+		encryptedData.forEach(x => {
+			let tc = (x * this.im) % this.n;
+			let innerRetval = "";
+			this.P.reverse().forEach(y => {
+				if (tc >= y) {
+					innerRetval = "1" + innerRetval;
+					tc -= y;
+				}
+				else
+					innerRetval = "0" + innerRetval;
+			});
+			if (tc != 0)
+				console.warn("Cannot decrypt, data might be corrupt. No refunds");
+			retval.push(String.fromCharCode(parseInt(innerRetval, 2)));
+		});
+		return retval.join("");
+	}
+	//#endregion 
+
 }

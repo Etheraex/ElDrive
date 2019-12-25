@@ -27,6 +27,23 @@ export class FileListComponent implements OnInit {
 		this.fileService.getFiles();
 	}
 
+	// decrypt() {
+	// 	switch (this.userInput.algorithm) {
+	// 		case "SimpleSubstitution":
+	// 			file.encryption = EncryptionAlgorithms.SimpleSubstitution;
+	// 			return this.cryptoService.SimpleSubstitutionEncrypt(file.data);
+	// 		case "One-Time-Pad":
+	// 			file.encryption = EncryptionAlgorithms.OneTimePad;
+	// 			return this.cryptoService.OneTimePad(file.data, this.userInput.key);
+	// 		case "TEA":
+	// 			file.encryption = EncryptionAlgorithms.TEA;
+	// 			return this.cryptoService.TEAEncrypt(file.data, this.cryptoService.SHA_2(this.userInput.key).substr(0, 64));
+	// 		case "Knapsack":
+	// 			file.encryption = EncryptionAlgorithms.Knapsack;
+	// 			return this.cryptoService.TEADecrypt(file.data, this.userInput.key);
+	// 	}
+	// }
+
 	applyFilter(filterValue: string) {
 		this.displayFiles.filter = filterValue.trim().toLowerCase();
 	}

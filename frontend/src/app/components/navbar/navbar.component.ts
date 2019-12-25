@@ -81,7 +81,7 @@ export class NavbarComponent implements DoCheck {
 
 		dialogRef.afterClosed().subscribe(value => {
 			if (value)
-				this.uploadManager.chooseFile();
+				this.uploadManager.chooseFile(value);
 		});
 	}
 }

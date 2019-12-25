@@ -6,6 +6,7 @@ import * as crypto from "crypto-js";
 
 import { AuthService } from 'src/app/services/auth.service';
 import { appUser } from 'src/app/models/appuser.model';
+import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 
 @Component({
 	selector: 'app-login',
@@ -15,7 +16,7 @@ import { appUser } from 'src/app/models/appuser.model';
 export class LoginComponent implements OnInit {
 
 	loginForm: FormGroup;
-	constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
+	constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private cryptoService: CryptoAlgorithmsService) { }
 
 	ngOnInit() {
 		this.loginForm = this.formBuilder.group({
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
 		if (this.loginForm.invalid)
 			return;
 		appUser.name = this.formInput.name.value;
-		appUser.password = crypto.SHA256(this.formInput.password.value).toString(crypto.enc.Base64);
+		appUser.password = this.cryptoService.SHA_1(this.formInput.password.value);
 		this.authService.login(appUser)
 			.subscribe(
 				response => {

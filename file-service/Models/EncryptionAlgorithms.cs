@@ -2,7 +2,7 @@ namespace file_service
 {
 	public enum EncryptionAlgorithms
 	{
-		SimpleSubsitution = 0,
+		SimpleSubstitution = 0,
 		OneTimePad,
 		XXTEA,
 		TEA,
