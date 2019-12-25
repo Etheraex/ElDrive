@@ -105,8 +105,8 @@ export class CryptoAlgorithmsService {
 	}
 
 	private _add(x, y) {
-		var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-		var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+		const lsw = (x & 0xFFFF) + (y & 0xFFFF);
+		const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
 		return (msw << 16) | (lsw & 0xFFFF);
 	}
 
@@ -133,7 +133,7 @@ export class CryptoAlgorithmsService {
 			d = h3;
 			e = h4;
 
-			for (var j = 0; j < 16; j++)
+			for (let j = 0; j < 16; j++)
 				w[j] = bin[i + j];
 
 			for (let j = 16; j < 80; j++)
@@ -217,7 +217,7 @@ export class CryptoAlgorithmsService {
 				if (w[j] === undefined)
 					w[j] = 0;
 
-			for (var j = 0; j < 16; j++)
+			for (let j = 0; j < 16; j++)
 				w[j] = bin[i + j];
 
 			for (let j = 16; j < 64; j++) {
@@ -271,6 +271,78 @@ export class CryptoAlgorithmsService {
 			this.dec2bin(h5, 32) +
 			this.dec2bin(h6, 32) +
 			this.dec2bin(h7, 32));
+	}
+	//#region
+
+	//#region TEA
+	private TEAChunk(data: string): Array<any> {
+		let binary = new Array(data.length >> 2);
+		binary.forEach(x => {
+			x = 0;
+		});
+
+		for (let i = 0; i < data.length * 8; i += 8)
+			binary[i >> 5] |= (data.charCodeAt(i / 8) & 0xFF) << (24 - i % 32);
+
+		return binary;
+	}
+
+	public TEADecrypt(data, k) {
+		k = this.TEAChunk(k);
+		let delta = 0x9e3779b9;
+		let chunks = this.TEAChunk(data);
+		
+		for (let j = 0; j < chunks.length; j += 2) {
+			let sum = 0xc6ef3720;
+			let v0 = chunks[j], v1 = chunks[j + 1];
+			let k0 = k[0], k1 = k[1], k2 = k[2], k3 = k[3];
+			for (let i = 0; i < 32; i++) {
+				v1 -= this._add((v0 << 4), k2) ^ this._add(v0, sum) ^ this._add((v0 >>> 5), k3);
+				v0 -= this._add((v1 << 4), k0) ^ (this._add(v1, sum)) ^ (this._add((v1 >>> 5), k1));
+				sum -= delta;
+			}
+			chunks[j] = v0;
+			chunks[j + 1] = v1;
+		}
+	
+		if(chunks[chunks.length-1]==0)
+			chunks.pop();
+
+		return this.ReturnToString(chunks);
+	};
+
+	public TEAEncrypt(data, k): string {
+		k = this.TEAChunk(k);
+		let delta = 0x9e3779b9;
+		
+		let chunks = this.TEAChunk(data);
+		if (chunks.length % 2)
+			chunks.push(0);
+
+		for (let j = 0; j < chunks.length; j += 2) {
+			let sum = 0;
+			let v0 = chunks[j], v1 = chunks[j + 1];
+			let k0 = k[0], k1 = k[1], k2 = k[2], k3 = k[3];
+			for (let i = 0; i < 32; i++) {
+				sum = this._add(sum, delta);
+				v0 = this._add(v0, (this._add((v1 << 4), k0)) ^ (this._add(v1, sum)) ^ (this._add((v1 >>> 5), k1)));
+				v1 = this._add(v1, (this._add((v0 << 4), k2) ^ this._add(v0, sum) ^ this._add((v0 >>> 5), k3)));
+			}
+			chunks[j] = v0;
+			chunks[j + 1] = v1;
+		}
+		return this.ReturnToString(chunks);
+	};
+
+	private ReturnToString(chunks): string {
+		let data = "";
+		chunks.forEach(x => {
+			let tmp = this.dec2bin(x, 32);
+			for (let i = 0; i < 4; i++) {
+				data += String.fromCharCode(parseInt(tmp.substr(i * 8, 8), 2));
+			}
+		});
+		return data;
 	}
 	//#region 
 }

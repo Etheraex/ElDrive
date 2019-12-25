@@ -47,10 +47,11 @@ export class UploadService {
 		uint8.forEach(x => {
 			file.data += String.fromCharCode(x);
 		});
-	
-		file.data = this.cryptoService.SHA_2(file.data);
+		let sifra = this.cryptoService.SHA_2("Ovo je neka sifra asd").substr(0, 64);
+		file.data = this.cryptoService.TEAEncrypt(file.data, sifra);
+		file.data = this.cryptoService.TEADecrypt(file.data, sifra);
 		console.log(file.data);
-		
+
 		// this.fileService.postFile(file)
 		// 	.subscribe(() => {
 		// 		this.fileService.getFiles();
