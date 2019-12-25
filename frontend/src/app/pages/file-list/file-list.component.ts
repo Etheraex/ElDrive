@@ -6,6 +6,7 @@ import { ZIFile } from 'src/app/models/zifile.model';
 import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { appUser } from 'src/app/models/appuser.model';
+import { EncryptionAlgorithms } from 'src/app/models/encryptionalgorithms.enum';
 
 @Component({
 	selector: 'app-file-list',
@@ -27,22 +28,18 @@ export class FileListComponent implements OnInit {
 		this.fileService.getFiles();
 	}
 
-	// decrypt() {
-	// 	switch (this.userInput.algorithm) {
-	// 		case "SimpleSubstitution":
-	// 			file.encryption = EncryptionAlgorithms.SimpleSubstitution;
-	// 			return this.cryptoService.SimpleSubstitutionEncrypt(file.data);
-	// 		case "One-Time-Pad":
-	// 			file.encryption = EncryptionAlgorithms.OneTimePad;
-	// 			return this.cryptoService.OneTimePad(file.data, this.userInput.key);
-	// 		case "TEA":
-	// 			file.encryption = EncryptionAlgorithms.TEA;
-	// 			return this.cryptoService.TEAEncrypt(file.data, this.cryptoService.SHA_2(this.userInput.key).substr(0, 64));
-	// 		case "Knapsack":
-	// 			file.encryption = EncryptionAlgorithms.Knapsack;
-	// 			return this.cryptoService.TEADecrypt(file.data, this.userInput.key);
-	// 	}
-	// }
+	decrypt(file: ZIFile) {
+		switch (file.encryption) {
+			case EncryptionAlgorithms.SimpleSubstitution:
+				return this.cryptoService.SimpleSubstitutionDecrypt(file.data);
+			case EncryptionAlgorithms.OneTimePad:
+				return this.cryptoService.OneTimePad(file.data, file.encryptionKey);
+			case EncryptionAlgorithms.TEA:
+				return this.cryptoService.TEADecrypt(file.data, this.cryptoService.SHA_2(file.encryptionKey).substr(0, 64));
+			case EncryptionAlgorithms.Knapsack:
+				return this.cryptoService.KnapsackDecrypt(file.data);
+		}
+	}
 
 	applyFilter(filterValue: string) {
 		this.displayFiles.filter = filterValue.trim().toLowerCase();
@@ -50,19 +47,17 @@ export class FileListComponent implements OnInit {
 
 	onDownload(id: string) {
 		this.fileService.downloadFile(id).subscribe(response => {
-			// decryption should be based on the `encryption` property of `response` not hard coded to `SimpleSubstitution`
-			const arrayBuffer = this.base64ToArrayBuffer(this.cryptoService.SimpleSubstitutionDecrypt(response.data));
+			const arrayBuffer = this.decrypt(response);
 			this.createAndDownloadBlobFile(arrayBuffer, response.name);
 		});
 	}
 
-	base64ToArrayBuffer(base64: string) { /* check wtf is base64/binaryStrin/string in js */
-		// const binaryString = atob(base64);
+	base64ToArrayBuffer(base64: string) {
 		const bytes = new Uint8Array(base64.length);
 		return bytes.map((byte, i) => base64.charCodeAt(i));
 	}
 
-	createAndDownloadBlobFile(body, fileName/*, extension = 'pdf'*/) {
+	createAndDownloadBlobFile(body, fileName) {
 		const blob = new Blob([body]);
 		//const fileName = `${filename}.${extension}`;
 		if (navigator.msSaveBlob) {

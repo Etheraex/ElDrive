@@ -36,20 +36,24 @@ export class UploadService {
 		}
 	}
 
-	encrypt(file): string {
+	encrypt(file) {
 		switch (this.userInput.algorithm) {
 			case "SimpleSubstitution":
 				file.encryption = EncryptionAlgorithms.SimpleSubstitution;
-				return this.cryptoService.SimpleSubstitutionEncrypt(file.data);
+				file.data = this.cryptoService.SimpleSubstitutionEncrypt(file.data);
+				break;
 			case "One-Time-Pad":
 				file.encryption = EncryptionAlgorithms.OneTimePad;
-				return this.cryptoService.OneTimePad(file.data, this.userInput.key);
+				file.data = this.cryptoService.OneTimePad(file.data, this.userInput.key);
+				break;
 			case "TEA":
 				file.encryption = EncryptionAlgorithms.TEA;
-				return this.cryptoService.TEAEncrypt(file.data, this.cryptoService.SHA_2(this.userInput.key).substr(0, 64));
+				file.data = this.cryptoService.TEAEncrypt(file.data, this.cryptoService.SHA_2(this.userInput.key).substr(0, 64));
+				break;
 			case "Knapsack":
 				file.encryption = EncryptionAlgorithms.Knapsack;
-				return this.cryptoService.TEADecrypt(file.data, this.userInput.key);
+				file.data = this.cryptoService.KnapsackEncrypt(file.data);
+				break;
 		}
 	}
 

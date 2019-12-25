@@ -355,7 +355,7 @@ export class CryptoAlgorithmsService {
 	private im = 12;
 	private J = [82, 123, 287, 83, 248, 373, 10, 471];
 
-	public KnapsackEncrypt(data) {
+	public KnapsackEncrypt(data): string {
 		let retval = [];
 		[...data].forEach(x => {
 			let C = 0;
@@ -365,10 +365,10 @@ export class CryptoAlgorithmsService {
 			});
 			retval.push(C);
 		});
-		return retval;
+		return retval.join("");
 	}
 
-	public KnapsackDecrypt(encryptedData) {
+	public KnapsackDecrypt(encryptedData): string {
 		let retval = [];
 		encryptedData.forEach(x => {
 			let tc = (x * this.im) % this.n;
