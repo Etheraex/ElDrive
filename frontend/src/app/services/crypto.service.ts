@@ -92,45 +92,28 @@ export class CryptoAlgorithmsService {
 		
 		return (leadingZeros+retval);
 	}
-	private ChunkMessage(data: string): Array<string> {
-		let messageLength = data.length * 8;
-		if (messageLength % 512 == 0)
-			data += String.fromCharCode(127);
-		let retval = new Array<string>();
-		let counter = 0;
-		let internal = "";
-		[...data].forEach(x => {
-			internal += x;
-			counter += 8;
-			if (counter == 512) {
-				counter = 0;
-				retval.push(internal);
-				internal = "";
-			}
-		});
-		while (counter < 448) {
-			internal += String.fromCharCode(0);
-			counter += 8;
+	private ChunkMessage(data: any): Array<any> {
+		let binary = new Array(data.length >> 2);
+		for (var i = 0, il = binary.length; i < il; i++) {
+		  binary[i] = 0;
 		}
-		let binaryString = this.dec2bin(messageLength,64);
-		// let toAdd = 64 - binaryString.length;
-		// let leadingZeros = "";
-		// for (toAdd; toAdd > 0; toAdd--) {
-		// 	leadingZeros += "0";
-		// }
-		// binaryString = leadingZeros + binaryString;
-		let charNumbers = [];
-		for (let i = 0; i < 8; i++) {
-			charNumbers.push(parseInt(binaryString.substr(i * 8, 8), 2));
+		for (i = 0, il = data.length * 8; i < il; i += 8) {
+		  binary[i>>5] |= (data.charCodeAt(i / 8) & 0xFF) << (24 - i % 32);
 		}
-		let temp = "";
-		for (let i = 0; i < 8; i++) {
-			temp += String.fromCharCode(charNumbers[7 - i]);
-		}
-		internal += temp;
-		retval.push(internal);
-		return retval;
+		return binary;
+		
 	}
+	private rawToBinary(raw) {
+		var binary = new Array(raw.length >> 2);
+		for (var i = 0, il = binary.length; i < il; i++) {
+		  binary[i] = 0;
+		}
+		for (i = 0, il = raw.length * 8; i < il; i += 8) {
+		  binary[i>>5] |= (raw.charCodeAt(i / 8) & 0xFF) << (24 - i % 32);
+		}
+		return binary;
+	  }
+	  
 	private BreakChunk(data: string): Array<number> {
 		let retval = Array<number>();
 		let counter = 0;
@@ -162,17 +145,8 @@ export class CryptoAlgorithmsService {
 		return retval;
 	}
 
-	private LeftRotate(data: number, rounds: number,size): number {
-		let binary = this.dec2bin(data,size);
-		let dataArray = [...binary];
-		let tmp = "";
-		for (let i = 0; i < rounds; i++) {
-			tmp = dataArray[0];
-			dataArray.shift();
-			dataArray.push(tmp);
-		}
-		binary = dataArray.join("");
-		return parseInt(binary, 2);
+	private LeftRotate(n: number, count: number): number {
+		return (n << count) | (n >>> (32 - count));
 	}
 	private _add(x, y) {
 		var lsw = (x & 0xFFFF) + (y & 0xFFFF);
@@ -186,41 +160,46 @@ export class CryptoAlgorithmsService {
 		let h3 = 271733878;  //h3 = 0x10325476
 		let h4 = -1009589776; //h4 = 0xC3D2E1F0
 		let a, b, c, d, e, f, k, temp;
-		let chunks = this.ChunkMessage(data);
-		
-		chunks.forEach(element => {
+		let w = new Array(80);
+		let len = data.length*8;
+		console.log(this.rawToBinary(data));
+		let bin = this.ChunkMessage(data);   
+		bin[len >> 5] |= 0x80 << (24 - len % 32);    //explain this
+		bin[((len + 64 >> 9) << 4) + 15] = len;		//and this and change to be reasonable?
+		for(let i=0,il=bin.length;i<il;i+=16) {
 			a = h0;
 			b = h1;
 			c = h2;
 			d = h3;
 			e = h4;
-			let chunksOfChunk = this.BreakChunk(element);
-			console.log(chunksOfChunk.join(""));
-			for (let i = 16; i < 80; i++) {
-				chunksOfChunk.push(this.LeftRotate(chunksOfChunk[i - 3] ^
-					chunksOfChunk[i - 8] ^
-					chunksOfChunk[i - 14] ^
-					chunksOfChunk[i - 16], 1,32));
-					console.log(chunksOfChunk[i]);
+			for (var j = 0; j < 16; j++) {    //change this to be reasonable
+				  w[j] = bin[i + j];
 			}
-			for (let i = 0; i < 80; i++) {
-				if (0 <= i && i <= 19) {
+			for (let j = 16; j < 80; j++) {
+				w[j]=(this.LeftRotate(w[j - 3] ^
+					w[j - 8] ^
+					w[j - 14] ^
+					w[j - 16], 1));
+					console.log(w[j]);
+			}
+			for (let j = 0; j < 80; j++) {
+				if (0 <= j && j <= 19) {
 					f = (b & c) | (~b & d);
 					k = 1518500249; //0x5A827999
-				} else if (20 <= i && i <= 39) {
+				} else if (20 <= j && j <= 39) {
 					f = b^c^d;
 					k = 1859775393;//0x6ED9EBA1
-				} else if (40 <= i && i <= 59) {
+				} else if (40 <= j && j <= 59) {
 					f = (b & c) | (b & d) | (c & d);
 					k = -1894007588;//0x8F1BBCDC
 				} else {
 					f = b^c^d;
 					k = -899497514;//0xCA62C1D6
 				}
-				temp = this.LeftRotate(a, 5,32) + f + e + k + chunksOfChunk[i];
+				temp = this._add(this._add(this._add(this._add(this.LeftRotate(a, 5),f) , e), k), w[j]);
 				e = d;
 				d = c;
-				c = this.LeftRotate(b, 30,32);
+				c = this.LeftRotate(b, 30);
 				b = a;
 				a = temp;
 			}
@@ -229,10 +208,27 @@ export class CryptoAlgorithmsService {
 			h2 = this._add(h2,c);
 			h3 = this._add(h3,d);
 			h4 = this._add(h4,e);
-		});
-		return this.BinaryToHex(this.dec2bin(h0,32) + this.dec2bin(h1,32) +this.dec2bin(h2,32) +this.dec2bin(h3,32) + this.dec2bin(h4,32));
+		}
+		return this.rawToHex(this.binaryToRaw([h0,h1,h2,h3,h4]));
 	}
-
+	private binaryToRaw(bin) {   //this also needs to be changed????
+		var raw = "";
+		for (var i = 0, il = bin.length * 32; i < il; i += 8) {
+		  raw += String.fromCharCode((bin[i >> 5] >>> (24 - i % 32)) & 0xff);
+		}
+		return raw;
+	  }
+	  private rawToHex(raw) {   //and this.....
+		var hex = "";
+		var hexChars = "0123456789abcdef";
+		for (var i = 0; i < raw.length; i++) {
+		  var c = raw.charCodeAt(i);
+		  hex += (
+			hexChars.charAt((c >>> 4) & 0x0f) +
+			hexChars.charAt(c & 0x0f));
+		}
+		return hex;
+	  }
 	private BinaryToHex(data: string): string {
 		let retval = "";
 		for(let i = 0; i < data.length; i+=4) {
