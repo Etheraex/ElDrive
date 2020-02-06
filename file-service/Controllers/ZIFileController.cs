@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using file_service.Models;
+using file_service.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace file_service
@@ -11,9 +13,11 @@ namespace file_service
 	public class ZIFileController : Controller
 	{
 		private readonly ZIFileRepository _repo;
-		public ZIFileController(ZIFileRepository repo)
+		private readonly StatisticsRepository _statisticsRepository;
+		public ZIFileController(ZIFileRepository repo , StatisticsRepository statisticsRepository)
 		{
 			_repo = repo;
+			_statisticsRepository = statisticsRepository;
 		}
 
 		// GET /zifile
@@ -42,6 +46,7 @@ namespace file_service
 			this._repo.SaveBytesToFileSystem(file);
 			file.Id = Guid.NewGuid().ToString("N");
 			await _repo.Create(file);
+			await _statisticsRepository.IncreaseFileCountAsync(file.Size);
 			return new OkObjectResult(file);
 		}
 
@@ -66,6 +71,8 @@ namespace file_service
 			var fileFromDB = await _repo.Get(id);
 			if (fileFromDB == null)
 				return new NotFoundResult();
+			var file = await _repo.Get(id);
+			await _statisticsRepository.DecreaseFileCountAsync(file.Size);
 			this._repo.DeleteFileFromFileSystem(fileFromDB);
 			await _repo.Delete(id);
 			return new OkResult();

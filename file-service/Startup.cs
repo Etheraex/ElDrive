@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using file_service.Models;
+using file_service.Repositories;
+using file_service.Repositories.DataAccess;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,9 +24,23 @@ namespace file_service
 		{
 			var config = new MongoDBConfig();
 			Configuration.Bind(config);
+
+			#region ZIFile
 			var appUsersContext = new ZIFileContext(config);
 			var repo = new ZIFileRepository(appUsersContext);
 			services.AddSingleton<ZIFileRepository>(repo);
+			#endregion
+			#region Statistics
+			var statisticsContext = new StatisticsContext(config);
+			var statisticsRepository = new StatisticsRepository(statisticsContext);
+			services.AddSingleton<StatisticsRepository>(statisticsRepository);
+
+			var stat = new Statistics{
+				Id = "2",
+				TotalDataStored = 0
+			};
+			//statisticsRepository.Create(stat);
+			#endregion
 
 			services.AddControllers();
 
