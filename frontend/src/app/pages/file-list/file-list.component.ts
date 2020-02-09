@@ -5,9 +5,10 @@ import { FileService } from 'src/app/services/file.service';
 import { ZIFile } from 'src/app/models/zifile.model';
 import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { appUser } from 'src/app/models/appuser.model';
+import { appUser, AppUser } from 'src/app/models/appuser.model';
 import { EncryptionAlgorithms } from 'src/app/models/encryptionalgorithms.enum';
 import { StatisticsService } from 'src/app/services/statistics.service';
+import { CookieService } from 'src/app/services/cookie.service';
 
 @Component({
 	selector: 'app-file-list',
@@ -19,14 +20,23 @@ export class FileListComponent implements OnInit {
 	displayFiles: MatTableDataSource<ZIFile>;
 	displayedColumns: string[] = ["name", "lastModified", "size", "action"];
 
-	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService, private statisticsService : StatisticsService) {
+	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService,
+		private statisticsService : StatisticsService, private cookieService: CookieService) {
 		this.fileService.files.subscribe(response => {
 			this.displayFiles = new MatTableDataSource(response);
 		});
 	}
 
 	ngOnInit() {
-		this.fileService.getFiles();
+		this.authService.getUserFromName(this.cookieService.getCookie()).subscribe((user: AppUser) => {
+			appUser.name = user.name;
+			appUser.id = user.id;
+			appUser.plan = user.plan;
+			appUser.usedSpace = user.usedSpace;
+			appUser.hash = user.hash;
+			appUser.password = user.password;
+			this.fileService.getFiles(appUser.hash);
+		});
 	}
 
 	decrypt(file: ZIFile) {
@@ -81,7 +91,7 @@ export class FileListComponent implements OnInit {
 
 	onDelete(file :ZIFile ) {
 		this.fileService.deleteFile(file.id).subscribe(() => {
-			this.fileService.getFiles();
+			this.fileService.getFiles(appUser.hash);
 			this.updateUserFreeSpace(file.size);
 		});
 		this.statisticsService.deleteFile(file).subscribe();

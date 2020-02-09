@@ -2,10 +2,10 @@ import { Router } from '@angular/router';
 import { Component, DoCheck } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { appUser } from 'src/app/models/appuser.model';
 import { Algorithms } from 'src/app/services/crypto.service';
 import { EncryptionDialogComponent } from '../encryption-dialog/encryption-dialog.component';
 import { UploadService } from 'src/app/services/upload.service';
+import { CookieService } from 'src/app/services/cookie.service';
 
 @Component({
 	selector: 'navbar',
@@ -54,7 +54,7 @@ export class NavbarComponent implements DoCheck {
 		this._isLoggedIn = value;
 	}
 
-	constructor(private router: Router, public dialog: MatDialog, private uploadManager: UploadService) { }
+	constructor(private router: Router, public dialog: MatDialog, private uploadManager: UploadService, private cookieService: CookieService) { }
 
 	fileProgress(fileInput: any) {
 		this.uploadManager.beginUpload(fileInput);
@@ -65,11 +65,11 @@ export class NavbarComponent implements DoCheck {
 	}
 
 	ngDoCheck(): void {
-		this.isLoggedIn = appUser.hash ? true : false;
+		this.isLoggedIn = this.cookieService.checkCookie();
 	}
 
 	private logout(): void {
-		appUser.hash = undefined;
+		this.cookieService.removeCookie();
 		this.router.navigate(['/login']);
 	}
 

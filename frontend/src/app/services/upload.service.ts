@@ -77,7 +77,7 @@ export class UploadService {
 		file.filehash = this.cryptoService.SHA_2(file.data);
 		this.fileService.postFile(file)
 			.subscribe(() => {
-				this.fileService.getFiles();
+				this.fileService.getFiles(appUser.hash);
 				this.authService.updateUser(appUser).subscribe();
 				file.data = "";
 			});

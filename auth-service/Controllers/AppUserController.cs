@@ -29,14 +29,14 @@ namespace auth_service
 			return new ObjectResult(await _repo.GetAll());
 		}
 
-		// GET /appuser/id
-		[HttpGet("{id}")]
-		public async Task<ActionResult<AppUser>> Get(String id)
+		// GET /appuser/name
+		[HttpGet("{name}")]
+		public async Task<ActionResult<AppUser>> Get(String name)
 		{
-			var appUser = await _repo.Get(id);
+			var appUser = await _repo.GetByName(name);
 			if (appUser == null)
 				return new NotFoundResult();
-
+			appUser.Hash = _repo.CreateNameHash(appUser);
 			return new ObjectResult(appUser);
 		}
 

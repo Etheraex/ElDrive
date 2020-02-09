@@ -22,4 +22,8 @@ export class AuthService {
 	updateUser(userInfo: AppUser): Observable<AppUser> {
 		return this.http.put(`${environment.authController}/${userInfo.id}`, userInfo) as Observable<AppUser>;
 	}
+
+	getUserFromName(name: string): Observable<AppUser> {
+		return this.http.get(`${environment.authController}/${name}`) as Observable<AppUser>;
+	}
 }

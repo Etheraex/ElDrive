@@ -75,6 +75,7 @@ namespace file_service
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<ZIFile>>> LoadFiles([FromBody] PostData data)
 		{
+			Console.WriteLine(data.Payload);
 			return await _repo.GetByHashName(data.Payload);
 		}
 	}

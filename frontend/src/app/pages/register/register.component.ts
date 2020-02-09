@@ -2,12 +2,11 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import * as crypto from 'crypto-js';
-
 import { AuthService } from 'src/app/services/auth.service';
 import { appUser } from 'src/app/models/appuser.model';
 import { availablePlans } from 'src/app/models/serviceplan.model';
 import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
+import { CookieService } from 'src/app/services/cookie.service';
 
 @Component({
 	selector: 'app-register',
@@ -17,9 +16,11 @@ import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 export class RegisterComponent implements OnInit {
 
 	registerForm: FormGroup;
-	constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private cryptoService: CryptoAlgorithmsService) { }
+	constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private cryptoService: CryptoAlgorithmsService, private cookieService: CookieService) { }
 
 	ngOnInit() {
+		if (this.cookieService.checkCookie())
+			this.router.navigate(['/files']);
 		this.registerForm = this.formBuilder.group({
 			name: ['', Validators.required],
 			password: ['', [Validators.required, Validators.minLength(8)]]
@@ -40,6 +41,7 @@ export class RegisterComponent implements OnInit {
 		this.authService.register(appUser)
 			.subscribe(
 				response => {
+					this.cookieService.setCookie(appUser);
 					appUser.hash = response;
 					this.router.navigate(['/files']);
 				});

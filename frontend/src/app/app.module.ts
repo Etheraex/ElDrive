@@ -12,6 +12,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { MatRippleModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -23,11 +25,11 @@ import { RegisterComponent } from './pages/register/register.component';
 import { CryptoAlgorithmsService } from './services/crypto.service';
 import { AuthGuard } from './services/authguard.service';
 import { AppRoutingModule } from './app-routing.module';
-import { MatDialogModule } from '@angular/material/dialog';
 import { EncryptionDialogComponent } from './components/encryption-dialog/encryption-dialog.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { PlanDialogComponent } from './components/plan-dialog/plan-dialog.component';
-import { MatRippleModule } from '@angular/material/core';
+import { CookieService } from './services/cookie.service';
+import { CookieService as NGXCookieService } from 'ngx-cookie-service';
 
 @NgModule({
 	declarations: [
@@ -62,7 +64,7 @@ import { MatRippleModule } from '@angular/material/core';
 		EncryptionDialogComponent,
 		PlanDialogComponent
 	],
-	providers: [FileService, AuthService, CryptoAlgorithmsService, AuthGuard,],
+	providers: [NGXCookieService, CookieService, FileService, AuthService, CryptoAlgorithmsService, AuthGuard],
 	bootstrap: [AppComponent],
 	exports: [
 		ReactiveFormsModule

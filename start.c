@@ -13,6 +13,7 @@ static char basePath[1024];
 static struct Projects projectsArray[] = {
 	{"auth", "/auth-service"},
 	{"file", "/file-service"},
+	{"stats", "/statistics-Service"},
 	{"angular", "/frontend"}
 };
 
