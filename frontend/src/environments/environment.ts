@@ -5,7 +5,8 @@
 export const environment = {
 	production: false,
 	fileController: 'https://localhost:5001/zifile',
-	authController: 'https://localhost:6001/appuser'
+	authController: 'https://localhost:6001/appuser',
+	statisticsController: 'https://localhost:7001/Statistics'
 };
 
 /*

@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using file_service.Models;
-using file_service.Repositories;
-using file_service.Repositories.DataAccess;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,24 +26,6 @@ namespace file_service
 			var appUsersContext = new ZIFileContext(config);
 			var repo = new ZIFileRepository(appUsersContext);
 			services.AddSingleton<ZIFileRepository>(repo);
-			#endregion
-			#region Statistics
-			var statisticsContext = new StatisticsContext(config);
-			var statisticsRepository = new StatisticsRepository(statisticsContext);
-			services.AddSingleton<StatisticsRepository>(statisticsRepository);
-
-			var stat = new Statistics{
-				Id = "6",
-				TotalDataStored = 0,
-				Extensions = new Dictionary<string, int>(),
-				//Plans = new Dictionary<string, int>()
-			};
-			stat.Extensions.Add(".exe",0);
-			//stat.Plans.Add("free",0);
-			//statisticsRepository.Create(stat).GetAwaiter().GetResult();
-			//var obj = statisticsRepository.Get("6").GetAwaiter().GetResult();
-			//obj.Extensions.Add(".exe",0);
-			//statisticsRepository.Update(obj).GetAwaiter().GetResult();
 			#endregion
 
 			services.AddControllers();

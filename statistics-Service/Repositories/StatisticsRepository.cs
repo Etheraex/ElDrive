@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using file_service.Models;
+
 using mongo_config;
 using MongoDB.Bson;
 using MongoDB.Driver;
-namespace file_service.Repositories
+using statistics_Service.Models;
+
+namespace statistics_Service.Repositories
 {
 	public class StatisticsRepository : Repository<Statistics>
 	{

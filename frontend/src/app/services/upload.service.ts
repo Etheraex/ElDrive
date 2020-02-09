@@ -6,6 +6,7 @@ import { FileService } from './file.service';
 import { CryptoAlgorithmsService } from './crypto.service';
 import { EncryptionAlgorithms } from '../models/encryptionalgorithms.enum';
 import { AuthService } from './auth.service';
+import { StatisticsService } from './statistics.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,7 +17,10 @@ export class UploadService {
 	byteArray: ArrayBuffer;
 	userInput: { algorithm: string, key: string };
 
-	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService) { }
+	constructor(private fileService: FileService
+		, private cryptoService: CryptoAlgorithmsService
+		, private authService: AuthService
+		,private statisticsService : StatisticsService) { }
 
 	chooseFile(data) {
 		this.userInput = data;
@@ -77,6 +81,8 @@ export class UploadService {
 				this.authService.updateUser(appUser).subscribe();
 				file.data = "";
 			});
+		this.statisticsService.postFile(file)
+			.subscribe();
 	}
 
 	check(): boolean {

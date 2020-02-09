@@ -7,6 +7,7 @@ import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { appUser } from 'src/app/models/appuser.model';
 import { EncryptionAlgorithms } from 'src/app/models/encryptionalgorithms.enum';
+import { StatisticsService } from 'src/app/services/statistics.service';
 
 @Component({
 	selector: 'app-file-list',
@@ -18,7 +19,7 @@ export class FileListComponent implements OnInit {
 	displayFiles: MatTableDataSource<ZIFile>;
 	displayedColumns: string[] = ["name", "lastModified", "size", "action"];
 
-	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService) {
+	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService, private statisticsService : StatisticsService) {
 		this.fileService.files.subscribe(response => {
 			this.displayFiles = new MatTableDataSource(response);
 		});
@@ -78,11 +79,12 @@ export class FileListComponent implements OnInit {
 		}
 	}
 
-	onDelete(id: string, size: number) {
-		this.fileService.deleteFile(id).subscribe(() => {
+	onDelete(file :ZIFile ) {
+		this.fileService.deleteFile(file.id).subscribe(() => {
 			this.fileService.getFiles();
-			this.updateUserFreeSpace(size);
+			this.updateUserFreeSpace(file.size);
 		});
+		this.statisticsService.deleteFile(file).subscribe();
 	}
 
 	updateUserFreeSpace(size: number) {

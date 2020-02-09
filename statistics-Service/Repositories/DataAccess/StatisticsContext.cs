@@ -1,8 +1,8 @@
-using file_service.Models;
 using mongo_config;
 using MongoDB.Driver;
+using statistics_Service.Models;
 
-namespace file_service.Repositories.DataAccess
+namespace statistics_Service.Repositories.DataAccess
 {
 	public class StatisticsContext : Context<Statistics>
 	{
