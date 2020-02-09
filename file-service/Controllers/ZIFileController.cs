@@ -46,7 +46,7 @@ namespace file_service
 			this._repo.SaveBytesToFileSystem(file);
 			file.Id = Guid.NewGuid().ToString("N");
 			await _repo.Create(file);
-			await _statisticsRepository.IncreaseFileCountAsync(file.Size);
+			await _statisticsRepository.onFileUploadAsync(file);
 			return new OkObjectResult(file);
 		}
 
@@ -72,7 +72,7 @@ namespace file_service
 			if (fileFromDB == null)
 				return new NotFoundResult();
 			var file = await _repo.Get(id);
-			await _statisticsRepository.DecreaseFileCountAsync(file.Size);
+			await _statisticsRepository.onFileRemoveAsync(file);
 			this._repo.DeleteFileFromFileSystem(fileFromDB);
 			await _repo.Delete(id);
 			return new OkResult();

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using file_service.Models;
 using mongo_config;
+using MongoDB.Bson;
 using MongoDB.Driver;
 namespace file_service.Repositories
 {
@@ -9,13 +11,35 @@ namespace file_service.Repositories
 		private const string defaultDocumentId = "1";
 		public StatisticsRepository(Context<Statistics> context) : base(context){}
 		
-		public async Task IncreaseFileCountAsync(double fileSize, string id = defaultDocumentId){
-			await this.addValueAsync(nameof(Statistics.TotalDataStored),fileSize , id);
-			await this.addValueAsync(nameof(Statistics.NumberOfFiles),1 , id);
+		public async Task onFileUploadAsync(ZIFile file, string id = defaultDocumentId){
+			var extension = (file.Extension == null || file.Extension.Equals(""))?"unknownType":file.Extension;
+			
+			var setUpdate = Builders<Statistics>.Update
+				.AddToSet(nameof(Statistics.Extensions),new KeyValuePair<string,int>(extension,0));
+
+
+
+			var filter = Builders<Statistics>.Filter.Eq(statistic => statistic.Id, id);
+			var update = Builders<Statistics>.Update
+				.Inc(nameof(Statistics.TotalDataStored),file.Size)
+				.Inc(nameof(Statistics.NumberOfFiles),1)
+				.Inc(nameof(Statistics.Extensions)+".$[extension].v",1);
+
+			var arrayFilters = new List<ArrayFilterDefinition>();
+			ArrayFilterDefinition<BsonDocument> arrayFilter = new BsonDocument("extension.k", extension);
+			arrayFilters.Add(arrayFilter);
+			var updateOptions = new UpdateOptions { ArrayFilters = arrayFilters, IsUpsert = true };
+
+			await _context.Collection.UpdateOneAsync(filter,setUpdate);
+			await _context.Collection.UpdateOneAsync(filter,update,updateOptions);
 		}
-		public async Task DecreaseFileCountAsync(double fileSize, string id = defaultDocumentId){
-			await this.addValueAsync(nameof(Statistics.TotalDataStored), -fileSize , id);
-			await this.addValueAsync(nameof(Statistics.NumberOfFiles), -1, id);
+
+		public async Task onFileRemoveAsync(ZIFile file, string id = defaultDocumentId){
+			var filter = Builders<Statistics>.Filter.Eq(statistic => statistic.Id, id);
+			var update = Builders<Statistics>.Update
+				.Inc(nameof(Statistics.TotalDataStored),-file.Size)
+				.Inc(nameof(Statistics.NumberOfFiles), -1);
+			await _context.Collection.UpdateOneAsync(filter,update);
 		}
 
 		public async Task AddNumberOfUsers(int value,string id = defaultDocumentId){

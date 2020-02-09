@@ -1,4 +1,5 @@
-﻿using file_service.Models;
+﻿using System.Collections.Generic;
+using file_service.Models;
 using file_service.Repositories;
 using file_service.Repositories.DataAccess;
 using Microsoft.AspNetCore.Builder;
@@ -36,10 +37,17 @@ namespace file_service
 			services.AddSingleton<StatisticsRepository>(statisticsRepository);
 
 			var stat = new Statistics{
-				Id = "2",
-				TotalDataStored = 0
+				Id = "6",
+				TotalDataStored = 0,
+				Extensions = new Dictionary<string, int>(),
+				//Plans = new Dictionary<string, int>()
 			};
-			//statisticsRepository.Create(stat);
+			stat.Extensions.Add(".exe",0);
+			//stat.Plans.Add("free",0);
+			//statisticsRepository.Create(stat).GetAwaiter().GetResult();
+			//var obj = statisticsRepository.Get("6").GetAwaiter().GetResult();
+			//obj.Extensions.Add(".exe",0);
+			//statisticsRepository.Update(obj).GetAwaiter().GetResult();
 			#endregion
 
 			services.AddControllers();
