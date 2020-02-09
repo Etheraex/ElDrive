@@ -7,16 +7,18 @@ services:
     image: mongo
     container_name: mongodb-zi
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: mongodb-root
+      MONGO_INITDB_ROOT_PASSWORD: 42942755eP2xeHT90
     ports:
-      - 27017:27017
+     - 27017:27017
 
   mongo-express:
     image: mongo-express
     container_name: mongo-express-zi
     ports:
-      - 8081:8081
+     - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongodb-root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 42942755eP2xeHT90
+      ME_CONFIG_BASICAUTH_USERNAME: mongo-express-root
+      ME_CONFIG_BASICAUTH_PASSWORD: MongoExpressWeb123
