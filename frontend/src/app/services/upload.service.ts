@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-
+import { MatDialog } from '@angular/material/dialog';
 import { ZIFile } from '../models/zifile.model';
 import { appUser } from '../models/appuser.model';
 import { FileService } from './file.service';
 import { CryptoAlgorithmsService } from './crypto.service';
 import { EncryptionAlgorithms } from '../models/encryptionalgorithms.enum';
 import { AuthService } from './auth.service';
+import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component';
 import { StatisticsService } from './statistics.service';
 
 @Injectable({
@@ -16,13 +17,11 @@ export class UploadService {
 	fileData: File = null;
 	byteArray: ArrayBuffer;
 	userInput: { algorithm: string, key: string };
+	dialogRef;
 
-	constructor(private fileService: FileService
-		, private cryptoService: CryptoAlgorithmsService
-		, private authService: AuthService
-		,private statisticsService : StatisticsService) { }
+	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService, public dialog: MatDialog, private statisticsService:StatisticsService) { }
 
-	chooseFile(data) {
+	chooseFile(data) {  //this is a bit confusing, maybe change to chooseAlgorithm or dialogResult
 		this.userInput = data;
 		const fileUpload = document.getElementById('fileUpload') as HTMLInputElement;
 		fileUpload.click();
@@ -30,12 +29,20 @@ export class UploadService {
 
 	beginUpload(fileInput: any) {
 		this.fileData = fileInput.target.files[0] as File;
+		//progressbar here
+		this.dialogRef = this.dialog.open(ProgressBarComponent,{
+			width: '300px',
+			height: '120px',
+			data: {value:0,title:'Reading file'}
+		});
+		//when complete upload?
 		if (this.check()) {
 			const reader = new FileReader();
 			reader.readAsArrayBuffer(this.fileData);
 			reader.onloadend = () => {
 				this.byteArray = reader.result as ArrayBuffer;
 				this.upload();
+				this.dialogRef.componentInstance.data = {value:10,title:'Reading file'};
 			};
 		}
 	}
@@ -72,7 +79,9 @@ export class UploadService {
 		uint8.forEach(x => {
 			file.data += String.fromCharCode(x);
 		});
+		this.dialogRef.componentInstance.data = {value:10,title:'Encrypting file'};
 		this.encrypt(file);
+		this.dialogRef.componentInstance.data = {value:60,title:'Uploading file'};
 		file.encryptionKey = this.userInput.key;
 		file.filehash = this.cryptoService.SHA_2(file.data);
 		this.fileService.postFile(file)
@@ -80,6 +89,8 @@ export class UploadService {
 				this.fileService.getFiles(appUser.hash);
 				this.authService.updateUser(appUser).subscribe();
 				file.data = "";
+				this.dialogRef.componentInstance.data = {value:100,title:'Upload complete'};
+				setTimeout(() => this.dialogRef.close(),200);
 			});
 		this.statisticsService.postFile(file)
 			.subscribe();

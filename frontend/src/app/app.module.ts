@@ -12,8 +12,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CookieService } from './services/cookie.service';
+import { CookieService as NGXCookieService } from 'ngx-cookie-service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -28,8 +30,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { EncryptionDialogComponent } from './components/encryption-dialog/encryption-dialog.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { PlanDialogComponent } from './components/plan-dialog/plan-dialog.component';
-import { CookieService } from './services/cookie.service';
-import { CookieService as NGXCookieService } from 'ngx-cookie-service';
+import { MatRippleModule } from '@angular/material/core';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 
 @NgModule({
 	declarations: [
@@ -40,7 +42,8 @@ import { CookieService as NGXCookieService } from 'ngx-cookie-service';
 		NavbarComponent,
 		EncryptionDialogComponent,
 		ProfileComponent,
-		PlanDialogComponent
+		PlanDialogComponent,
+		ProgressBarComponent
 	],
 	imports: [
 		BrowserModule,
@@ -53,6 +56,7 @@ import { CookieService as NGXCookieService } from 'ngx-cookie-service';
 		MatButtonModule,
 		MatSelectModule,
 		MatCheckboxModule,
+		MatProgressBarModule,
 		MatChipsModule,
 		MatToolbarModule,
 		MatIconModule,
@@ -62,6 +66,7 @@ import { CookieService as NGXCookieService } from 'ngx-cookie-service';
 	],
 	entryComponents: [
 		EncryptionDialogComponent,
+		ProgressBarComponent,
 		PlanDialogComponent
 	],
 	providers: [NGXCookieService, CookieService, FileService, AuthService, CryptoAlgorithmsService, AuthGuard],

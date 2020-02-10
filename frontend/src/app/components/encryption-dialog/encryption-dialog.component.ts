@@ -16,6 +16,7 @@ export class EncryptionDialogComponent {
 	}
 
 	onYesClick(): void {
+		
 		this.dialogRef.close({algorithm: this.selected, key: this.keyValue})
 	}
 
