@@ -7,6 +7,7 @@ import { appUser } from 'src/app/models/appuser.model';
 import { availablePlans } from 'src/app/models/serviceplan.model';
 import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 import { CookieService } from 'src/app/services/cookie.service';
+import { StatisticsService, StatisticFileds } from 'src/app/services/statistics.service';
 
 @Component({
 	selector: 'app-register',
@@ -16,7 +17,12 @@ import { CookieService } from 'src/app/services/cookie.service';
 export class RegisterComponent implements OnInit {
 
 	registerForm: FormGroup;
-	constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private cryptoService: CryptoAlgorithmsService, private cookieService: CookieService) { }
+	constructor(private authService: AuthService
+			, private formBuilder: FormBuilder
+			, private router: Router
+			, private cryptoService: CryptoAlgorithmsService
+			, private statisticsService : StatisticsService
+			, private cookieService: CookieService) { }
 
 	ngOnInit() {
 		if (this.cookieService.checkCookie())
@@ -42,6 +48,7 @@ export class RegisterComponent implements OnInit {
 			.subscribe(
 				response => {
 					this.cookieService.setCookie(appUser);
+					this.statisticsService.changeFildCount(StatisticFileds.NumberOfUsers).subscribe();
 					appUser.hash = response;
 					this.router.navigate(['/files']);
 				});

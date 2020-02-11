@@ -6,7 +6,15 @@ export const environment = {
 	production: false,
 	fileController: 'https://localhost:5001/zifile',
 	authController: 'https://localhost:6001/appuser',
-	statisticsController: 'https://localhost:7001/Statistics'
+	statisticsController: 'https://localhost:7001/Statistics',
+	addPlanEndpoint: 'addDataPlan',
+	removePlanEndpoint: 'removeDataPlan',
+	incrementUserCountEndpoint: 'incrementUserCount',
+	decrementUserCountEndpoint: 'decrementUserCount',
+	StatisticNames:{
+		NumberOfUsers : "NumberOfUsers",
+		NumberOfMessages : "NumberOfMessages",
+	}
 };
 
 /*

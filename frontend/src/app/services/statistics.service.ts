@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ZIFile } from '../models/zifile.model';
 import { Observable } from 'rxjs';
+import { prepareEventListenerParameters } from '@angular/compiler/src/render3/view/template';
 @Injectable({
 	providedIn: 'root'
 })
@@ -23,4 +24,21 @@ export class StatisticsService{
 		  };
 		return this.http.delete(`${environment.statisticsController}`,options);
 	}
+
+	addDataPlan(plan: string): Observable<any>{
+		return this.http.put(`${environment.statisticsController}/${environment.addPlanEndpoint}/${plan}`,null);
+	}
+
+	removeDataPlan(plan: string): Observable<any>{
+		return this.http.put(`${environment.statisticsController}/${environment.removePlanEndpoint}/${plan}`,null);
+	}
+
+	changeFildCount(fildName : StatisticFileds,isIncrement: boolean = true ): Observable<any>{
+		return this.http.put(`${environment.statisticsController}/${StatisticFileds[fildName]}`,(isIncrement)?1:-1)
+	}
+}
+
+export enum StatisticFileds{
+	NumberOfUsers,
+	NumberOfMessages
 }

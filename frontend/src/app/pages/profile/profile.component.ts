@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PlanDialogComponent } from 'src/app/components/plan-dialog/plan-dialog.component';
 import { availablePlans } from 'src/app/models/serviceplan.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { StatisticsService } from 'src/app/services/statistics.service';
 
 @Component({
 	selector: 'app-profile',
@@ -16,7 +17,7 @@ export class ProfileComponent implements OnInit {
 
 	public userForm: FormGroup;
 
-	constructor(private formBuilder: FormBuilder, public dialog: MatDialog, private authService: AuthService) {
+	constructor(private formBuilder: FormBuilder, public dialog: MatDialog, private authService: AuthService, private statisticsService : StatisticsService ) {
 		this.userForm = this.formBuilder.group({
 			name: [appUser.name],
 			plan: [`${appUser.plan.name} - ${appUser.plan.space} GB`],
@@ -32,7 +33,7 @@ export class ProfileComponent implements OnInit {
 		const dialogRef = this.dialog.open(PlanDialogComponent, {
 			width: '600px'
 		});
-
+		let previusPlan = appUser.plan;
 		dialogRef.afterClosed().subscribe(value => {
 			if (value) {
 				switch (value) {
@@ -46,6 +47,8 @@ export class ProfileComponent implements OnInit {
 						appUser.plan = availablePlans.Advanced;
 						break;
 				}
+
+				//this.statisticsService.removeDataPlan(previusPlan.name).subscribe();
 
 				this.authService.updateUser(appUser).subscribe(response => {
 					this.userForm.get("plan").setValue(`${appUser.plan.name} - ${appUser.plan.space} GB`);

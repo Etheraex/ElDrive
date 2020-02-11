@@ -16,11 +16,14 @@ namespace statistics_Service.Models
 		public string Id { get; set; }
 		public double TotalDataStored { get; set; }
 		public int NumberOfFiles { get; set; }
+		public int NumberOfMessages { get; set; }
 		public int NumberOfUsers { get; set; }
 
 		[BsonDictionaryOptions(Representation = DictionaryRepresentation.ArrayOfDocuments)]
 		public Dictionary<string,int> Extensions { get; set; }
 		[BsonDictionaryOptions(Representation = DictionaryRepresentation.ArrayOfDocuments)]
-		public Dictionary<string,int> Plans { get; set; }
+		public Dictionary<string,int> DataPlans { get; set; }
+		[BsonDictionaryOptions(Representation = DictionaryRepresentation.ArrayOfDocuments)]
+		public Dictionary<string,int> UploadDates { get; set; }
 	}
 }
