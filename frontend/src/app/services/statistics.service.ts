@@ -11,6 +11,10 @@ export class StatisticsService{
 	constructor(private http: HttpClient) {
 	}
 
+	getStatistics() : Observable<any>{
+		return this.http.get(`${environment.statisticsController}`);
+	}
+	
 	postFile(file: ZIFile): Observable<any> {
 		return this.http.post(`${environment.statisticsController}`, file);
 	}

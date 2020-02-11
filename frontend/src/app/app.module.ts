@@ -16,6 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CookieService } from './services/cookie.service';
 import { CookieService as NGXCookieService } from 'ngx-cookie-service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatCardModule} from '@angular/material/card';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -32,6 +33,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { PlanDialogComponent } from './components/plan-dialog/plan-dialog.component';
 import { MatRippleModule } from '@angular/material/core';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
+import { StatisticsComponent } from './pages/statistics/statistics.component';
 
 @NgModule({
 	declarations: [
@@ -43,7 +45,8 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
 		EncryptionDialogComponent,
 		ProfileComponent,
 		PlanDialogComponent,
-		ProgressBarComponent
+		ProgressBarComponent,
+		StatisticsComponent
 	],
 	imports: [
 		BrowserModule,
@@ -62,7 +65,8 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
 		MatIconModule,
 		MatTableModule,
 		MatDialogModule,
-		MatRippleModule
+		MatRippleModule,
+		MatCardModule
 	],
 	entryComponents: [
 		EncryptionDialogComponent,

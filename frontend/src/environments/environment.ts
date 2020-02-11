@@ -11,10 +11,6 @@ export const environment = {
 	removePlanEndpoint: 'removeDataPlan',
 	incrementUserCountEndpoint: 'incrementUserCount',
 	decrementUserCountEndpoint: 'decrementUserCount',
-	StatisticNames:{
-		NumberOfUsers : "NumberOfUsers",
-		NumberOfMessages : "NumberOfMessages",
-	}
 };
 
 /*

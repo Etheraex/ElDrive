@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using statistics_Service.Models;
 using statistics_Service.Repositories;
 
 namespace statistics_Service.Controllers
@@ -15,6 +17,12 @@ namespace statistics_Service.Controllers
         {
             _statisticsRepository = repository;
         }
+
+		public async Task<ActionResult<Statistics>> Get(){
+			var Statistics = await _statisticsRepository.GetAll();
+			return new ObjectResult(Statistics.FirstOrDefault());
+		}
+
 
 		// POST
 		[HttpPost]
