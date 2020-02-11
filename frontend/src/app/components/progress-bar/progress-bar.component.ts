@@ -7,12 +7,12 @@ import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 })
 export class ProgressBarComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { data.value=0;
-  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { this.tmpdata=data;}
   mode = 'determinate';
-
+  tmpdata;
 
   ngOnInit() {
+    this.tmpdata.value=0;
   }
 
 }
