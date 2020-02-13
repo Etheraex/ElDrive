@@ -6,6 +6,7 @@ export const environment = {
 	production: false,
 	fileController: 'https://localhost:5001/zifile',
 	authController: 'https://localhost:6001/appuser',
+	planController: 'https://localhost:6001/plans',
 	statisticsController: 'https://localhost:7001/Statistics',
 	addPlanEndpoint: 'addDataPlan',
 	removePlanEndpoint: 'removeDataPlan',

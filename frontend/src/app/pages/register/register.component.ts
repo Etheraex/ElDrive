@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { appUser } from 'src/app/models/appuser.model';
-import { availablePlans } from 'src/app/models/serviceplan.model';
+import { Free } from 'src/app/models/serviceplan.model';
 import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 import { CookieService } from 'src/app/services/cookie.service';
 import { StatisticsService, StatisticFileds } from 'src/app/services/statistics.service';
@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
 			return;
 		appUser.name = this.formInput.name.value;
 		appUser.password = this.cryptoService.SHA_1(this.formInput.password.value);
-		appUser.plan = availablePlans.Free;
+		appUser.plan = Free;
 		appUser.usedSpace = 0.0;
 		this.authService.register(appUser)
 			.subscribe(

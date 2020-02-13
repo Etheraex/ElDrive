@@ -44,6 +44,8 @@ export class LoginComponent implements OnInit {
 					appUser.plan = response.plan;
 					appUser.usedSpace = response.usedSpace;
 					appUser.hash = response.hash;
+					appUser.planChosen = response.planChosen;
+					appUser.planExpires = response.planExpires;
 					this.router.navigate(['/files']);
 				},
 				error => {

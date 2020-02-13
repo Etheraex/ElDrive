@@ -10,12 +10,6 @@ namespace auth_service
 	[Route("AppUser")]
 	public class AppUserController : Controller
 	{
-		private ServicePlan[] AvailablePlans =
-		{
-			new ServicePlan("Free", 1.0),
-			new ServicePlan("Basic", 10.0),
-			new ServicePlan("Advanced", 100.0)
-		};
 		private readonly AppUserRepository _repo;
 		public AppUserController(AppUserRepository repo)
 		{
@@ -60,6 +54,8 @@ namespace auth_service
 				return new NotFoundResult();
 			appUser.Id = appUserFromDb.Id;
 			appUser.InternalId = appUserFromDb.InternalId;
+			appUser.planChosen = DateTime.Now;
+			appUser.planExpires = DateTime.Now.AddMonths(1);
 			await _repo.Update(appUser);
 			return new OkObjectResult(appUser);
 		}

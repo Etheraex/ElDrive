@@ -14,7 +14,7 @@ const appRoutes: Routes = [
 	{ path: 'files', component: FileListComponent, canActivate: [AuthGuard] },
 	{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 	{ path: 'statistics', component: StatisticsComponent },
-	{ path: '**', redirectTo: '/register', pathMatch: 'full' }
+	{ path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];
 @NgModule({
 	imports: [

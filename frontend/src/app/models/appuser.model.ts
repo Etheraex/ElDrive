@@ -9,6 +9,8 @@ export class AppUser {
 	files?: Array<ZIFile>;
 	plan: ServicePlan;
 	usedSpace: number;
+	planChosen: Date;
+	planExpires: Date;
 }
 
 export const appUser = new AppUser();

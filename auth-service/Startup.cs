@@ -24,6 +24,9 @@ namespace auth_service
 			var appUsersContext = new AppUserContext(config);
 			var repo = new AppUserRepository(appUsersContext);
 			services.AddSingleton<AppUserRepository>(repo);
+			var planContext = new ServicePlanContext(config);
+			var planrepo = new ServicePlanRepository(planContext);
+			services.AddSingleton<ServicePlanRepository>(planrepo);
 
 			services.AddControllers();
 

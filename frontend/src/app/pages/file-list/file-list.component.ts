@@ -35,6 +35,8 @@ export class FileListComponent implements OnInit {
 			appUser.usedSpace = user.usedSpace;
 			appUser.hash = user.hash;
 			appUser.password = user.password;
+			appUser.planChosen = user.planChosen;
+			appUser.planExpires = user.planExpires;
 			this.fileService.getFiles(appUser.hash);
 		});
 	}

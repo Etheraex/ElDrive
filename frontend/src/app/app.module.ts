@@ -34,6 +34,8 @@ import { PlanDialogComponent } from './components/plan-dialog/plan-dialog.compon
 import { MatRippleModule } from '@angular/material/core';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
+import { PlanService } from './services/plan.service';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
 	declarations: [
@@ -73,7 +75,7 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
 		ProgressBarComponent,
 		PlanDialogComponent
 	],
-	providers: [NGXCookieService, CookieService, FileService, AuthService, CryptoAlgorithmsService, AuthGuard],
+	providers: [NGXCookieService, CookieService, FileService, PlanService, AuthService, CryptoAlgorithmsService, AuthGuard,DatePipe],
 	bootstrap: [AppComponent],
 	exports: [
 		ReactiveFormsModule
