@@ -14,6 +14,7 @@ static struct Projects projectsArray[] = {
 	{"auth", "/auth-service"},
 	{"file", "/file-service"},
 	{"stats", "/statistics-Service"},
+	{"notes", "/note-service"},
 	{"angular", "/frontend"}
 };
 
