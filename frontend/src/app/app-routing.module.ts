@@ -7,6 +7,7 @@ import { FileListComponent } from './pages/file-list/file-list.component';
 import { AuthGuard } from './services/authguard.service';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
+import { NotesComponent } from './pages/notes/notes.component';
 
 const appRoutes: Routes = [
 	{ path: 'register', component: RegisterComponent },
@@ -14,7 +15,12 @@ const appRoutes: Routes = [
 	{ path: 'files', component: FileListComponent, canActivate: [AuthGuard] },
 	{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 	{ path: 'statistics', component: StatisticsComponent },
+<<<<<<< HEAD
 	{ path: '**', redirectTo: '/login', pathMatch: 'full' }
+=======
+	{ path: 'notes', component: NotesComponent},
+	{ path: '**', redirectTo: '/register', pathMatch: 'full' }
+>>>>>>> feat notes: front end funcional
 ];
 @NgModule({
 	imports: [

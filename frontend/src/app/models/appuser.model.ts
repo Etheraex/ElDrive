@@ -9,8 +9,12 @@ export class AppUser {
 	files?: Array<ZIFile>;
 	plan: ServicePlan;
 	usedSpace: number;
+<<<<<<< HEAD
 	planChosen: Date;
 	planExpires: Date;
+=======
+	noteCollecionId : string; 
+>>>>>>> feat notes: front end funcional
 }
 
 export const appUser = new AppUser();

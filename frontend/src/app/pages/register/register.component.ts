@@ -3,11 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from 'src/app/services/auth.service';
-import { appUser } from 'src/app/models/appuser.model';
+import { appUser, AppUser } from 'src/app/models/appuser.model';
 import { Free } from 'src/app/models/serviceplan.model';
 import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 import { CookieService } from 'src/app/services/cookie.service';
 import { StatisticsService, StatisticFileds } from 'src/app/services/statistics.service';
+import { NoteService } from 'src/app/services/note.service';
+import { Note } from 'src/app/models/note.model';
+import { NoteCollection } from 'src/app/models/noteCollecion.model';
 
 @Component({
 	selector: 'app-register',
@@ -22,7 +25,8 @@ export class RegisterComponent implements OnInit {
 			, private router: Router
 			, private cryptoService: CryptoAlgorithmsService
 			, private statisticsService : StatisticsService
-			, private cookieService: CookieService) { }
+			, private cookieService: CookieService
+			, private noteService :NoteService) { }
 
 	ngOnInit() {
 		if (this.cookieService.checkCookie())
@@ -46,10 +50,13 @@ export class RegisterComponent implements OnInit {
 		appUser.usedSpace = 0.0;
 		this.authService.register(appUser)
 			.subscribe(
-				response => {
+				(response : AppUser) => {
 					this.cookieService.setCookie(appUser);
 					this.statisticsService.changeFildCount(StatisticFileds.NumberOfUsers).subscribe();
-					appUser.hash = response;
+					appUser.hash = response.hash;
+					let noteCollecion = new NoteCollection();
+					noteCollecion.userId = appUser.id;
+					this.noteService.postNotes(noteCollecion).subscribe();
 					this.router.navigate(['/files']);
 				});
 	}

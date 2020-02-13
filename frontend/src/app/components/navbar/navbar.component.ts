@@ -13,14 +13,20 @@ import { CookieService } from 'src/app/services/cookie.service';
                     <span>
                         <button *ngIf="!isLoggedIn" mat-button [routerLink]="[ '/register' ]">Register</button>
                         <button *ngIf="!isLoggedIn" mat-button [routerLink]="[ '/login' ]">Login</button>
-                        <button *ngIf="isLoggedIn" mat-button (click)="onClick()">
-						<mat-icon>file_upload</mat-icon>
-						Upload file
+						<button *ngIf="isLoggedIn" mat-button (click)="onClick()">
+							<mat-icon>file_upload</mat-icon>
+							Upload file
 						</button>
-                        <button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/files' ]">
+						<button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/files' ]">
 						<mat-icon>insert_drive_file</mat-icon>
 						My files
 						</button>
+
+						<button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/notes' ]">
+							<mat-icon>notes</mat-icon>
+							notes
+						</button>
+
 						<span class="right-side" >
                         	<button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/profile' ]">Profile</button>
 							<button *ngIf="isLoggedIn" mat-button (click)="logout()">Log out</button>

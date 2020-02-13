@@ -40,8 +40,11 @@ int main(void) {
 	int numOfProjects = sizeof(projectsArray) / sizeof(projectsArray[0]);
 
 	for (int i = 0; i < numOfProjects - 1; i++)
-		if (getpid() == mainPID && fork() == 0)
+		if (getpid() == mainPID && fork() == 0){
 			startDotnetProcess(projectsArray[i].path);
+			sleep(10);
+		}
+			
 
 	if (getpid() == mainPID)
 		startAngularProcess(numOfProjects - 1);

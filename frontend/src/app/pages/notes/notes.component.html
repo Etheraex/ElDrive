@@ -1,0 +1,17 @@
+<div class="button-container">
+	<mat-card class="addCard">
+		<mat-card-content>
+			<button (click)="addNote()" mat-button><mat-icon>note_add</mat-icon> ADD</button>
+		</mat-card-content>
+	</mat-card>	
+</div>
+<hr style="width: 80%;">
+<div class="card-container">
+	<app-note *ngFor="let note of notesCollecion.notes;" 
+		(saveEvent)="saveChanges()" 
+		(deleteEvent)="deleteNote($event)" 
+		[note]="note">
+	</app-note>
+</div>
+
+

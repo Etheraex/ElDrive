@@ -33,5 +33,30 @@ namespace note_service.Controllers
             var noteCollection = await _noteRepository.Get(id);
             return new ObjectResult(noteCollection);
         }
+
+		[HttpPost]
+        public async Task<ActionResult<NoteCollection>> Post([FromBody]NoteCollection noteCollection)
+        {
+			if (noteCollection == null && noteCollection.UserId.Equals(""))
+				return new BadRequestResult();
+
+			noteCollection.Id = Guid.NewGuid().ToString("N");
+			await _noteRepository.Create(noteCollection);
+			return new ObjectResult(noteCollection);
+		}
+		
+		// PUT /Note/id
+		[HttpPut("{id}")]
+        public async Task<ActionResult<NoteCollection>> Put(string id, [FromBody]NoteCollection noteCollection)
+        {
+			if (noteCollection == null)
+				return new BadRequestResult();
+			var notesFromDb = await _noteRepository.Get(id);
+			noteCollection.InternalId = notesFromDb.InternalId;
+			noteCollection.Id = notesFromDb.Id;
+			noteCollection.UserId = notesFromDb.UserId;
+			await _noteRepository.Update(noteCollection);
+			return new ObjectResult(noteCollection);
+		}
     }
 }

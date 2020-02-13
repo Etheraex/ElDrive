@@ -34,9 +34,14 @@ import { PlanDialogComponent } from './components/plan-dialog/plan-dialog.compon
 import { MatRippleModule } from '@angular/material/core';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
+<<<<<<< HEAD
 import { PlanService } from './services/plan.service';
 import { DatePipe } from '@angular/common';
 import { RoundingUtility } from './utilities/rounding.utility';
+=======
+import { NotesComponent } from './pages/notes/notes.component';
+import { NoteComponent } from './components/note/note.component';
+>>>>>>> feat notes: front end funcional
 
 @NgModule({
 	declarations: [
@@ -49,7 +54,9 @@ import { RoundingUtility } from './utilities/rounding.utility';
 		ProfileComponent,
 		PlanDialogComponent,
 		ProgressBarComponent,
-		StatisticsComponent
+		StatisticsComponent,
+		NotesComponent,
+		NoteComponent
 	],
 	imports: [
 		BrowserModule,

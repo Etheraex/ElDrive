@@ -37,12 +37,13 @@ namespace auth_service
 		// register
 		// POST /appuser
 		[HttpPost]
-		public async Task<ActionResult<String>> Post([FromBody] AppUser appUser)
+		public async Task<ActionResult<AppUser>> Post([FromBody] AppUser appUser)
 		{
 			appUser.InternalId = new ObjectId(Guid.NewGuid().ToString("N"));
 			appUser.Id = Guid.NewGuid().ToString("N");
 			await _repo.Create(appUser);
-			return new OkObjectResult(_repo.CreateNameHash(appUser));
+			appUser.Hash = _repo.CreateNameHash(appUser);
+			return new OkObjectResult(appUser);
 		}
 
 		// PUT /appuser/id

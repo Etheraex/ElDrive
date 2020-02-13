@@ -8,6 +8,7 @@ export const environment = {
 	authController: 'https://localhost:6001/appuser',
 	planController: 'https://localhost:6001/plans',
 	statisticsController: 'https://localhost:7001/Statistics',
+	noteCotroller: 'https://localhost:9001/Note',
 	addPlanEndpoint: 'addDataPlan',
 	removePlanEndpoint: 'removeDataPlan',
 	incrementUserCountEndpoint: 'incrementUserCount',

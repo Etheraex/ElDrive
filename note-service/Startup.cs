@@ -36,30 +36,6 @@ namespace note_service
 			var noteContext = new NoteContext(config);
 			var noteRepository = new NoteRepository(noteContext);
 			services.AddSingleton(noteRepository);
-			
-
-			var notes = new List<Note>{
-				new Note {
-					Title = "First Note",
-					Contant = "Dandolo is Baaastards baastard",
-					CreationDate = DateTime.Now,
-					LastEdited = DateTime.Now,
-				},
-				new Note {
-					Title = "Second Note",
-					Contant = "Dandolo is Baaastards baastard again",
-					CreationDate = DateTime.Now,
-					LastEdited = DateTime.Now,
-				}
-			};
-			var collecion = new NoteCollection{
-				UserId = "3962662e30244943a352d8720eaaf540",
-				Id = Guid.NewGuid().ToString("N"),
-				Notes = notes
-			};
-
-			noteRepository.Create(collecion);
-
 			#endregion
 
             services.AddControllers();

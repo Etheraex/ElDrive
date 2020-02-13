@@ -15,8 +15,8 @@ export class AuthService {
 		return this.http.post(`${environment.authController}/login`, loginInfo) as Observable<AppUser>;
 	}
 
-	register(registerInfo: AppUser): Observable<string> {
-		return this.http.post(`${environment.authController}`, registerInfo) as Observable<string>;
+	register(registerInfo: AppUser): Observable<AppUser> {
+		return this.http.post(`${environment.authController}`, registerInfo) as Observable<AppUser>;
 	}
 
 	updateUser(userInfo: AppUser): Observable<AppUser> {
