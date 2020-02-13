@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RoundingUtility } from './utilities/rounding.utility';
 
 @Component({
 	selector: 'app-root',
@@ -7,6 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-	constructor() { }
+	constructor(private roundingUtility: RoundingUtility) {
+		console.log(roundingUtility.round(0.0190000234, 2));
+	}
 
 }

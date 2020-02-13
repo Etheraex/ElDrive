@@ -36,6 +36,7 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { PlanService } from './services/plan.service';
 import { DatePipe } from '@angular/common';
+import { RoundingUtility } from './utilities/rounding.utility';
 
 @NgModule({
 	declarations: [
@@ -75,7 +76,7 @@ import { DatePipe } from '@angular/common';
 		ProgressBarComponent,
 		PlanDialogComponent
 	],
-	providers: [NGXCookieService, CookieService, FileService, PlanService, AuthService, CryptoAlgorithmsService, AuthGuard,DatePipe],
+	providers: [NGXCookieService, CookieService, FileService, PlanService, AuthService, CryptoAlgorithmsService, AuthGuard, DatePipe, RoundingUtility],
 	bootstrap: [AppComponent],
 	exports: [
 		ReactiveFormsModule
