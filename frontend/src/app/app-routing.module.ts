@@ -15,12 +15,8 @@ const appRoutes: Routes = [
 	{ path: 'files', component: FileListComponent, canActivate: [AuthGuard] },
 	{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 	{ path: 'statistics', component: StatisticsComponent },
-<<<<<<< HEAD
-	{ path: '**', redirectTo: '/login', pathMatch: 'full' }
-=======
 	{ path: 'notes', component: NotesComponent},
-	{ path: '**', redirectTo: '/register', pathMatch: 'full' }
->>>>>>> feat notes: front end funcional
+	{ path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];
 @NgModule({
 	imports: [

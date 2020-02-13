@@ -15,20 +15,12 @@ namespace auth_service
         public String Name { get; set; }
         public String Password { get; set; }
 
-<<<<<<< HEAD
         [BsonIgnore]
         public String Hash { get; set; }
         public ServicePlan Plan { get; set; }
         public DateTime planChosen { get; set; }
         public DateTime planExpires { get; set; }
         public double UsedSpace { get; set; }
-    }
-=======
-		[BsonIgnore]
-		public String Hash { get; set; }
-		public ServicePlan Plan { get; set; }
-		public double UsedSpace { get; set; }
 		public string NoteCollecionId { get; set; }
-	}
->>>>>>> feat notes: front end funcional
+    }
 }
