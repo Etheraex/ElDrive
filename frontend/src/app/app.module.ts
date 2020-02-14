@@ -36,10 +36,10 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { PlanService } from './services/plan.service';
 import { DatePipe } from '@angular/common';
-import { RoundingUtility } from './utilities/rounding.utility';
 import { NotesComponent } from './pages/notes/notes.component';
 import { NoteComponent } from './components/note/note.component';
 import { ShareDialogComponent } from './components/share-dialog/share-dialog.component';
+import { RoundPipe } from './pipes/rounding.pipe';
 
 @NgModule({
 	declarations: [
@@ -55,7 +55,8 @@ import { ShareDialogComponent } from './components/share-dialog/share-dialog.com
 		StatisticsComponent,
 		NotesComponent,
 		NoteComponent,
-		ShareDialogComponent
+		ShareDialogComponent,
+		RoundPipe
 	],
 	imports: [
 		BrowserModule,
@@ -83,7 +84,7 @@ import { ShareDialogComponent } from './components/share-dialog/share-dialog.com
 		PlanDialogComponent,
 		ShareDialogComponent
 	],
-	providers: [NGXCookieService, CookieService, FileService, PlanService, AuthService, CryptoAlgorithmsService, AuthGuard, DatePipe, RoundingUtility],
+	providers: [NGXCookieService, CookieService, FileService, PlanService, AuthService, CryptoAlgorithmsService, AuthGuard, DatePipe],
 	bootstrap: [AppComponent],
 	exports: [
 		ReactiveFormsModule

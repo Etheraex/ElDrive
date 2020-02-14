@@ -52,7 +52,8 @@ export class UploadService {
 		reader.onloadend = () => {
 			this.byteArray = reader.result as ArrayBuffer;
 			this.dialogRef.componentInstance.data = { value: 10, title: 'Encrypting file' };
-			if (this.fileData.size < 20_000_000)
+			// 20 MB
+			if (this.fileData.size < 20_971_520)
 				setTimeout(() => this.upload(), 10);
 			else {
 				this.dialogRef.close();
