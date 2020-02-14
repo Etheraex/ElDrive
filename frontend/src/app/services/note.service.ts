@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { NoteCollection } from 'src/app/models/noteCollecion.model';
 
@@ -8,18 +8,18 @@ import { NoteCollection } from 'src/app/models/noteCollecion.model';
 	providedIn: 'root'
 })
 export class NoteService {
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) { }
 
-	getNotes(noteId : string) : Observable<any> {
-		return this.http.get(`${environment.noteCotroller}/${noteId}`);
+	getNotes(noteId: string): Observable<NoteCollection> {
+		return this.http.get(`${environment.noteController}/${noteId}`) as Observable<NoteCollection>;
 	}
 
-	postNotes(noteCollecion : NoteCollection){
-		return this.http.post(`${environment.noteCotroller}`,noteCollecion);
+	postNotes(noteCollection: NoteCollection): Observable<NoteCollection> {
+		return this.http.post<NoteCollection>(`${environment.noteController}`, noteCollection);
 	}
 
-	updateNotes(noteCollecion : NoteCollection){
-		return this.http.put(`${environment.noteCotroller}/${noteCollecion.id}`,noteCollecion);
+	updateNotes(noteCollection: NoteCollection): Observable<NoteCollection> {
+		return this.http.put<NoteCollection>(`${environment.noteController}/${noteCollection.id}`, noteCollection);
 	}
 
 }

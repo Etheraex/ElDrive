@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ServicePlan } from '../models/serviceplan.model';
 
 @Injectable({
@@ -9,14 +9,10 @@ import { ServicePlan } from '../models/serviceplan.model';
 })
 export class PlanService {
 
-	
-	constructor(private http: HttpClient) {
-	}
+	constructor(private http: HttpClient) {}
 
-	getFiles(): Observable<any> {
-	
+	getFiles(): Observable<Array<ServicePlan>> {
 		return this.http.get<Array<ServicePlan>>(`${environment.planController}`);
 	}
-
 
 }

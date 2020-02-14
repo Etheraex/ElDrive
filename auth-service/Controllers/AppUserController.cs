@@ -20,7 +20,10 @@ namespace auth_service
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<AppUser>>> Get()
 		{
-			return new ObjectResult(await _repo.GetAll());
+			var UsersFromDB = await _repo.GetAll();
+			foreach(var u in UsersFromDB)
+				u.Hash = this._repo.CreateNameHash(u);
+			return new OkObjectResult(UsersFromDB);
 		}
 
 		// GET /appuser/name

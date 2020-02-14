@@ -11,6 +11,10 @@ export class AuthService {
 
 	constructor(private http: HttpClient) { }
 
+	getUsers(): Observable<Array<AppUser>> {
+		return this.http.get(`${environment.authController}`) as Observable<Array<AppUser>>;
+	}
+
 	login(loginInfo: AppUser): Observable<AppUser> {
 		return this.http.post(`${environment.authController}/login`, loginInfo) as Observable<AppUser>;
 	}

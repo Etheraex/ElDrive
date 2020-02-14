@@ -18,41 +18,33 @@ export class ProfileComponent implements OnInit {
 
 	public userForm: FormGroup;
 	private date;
-	constructor(private formBuilder: FormBuilder, public dialog: MatDialog, private datepipe:DatePipe, private authService: AuthService, private statisticsService : StatisticsService ) {
-		this.date = datepipe.transform(appUser.planExpires,"yyyy/MM/dd HH:mm");
+	constructor(private formBuilder: FormBuilder, public dialog: MatDialog, private datepipe: DatePipe, private authService: AuthService, private statisticsService: StatisticsService) {
+		this.date = datepipe.transform(appUser.planExpires, "yyyy/MM/dd HH:mm");
 		this.userForm = this.formBuilder.group({
 			name: [appUser.name],
 			plan: [`${appUser.plan.name} - ${appUser.plan.space} GB`],
 			usedSpace: [`${((appUser.usedSpace / appUser.plan.space) * 100).toFixed(2)}%`],
-			planExpires : [`${((this.date))}`]
+			planExpires: [`${((this.date))}`]
 		});
 		this.userForm.disable();
 	}
-
-
 
 	ngOnInit() {
 	}
 
 	openPlanPopup() {
-		const dialogRef = this.dialog.open(PlanDialogComponent, {
-			
-		});
-		let previusPlan = appUser.plan;
+		const dialogRef = this.dialog.open(PlanDialogComponent, {});
 		dialogRef.afterClosed().subscribe(value => {
-			if (value) {
-					appUser.plan = value;
-				}
+			if (value)
+				appUser.plan = value;
 
-				//this.statisticsService.removeDataPlan(previusPlan.name).subscribe();
+			this.authService.updateUser(appUser).subscribe(response => {
+				this.date = this.datepipe.transform(response.planExpires, "yyyy/MM/dd HH:mm");
+				this.userForm.get("plan").setValue(`${appUser.plan.name} - ${appUser.plan.space} GB`);
+				this.userForm.get("usedSpace").setValue(`${((appUser.usedSpace / appUser.plan.space) * 100).toFixed(2)}%`);
+				this.userForm.get("planExpires").setValue(this.date);
+			});
 
-				this.authService.updateUser(appUser).subscribe(response => {
-					this.date = this.datepipe.transform(response.planExpires,"yyyy/MM/dd HH:mm");
-					this.userForm.get("plan").setValue(`${appUser.plan.name} - ${appUser.plan.space} GB`);
-					this.userForm.get("usedSpace").setValue(`${((appUser.usedSpace / appUser.plan.space) * 100).toFixed(2)}%`);
-					this.userForm.get("planExpires").setValue(this.date);
-				});
-			
 		});
 	}
 }

@@ -19,7 +19,7 @@ export class UploadService {
 	userInput: { algorithm: string, key: string };
 	dialogRef;
 
-	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService, public dialog: MatDialog, private statisticsService:StatisticsService) { }
+	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService, public dialog: MatDialog, private statisticsService: StatisticsService) { }
 
 	chooseFile(data) {  //this is a bit confusing, maybe change to chooseAlgorithm or dialogResult
 		this.userInput = data;
@@ -30,29 +30,34 @@ export class UploadService {
 	beginUpload(fileInput: any) {
 		this.fileData = fileInput.target.files[0] as File;
 		//progressbar here
-	
+
 		//when complete upload?
 		if (this.check()) {
-			setTimeout(()=>this.showProgressBar(),10);
-			setTimeout(()=>this.loadFile(),15);
+			setTimeout(() => this.showProgressBar(), 10);
+			setTimeout(() => this.loadFile(), 15);
 		}
 	}
 
-	showProgressBar(){
-		this.dialogRef = this.dialog.open(ProgressBarComponent,{
+	showProgressBar(): void {
+		this.dialogRef = this.dialog.open(ProgressBarComponent, {
 			width: '300px',
 			height: '120px',
-			data: {value:1,title:'Reading file'}
+			data: { value: 1, title: 'Reading file' }
 		});
 	}
 
-	loadFile(){
+	loadFile(): void {
 		const reader = new FileReader();
 		reader.readAsArrayBuffer(this.fileData);
 		reader.onloadend = () => {
 			this.byteArray = reader.result as ArrayBuffer;
-			this.dialogRef.componentInstance.data = {value:10,title:'Encrypting file'};
-				setTimeout(()=>this.upload(),10);
+			this.dialogRef.componentInstance.data = { value: 10, title: 'Encrypting file' };
+			if (this.fileData.size < 20_000_000)
+				setTimeout(() => this.upload(), 10);
+			else {
+				this.dialogRef.close();
+				setTimeout(() => alert("Only files that are less than 20MB are currently supported"), 10);
+			}
 		}
 	}
 
@@ -84,6 +89,7 @@ export class UploadService {
 		file.lastModified = new Date(this.fileData.lastModified);
 		file.hash = appUser.hash;
 		file.size = this.fileData.size / 1000000000;
+		file.haveAccess = new Array<string>();
 		const uint8 = new Uint8Array(this.byteArray);
 		uint8.forEach(x => {
 			file.data += String.fromCharCode(x);
@@ -91,18 +97,18 @@ export class UploadService {
 		this.encrypt(file);
 		file.encryptionKey = this.userInput.key;
 		file.filehash = this.cryptoService.SHA_2(file.data);
-		this.dialogRef.componentInstance.data = {value:60,title:'Uploading file'};
-		setTimeout(()=>this.actualUpload(file),1);
+		this.dialogRef.componentInstance.data = { value: 60, title: 'Uploading file' };
+		setTimeout(() => this.actualUpload(file), 1);
 	}
 
-	actualUpload(file:ZIFile){
+	actualUpload(file: ZIFile) {
 		this.fileService.postFile(file)
 			.subscribe(() => {
 				this.fileService.getFiles(appUser.hash);
 				this.authService.updateUser(appUser).subscribe();
 				file.data = "";
-				this.dialogRef.componentInstance.data = {value:100,title:'Upload complete'};
-				setTimeout(() => this.dialogRef.close(),200);
+				this.dialogRef.componentInstance.data = { value: 100, title: 'Upload complete' };
+				setTimeout(() => this.dialogRef.close(), 200);
 			});
 		this.statisticsService.postFile(file)
 			.subscribe();

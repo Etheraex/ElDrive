@@ -1,10 +1,10 @@
-<div *ngIf="displayFiles" class="container">
+<div *ngIf="myFiles" class="container">
 	<br>
+	<h3>My files</h3>
 	<mat-form-field>
 		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 	</mat-form-field>
-	<table mat-table [dataSource]="displayFiles" class="mat-elevation-z8">
-
+	<table mat-table [dataSource]="myFiles" class="mat-elevation-z8">
 		<ng-container matColumnDef="name">
 			<th mat-header-cell *matHeaderCellDef class="left"> Name</th>
 			<td mat-cell *matCellDef="let element" class="left"> {{element.name}}</td>
@@ -24,6 +24,7 @@
 			<th mat-header-cell *matHeaderCellDef></th>
 			<td mat-cell *matCellDef="let element" class="action-link">
 				<button mat-button color="primary" (click)="onDownload(element.id)">Download</button>
+				<button mat-button color="primary" (click)="onShare(element)">Share</button>
 				<button mat-button color="warn" (click)="onDelete(element)">Delete</button>
 			</td>
 		</ng-container>
@@ -32,3 +33,38 @@
 		<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 	</table>
 </div>
+
+<div *ngIf="sharedFiles" class="container">
+	<br>
+	<h3>Shared with me</h3>
+	<mat-form-field>
+		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+	</mat-form-field>
+	<table mat-table [dataSource]="sharedFiles" class="mat-elevation-z8">
+		<ng-container matColumnDef="name">
+			<th mat-header-cell *matHeaderCellDef class="left"> Name</th>
+			<td mat-cell *matCellDef="let element" class="left"> {{element.name}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="lastModified">
+			<th mat-header-cell *matHeaderCellDef> Last Modified</th>
+			<td mat-cell *matCellDef="let element"> {{element.lastModified}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="size">
+			<th mat-header-cell *matHeaderCellDef> Size </th>
+			<td mat-cell *matCellDef="let element"> {{element.size.toString() + " GB"}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="action">
+			<th mat-header-cell *matHeaderCellDef></th>
+			<td mat-cell *matCellDef="let element" class="action-link">
+				<button mat-button color="primary" (click)="onDownload(element.id)">Download</button>
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+	</table>
+</div>
+

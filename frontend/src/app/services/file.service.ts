@@ -31,6 +31,16 @@ export class FileService {
 	downloadFile(id: string): Observable<ZIFile> {
 		return this.http.get<ZIFile>(`${environment.fileController}/${id}`);
 	}
+
+	updateFile(file: ZIFile): Observable<ZIFile> {
+		return this.http.put<ZIFile>(`${environment.fileController}/${file.id}`, file) as Observable<ZIFile>;
+	}
+
+	getSharedFiles(hash: string): Observable<Array<ZIFile>> {
+		const postData = new PostData();
+		postData.payload = hash;
+		return this.http.post<Array<ZIFile>>(`${environment.fileController}/shared`, postData);
+	}
 }
 
 class PostData {

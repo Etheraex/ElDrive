@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using mongo_config;
 using MongoDB.Driver;
+using System.Linq;
 
 namespace file_service
 {
@@ -33,6 +34,14 @@ namespace file_service
 			return _context.Collection
 							.Find(filter)
 							.ToListAsync();
+		}
+
+		public async Task<List<ZIFile>> GetSharedFiles(String hash)
+		{
+			// TODO: mongoDB query instead of linq
+			var filesFromDB = (await this.GetAll()).ToList();
+			filesFromDB = filesFromDB.Where(x => x.HaveAccess.Contains(hash)).ToList();	
+			return filesFromDB;
 		}
 	}
 }

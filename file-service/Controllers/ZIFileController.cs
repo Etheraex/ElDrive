@@ -75,8 +75,14 @@ namespace file_service
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<ZIFile>>> LoadFiles([FromBody] PostData data)
 		{
-			Console.WriteLine(data.Payload);
 			return await _repo.GetByHashName(data.Payload);
+		}
+
+		[Route("[action]")]
+		[HttpPost]
+		public async Task<ActionResult<IEnumerable<ZIFile>>> Shared([FromBody] PostData data)
+		{
+			return new OkObjectResult(await this._repo.GetSharedFiles(data.Payload));
 		}
 	}
 

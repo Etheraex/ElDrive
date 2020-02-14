@@ -16,7 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CookieService } from './services/cookie.service';
 import { CookieService as NGXCookieService } from 'ngx-cookie-service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -39,6 +39,7 @@ import { DatePipe } from '@angular/common';
 import { RoundingUtility } from './utilities/rounding.utility';
 import { NotesComponent } from './pages/notes/notes.component';
 import { NoteComponent } from './components/note/note.component';
+import { ShareDialogComponent } from './components/share-dialog/share-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -53,7 +54,8 @@ import { NoteComponent } from './components/note/note.component';
 		ProgressBarComponent,
 		StatisticsComponent,
 		NotesComponent,
-		NoteComponent
+		NoteComponent,
+		ShareDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -78,7 +80,8 @@ import { NoteComponent } from './components/note/note.component';
 	entryComponents: [
 		EncryptionDialogComponent,
 		ProgressBarComponent,
-		PlanDialogComponent
+		PlanDialogComponent,
+		ShareDialogComponent
 	],
 	providers: [NGXCookieService, CookieService, FileService, PlanService, AuthService, CryptoAlgorithmsService, AuthGuard, DatePipe, RoundingUtility],
 	bootstrap: [AppComponent],

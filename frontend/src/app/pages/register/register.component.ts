@@ -9,8 +9,8 @@ import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 import { CookieService } from 'src/app/services/cookie.service';
 import { StatisticsService, StatisticFileds } from 'src/app/services/statistics.service';
 import { NoteService } from 'src/app/services/note.service';
-import { Note } from 'src/app/models/note.model';
 import { NoteCollection } from 'src/app/models/noteCollecion.model';
+import { Note } from 'src/app/models/note.model';
 
 @Component({
 	selector: 'app-register',
@@ -20,13 +20,8 @@ import { NoteCollection } from 'src/app/models/noteCollecion.model';
 export class RegisterComponent implements OnInit {
 
 	registerForm: FormGroup;
-	constructor(private authService: AuthService
-			, private formBuilder: FormBuilder
-			, private router: Router
-			, private cryptoService: CryptoAlgorithmsService
-			, private statisticsService : StatisticsService
-			, private cookieService: CookieService
-			, private noteService :NoteService) { }
+	constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private cryptoService: CryptoAlgorithmsService,
+		private statisticsService: StatisticsService, private cookieService: CookieService, private noteService: NoteService) { }
 
 	ngOnInit() {
 		if (this.cookieService.checkCookie())
@@ -34,7 +29,7 @@ export class RegisterComponent implements OnInit {
 		this.registerForm = this.formBuilder.group({
 			name: ['', Validators.required],
 			password: ['', [Validators.required, Validators.minLength(8)]]
-		})
+		});
 	}
 
 	get formInput(): any {
@@ -48,16 +43,18 @@ export class RegisterComponent implements OnInit {
 		appUser.password = this.cryptoService.SHA_1(this.formInput.password.value);
 		appUser.plan = Free;
 		appUser.usedSpace = 0.0;
-		this.authService.register(appUser)
-			.subscribe(
-				(response : AppUser) => {
-					this.cookieService.setCookie(appUser);
-					this.statisticsService.changeFildCount(StatisticFileds.NumberOfUsers).subscribe();
-					appUser.hash = response.hash;
-					let noteCollecion = new NoteCollection();
-					noteCollecion.userId = appUser.id;
-					this.noteService.postNotes(noteCollecion).subscribe();
-					this.router.navigate(['/files']);
-				});
+		this.authService.register(appUser).subscribe((response: AppUser) => {
+			this.cookieService.setCookie(appUser);
+			this.statisticsService.changeFieldCount(StatisticFileds.NumberOfUsers).subscribe();
+			appUser.hash = response.hash;
+			let noteCollecion = new NoteCollection();
+			noteCollecion.userId = appUser.id;
+			noteCollecion.notes = new Array<Note>();
+			this.noteService.postNotes(noteCollecion).subscribe((x: NoteCollection) => {
+				appUser.noteCollecionId = x.id;
+				this.authService.updateUser(appUser).subscribe();
+			});
+			this.router.navigate(['/files']);
+		});
 	}
 }

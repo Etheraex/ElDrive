@@ -3,6 +3,7 @@ import { EncryptionAlgorithms } from './encryptionalgorithms.enum';
 export class ZIFile {
 	id?: string;
 	name: string;
+	// Owner hash
 	hash: string;
 	filehash: string;
 	data: string = "";
@@ -10,4 +11,5 @@ export class ZIFile {
 	encryption: EncryptionAlgorithms;
 	encryptionKey: string;
 	size: number;
+	haveAccess: Array<string>;
 }

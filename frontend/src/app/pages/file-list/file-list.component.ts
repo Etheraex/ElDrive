@@ -9,6 +9,8 @@ import { appUser, AppUser } from 'src/app/models/appuser.model';
 import { EncryptionAlgorithms } from 'src/app/models/encryptionalgorithms.enum';
 import { StatisticsService } from 'src/app/services/statistics.service';
 import { CookieService } from 'src/app/services/cookie.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ShareDialogComponent } from 'src/app/components/share-dialog/share-dialog.component';
 
 @Component({
 	selector: 'app-file-list',
@@ -17,13 +19,14 @@ import { CookieService } from 'src/app/services/cookie.service';
 })
 export class FileListComponent implements OnInit {
 
-	displayFiles: MatTableDataSource<ZIFile>;
+	myFiles: MatTableDataSource<ZIFile>;
+	sharedFiles: MatTableDataSource<ZIFile>;
 	displayedColumns: string[] = ["name", "lastModified", "size", "action"];
 
 	constructor(private fileService: FileService, private cryptoService: CryptoAlgorithmsService, private authService: AuthService,
-		private statisticsService : StatisticsService, private cookieService: CookieService) {
+		private statisticsService : StatisticsService, private cookieService: CookieService, private dialog: MatDialog) {
 		this.fileService.files.subscribe(response => {
-			this.displayFiles = new MatTableDataSource(response);
+			this.myFiles = new MatTableDataSource(response);
 		});
 	}
 
@@ -38,6 +41,10 @@ export class FileListComponent implements OnInit {
 			appUser.planChosen = user.planChosen;
 			appUser.planExpires = user.planExpires;
 			this.fileService.getFiles(appUser.hash);
+			this.fileService.getSharedFiles(appUser.hash).subscribe(response => {
+				console.log(response)
+				this.sharedFiles = new MatTableDataSource(response);
+			});
 		});
 	}
 
@@ -55,13 +62,18 @@ export class FileListComponent implements OnInit {
 	}
 
 	applyFilter(filterValue: string) {
-		this.displayFiles.filter = filterValue.trim().toLowerCase();
+		this.myFiles.filter = filterValue.trim().toLowerCase();
 	}
 
 	onDownload(id: string) {
 		this.fileService.downloadFile(id).subscribe(response => {
 			const arrayBuffer = this.decrypt(response);
 			this.createAndDownloadBlobFile(arrayBuffer, response.name);
+		}, error => {
+			alert("File has been deleted by its owner");
+			this.fileService.getSharedFiles(appUser.hash).subscribe(response => {
+				this.sharedFiles = new MatTableDataSource(response);
+			});
 		});
 	}
 
@@ -89,6 +101,10 @@ export class FileListComponent implements OnInit {
 				document.body.removeChild(link);
 			}
 		}
+	}
+
+	onShare(file: ZIFile) {
+		const dialogRef = this.dialog.open(ShareDialogComponent, { data: file });
 	}
 
 	onDelete(file :ZIFile ) {
