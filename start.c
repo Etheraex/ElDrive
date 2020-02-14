@@ -28,6 +28,7 @@ void signal_handler(int signum)
     {
         kill(pids[i],SIGKILL);
     }
+	exit(0);
 }
 
 char* createWorkingPath(char* folderName) {
@@ -61,12 +62,14 @@ int main(void) {
         	}
 			if(pid == 0)
 			{
+				sleep((rand()%100)/100*0.01);
 				startDotnetProcess(projectsArray[i].path);
+				
 				break;
 			}
 		}
 		if(getpid() == mainPID)		
-		sleep(0.01);
+		sleep(0.2);
 	}
 
 	if (getpid() == mainPID)
