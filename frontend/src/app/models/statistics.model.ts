@@ -1,13 +1,13 @@
 import * as Collections from 'typescript-collections';
 export class Statistics
     {
-		Id : string;
-		TotalDataStored : number;
-		NumberOfFiles : number;
-		NumberOfMessages : number ;
-		NumberOfUsers : number;
+		id : string;
+		totalDataStored : number;
+		numberOfFiles : number;
+		numberOfMessages : number ;
+		numberOfUsers : number;
 
-		Extensions : Collections.Dictionary<string, number>;
-		DataPlans : Collections.Dictionary<string, number>;
-		UploadDates : Collections.Dictionary<string, number>;
+		extensions : Collections.Dictionary<string, number>;
+		dataPlans : Collections.Dictionary<string, number>;
+		uploadDates : Collections.Dictionary<string, number>;
 	}

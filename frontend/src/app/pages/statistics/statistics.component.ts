@@ -19,11 +19,24 @@ export class StatisticsComponent implements OnInit {
 		this.statisticsService.getStatistics()
 		.subscribe((result : Statistics) => {
 			this.data = result;
-		})
-		this.drawchart();
+			console.log(this.data.uploadDates);
+			this.drawchart("column","test",this.data.uploadDates,"Uploads");
+		});
 	}
-	
-	drawchart(){
+	transform(data){
+		let retval = [];
+		Object.keys(data).forEach(element => {
+			let obj = [];
+			obj.push(Date.parse(element));
+			obj.push(data[element]);
+			retval.push(obj);
+		});
+		return retval;
+		console.log(retval);
+	}
+	drawchart(type,dataName,data,title){
+		data = this.transform(data);
+		console.log(data);
 		Highcharts.chart( {
 			chart:{
 
@@ -31,25 +44,23 @@ export class StatisticsComponent implements OnInit {
 				
 			},
 			title: {
-				text: 'Solar Employment Growth by Sector, 2010-2016'
+				text: title
 			},
 			
-			series:[{type:"line",name:"test",data:[43,22]}],
+			series:[{type:type,name:dataName,data:data}],
 
-			subtitle: {
-				text: 'Source: thesolarfoundation.com'
-			},
 		
 			yAxis: {
 				title: {
-					text: 'Number of Employees'
+					text: 'Number of uploads'
 				}
 			},
 			
 			xAxis: {
-				accessibility: {
-					rangeDescription: 'Range: 2010 to 2017'
-				}
+				title: {
+					text:'Date'
+				},
+				type:'datetime'
 			},
 			
 			legend: {
@@ -58,14 +69,7 @@ export class StatisticsComponent implements OnInit {
 				verticalAlign: 'middle'
 			},
 			
-			plotOptions: {
-				series: {
-					label: {
-						connectorAllowed: false
-					},
-					pointStart: 2010
-				}
-			},
+	
 			
 			
 			responsive: {
