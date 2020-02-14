@@ -12,7 +12,7 @@ export class NoteComponent implements OnInit {
 
 	@Input()
 	note : Note;
-	reedonly : boolean = true;
+	readonly : boolean = true;
 
 	@Output()
 	saveEvent : EventEmitter<void> = new EventEmitter();

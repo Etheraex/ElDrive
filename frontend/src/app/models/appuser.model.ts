@@ -11,7 +11,19 @@ export class AppUser {
 	usedSpace: number;
 	planChosen: Date;
 	planExpires: Date;
-	noteCollecionId : string; 
+	noteCollecionId : string;
+
+	updateUser(user: AppUser) {
+		this.id = user.id;
+		this.name = user.name;
+		this.password = user.password;
+		this.hash = user.hash;
+		this.plan = user.plan;
+		this.usedSpace = user.usedSpace;
+		this.planChosen = user.planChosen;
+		this.planExpires = user.planExpires;
+		this.noteCollecionId = user.noteCollecionId;
+	}
 }
 
 export const appUser = new AppUser();

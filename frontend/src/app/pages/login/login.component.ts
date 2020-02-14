@@ -40,12 +40,7 @@ export class LoginComponent implements OnInit {
 			.subscribe(
 				response => {
 					this.cookieService.setCookie(response);
-					appUser.id = response.id;
-					appUser.plan = response.plan;
-					appUser.usedSpace = response.usedSpace;
-					appUser.hash = response.hash;
-					appUser.planChosen = response.planChosen;
-					appUser.planExpires = response.planExpires;
+					appUser.updateUser(response);
 					this.router.navigate(['/files']);
 				},
 				error => {

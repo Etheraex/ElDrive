@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { Observable } from 'rxjs';
+
 import { environment } from 'src/environments/environment';
 import { ZIFile } from '../models/zifile.model';
-import { Observable } from 'rxjs';
+
 @Injectable({
 	providedIn: 'root'
 })

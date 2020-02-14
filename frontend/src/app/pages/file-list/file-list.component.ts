@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 import { FileService } from 'src/app/services/file.service';
 import { ZIFile } from 'src/app/models/zifile.model';
@@ -9,7 +10,6 @@ import { appUser, AppUser } from 'src/app/models/appuser.model';
 import { EncryptionAlgorithms } from 'src/app/models/encryptionalgorithms.enum';
 import { StatisticsService } from 'src/app/services/statistics.service';
 import { CookieService } from 'src/app/services/cookie.service';
-import { MatDialog } from '@angular/material/dialog';
 import { ShareDialogComponent } from 'src/app/components/share-dialog/share-dialog.component';
 
 @Component({
@@ -32,14 +32,7 @@ export class FileListComponent implements OnInit {
 
 	ngOnInit() {
 		this.authService.getUserFromName(this.cookieService.getCookie()).subscribe((user: AppUser) => {
-			appUser.name = user.name;
-			appUser.id = user.id;
-			appUser.plan = user.plan;
-			appUser.usedSpace = user.usedSpace;
-			appUser.hash = user.hash;
-			appUser.password = user.password;
-			appUser.planChosen = user.planChosen;
-			appUser.planExpires = user.planExpires;
+			appUser.updateUser(user);
 			this.fileService.getFiles(appUser.hash);
 			this.fileService.getSharedFiles(appUser.hash).subscribe(response => {
 				console.log(response)
@@ -104,7 +97,13 @@ export class FileListComponent implements OnInit {
 	}
 
 	onShare(file: ZIFile) {
-		const dialogRef = this.dialog.open(ShareDialogComponent, { data: file });
+		this.authService.getUsers().subscribe(response => {
+			// filter to ignore currently logged in user
+			const users = response.filter(x => x.hash != appUser.hash);
+			if (users.length) {
+				const dialogRef = this.dialog.open(ShareDialogComponent, { data: { file: file, users: users } });
+			}
+		});
 	}
 
 	onDelete(file :ZIFile ) {

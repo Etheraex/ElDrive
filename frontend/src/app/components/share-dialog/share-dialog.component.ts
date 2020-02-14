@@ -14,18 +14,15 @@ export class ShareDialogComponent implements OnInit {
 
 	users: Array<AppUser>;
 
-	constructor(public dialogRef: MatDialogRef<ShareDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: ZIFile, private authService: AuthService, private fileService: FileService) { }
-
-	ngOnInit() {
-		this.authService.getUsers().subscribe(x => {
-			// filter to ignore currently logged in user
-			this.users = x.filter(x => x.hash != appUser.hash);
-		});
+	constructor(public dialogRef: MatDialogRef<ShareDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: { file: ZIFile, users: Array<AppUser> }, private authService: AuthService, private fileService: FileService) {
+		this.users = data.users;
 	}
 
+	ngOnInit() {}
+
 	onChosenUser(user: AppUser): void {
-		this.data.haveAccess.push(user.hash);
-		this.fileService.updateFile(this.data).subscribe(x => this.dialogRef.close());
+		this.data.file.haveAccess.push(user.hash);
+		this.fileService.updateFile(this.data.file).subscribe(x => this.dialogRef.close());
 	}
 
 }

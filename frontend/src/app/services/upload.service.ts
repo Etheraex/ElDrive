@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+
 import { ZIFile } from '../models/zifile.model';
 import { appUser } from '../models/appuser.model';
 import { FileService } from './file.service';
@@ -84,12 +85,12 @@ export class UploadService {
 	}
 
 	upload() {
-		appUser.usedSpace += this.fileData.size / 1000000000;
+		appUser.usedSpace += this.fileData.size / 1_000_000_000;
 		const file = new ZIFile();
 		file.name = this.fileData.name;
 		file.lastModified = new Date(this.fileData.lastModified);
 		file.hash = appUser.hash;
-		file.size = this.fileData.size / 1000000000;
+		file.size = this.fileData.size / 1_000_000_000;
 		file.haveAccess = new Array<string>();
 		const uint8 = new Uint8Array(this.byteArray);
 		uint8.forEach(x => {

@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+
 import { CryptoAlgorithmsService } from 'src/app/services/crypto.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { appUser, AppUser } from 'src/app/models/appuser.model';
@@ -24,13 +25,7 @@ export class NotesComponent implements OnInit {
 
 	ngOnInit() {
 		this.authService.getUserFromName(this.cookieService.getCookie()).subscribe((user: AppUser) => {
-			appUser.name = user.name;
-			appUser.id = user.id;
-			appUser.plan = user.plan;
-			appUser.usedSpace = user.usedSpace;
-			appUser.hash = user.hash;
-			appUser.password = user.password;
-			appUser.noteCollecionId = user.noteCollecionId;
+			appUser.updateUser(user);
 			this.noteService.getNotes(appUser.noteCollecionId).subscribe(response => {
 				this.notesCollecion = response
 				console.log(this.notesCollecion);

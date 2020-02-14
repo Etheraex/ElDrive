@@ -1,17 +1,17 @@
 <mat-card class="card">
 	<mat-card-header>
-	  <mat-card-title>
-		  <input [readonly]="reedonly" class="noteTitle" [(ngModel)]="note.title">
-	  </mat-card-title>
+		<mat-card-title>
+			<input [readonly]="readonly" class="noteTitle" [(ngModel)]="note.title">
+		</mat-card-title>
 	</mat-card-header>
 	<mat-card-content>
 		<div class="">
-			<textarea [readonly]="reedonly" class="noteLabel" [(ngModel)]="note.content"></textarea>
+			<textarea [readonly]="readonly" class="noteLabel" [(ngModel)]="note.content"></textarea>
 		</div>
 	</mat-card-content>
 	<mat-card-actions>
-		<button (click)="reedonly = false" mat-button>EDIT</button>
-		<button (click)="onDelete()" mat-button>delete</button>
-		<button *ngIf="!reedonly" (click)="reedonly = true; onSave();" mat-button>SAVE</button>
+		<button mat-raised-button *ngIf="readonly" (click)="readonly = false" mat-button>Edit</button>
+		<button mat-raised-button *ngIf="!readonly" (click)="readonly = true; onSave();" mat-button>Save</button>
+		<button mat-raised-button color="warn" (click)="onDelete()" mat-button>Delete</button>
 	  </mat-card-actions>
   </mat-card>

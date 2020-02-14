@@ -19,12 +19,12 @@ import { CookieService } from 'src/app/services/cookie.service';
 						</button>
 						<button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/files' ]">
 						<mat-icon>insert_drive_file</mat-icon>
-						My files
+						Files
 						</button>
 
 						<button *ngIf="isLoggedIn" mat-button [routerLink]="[ '/notes' ]">
 							<mat-icon>notes</mat-icon>
-							notes
+							My notes
 						</button>
 
 						<span class="right-side" >
@@ -74,7 +74,7 @@ export class NavbarComponent implements DoCheck {
 		this.isLoggedIn = this.cookieService.checkCookie();
 	}
 
-	private logout(): void {
+	logout(): void {
 		this.cookieService.removeCookie();
 		this.router.navigate(['/login']);
 	}
