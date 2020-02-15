@@ -26,6 +26,7 @@ export class StatisticsComponent implements OnInit {
 	}
 	transform(data){
 		let retval = [];
+		console.log(data);
 		Object.keys(data).forEach(element => {
 			let obj = [];
 			obj.push(Date.parse(element));
@@ -37,8 +38,11 @@ export class StatisticsComponent implements OnInit {
 	drawchart(type,dataName,data,title){
 		data = this.transform(data);
 		Highcharts.chart( {
+			time: {
+				useUTC:false
+			},
 			chart:{
-
+				
 				renderTo:'container',
 				
 			},
