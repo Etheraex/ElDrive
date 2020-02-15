@@ -50,6 +50,8 @@ export class FileListComponent implements OnInit {
 				return this.cryptoService.TEADecrypt(file.data, this.cryptoService.SHA_2(file.encryptionKey).substr(0, 64));
 			case EncryptionAlgorithms.Knapsack:
 				return this.cryptoService.KnapsackDecrypt(file.data);
+			default:
+				return file.data;
 		}
 	}
 
@@ -63,6 +65,7 @@ export class FileListComponent implements OnInit {
 
 	onDownload(id: string) {
 		this.fileService.downloadFile(id).subscribe(response => {
+			console.log(response);
 			const arrayBuffer = this.decrypt(response);
 			this.createAndDownloadBlobFile(arrayBuffer, response.name);
 		}, error => {
@@ -78,8 +81,19 @@ export class FileListComponent implements OnInit {
 		return bytes.map((byte, i) => base64.charCodeAt(i));
 	}
 
+	string2uint8(data){
+		let retval = new Uint8Array(data.length);
+		let i=0;
+		[...data].forEach(element => {
+			retval[i++]= element.charCodeAt(0);
+		});
+		console.log(retval);
+		return retval;
+	}
 	createAndDownloadBlobFile(body, fileName) {
-		const blob = new Blob([body]);
+		const blob = new Blob([this.string2uint8(body)]);
+		
+		//console.log(blob.arrayBuffer());
 		//const fileName = `${filename}.${extension}`;
 		if (navigator.msSaveBlob) {
 			// IE 10+
