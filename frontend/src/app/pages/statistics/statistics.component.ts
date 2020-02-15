@@ -26,7 +26,7 @@ export class StatisticsComponent implements OnInit {
 	}
 	transform(data){
 		let retval = [];
-		console.log(data);
+	//	console.log(data);
 		Object.keys(data).forEach(element => {
 			let obj = [];
 			obj.push(Date.parse(element));
