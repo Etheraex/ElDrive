@@ -65,7 +65,6 @@ export class FileListComponent implements OnInit {
 
 	onDownload(id: string) {
 		this.fileService.downloadFile(id).subscribe(response => {
-			console.log(response);
 			const arrayBuffer = this.decrypt(response);
 			this.createAndDownloadBlobFile(arrayBuffer, response.name);
 		}, error => {
@@ -87,7 +86,6 @@ export class FileListComponent implements OnInit {
 		[...data].forEach(element => {
 			retval[i++]= element.charCodeAt(0);
 		});
-		console.log(retval);
 		return retval;
 	}
 	createAndDownloadBlobFile(body, fileName) {

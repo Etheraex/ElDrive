@@ -108,7 +108,6 @@ export class UploadService {
 		//this.fileData=this.byteArray;
 		file.data=this.byteArray;
 		this.encrypt(file);
-		console.log(file.data);
 		file.encryptionKey = this.userInput.key;
 		file.filehash = this.cryptoService.SHA_2(file.data);
 		this.dialogRef.componentInstance.data = { value: 60, title: 'Uploading file' };
