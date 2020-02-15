@@ -16,7 +16,7 @@ import { StatisticsService } from './statistics.service';
 export class UploadService {
 
 	fileData: File = null;
-	byteArray: ArrayBuffer;
+	byteArray: any;
 	userInput: { algorithm: string, key: string };
 	dialogRef;
 
@@ -49,7 +49,7 @@ export class UploadService {
 
 	loadFile(): void {
 		const reader = new FileReader();
-		reader.readAsArrayBuffer(this.fileData);
+		reader.readAsBinaryString(this.fileData);
 		reader.onloadend = () => {
 			// 20 MB
 			this.fileService.getFiles(appUser.hash).subscribe(response => {
@@ -66,7 +66,8 @@ export class UploadService {
 					setTimeout(() => alert("File already uploaded"), 10);
 				}
 			});
-			this.byteArray = reader.result as ArrayBuffer;
+		//	console.log(reader.result);
+			this.byteArray = reader.result;
 			this.dialogRef.componentInstance.data = { value: 10, title: 'Encrypting file' };
 		}
 	}
@@ -100,11 +101,14 @@ export class UploadService {
 		file.hash = appUser.hash;
 		file.size = this.fileData.size / 1_000_000_000;
 		file.haveAccess = new Array<string>();
-		const uint8 = new Uint8Array(this.byteArray);
-		uint8.forEach(x => {
-			file.data += String.fromCharCode(x);
-		});
+		// const uint8 = new Uint8Array(this.byteArray);
+		// uint8.forEach(x => {
+		// 	file.data += String.fromCharCode(x);
+		// });
+		//this.fileData=this.byteArray;
+		file.data=this.byteArray;
 		this.encrypt(file);
+		console.log(file.data);
 		file.encryptionKey = this.userInput.key;
 		file.filehash = this.cryptoService.SHA_2(file.data);
 		this.dialogRef.componentInstance.data = { value: 60, title: 'Uploading file' };
@@ -130,3 +134,4 @@ export class UploadService {
 		return true;
 	}
 }
+

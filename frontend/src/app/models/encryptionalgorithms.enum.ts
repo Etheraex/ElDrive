@@ -1,5 +1,6 @@
 export enum EncryptionAlgorithms {
-	SimpleSubstitution = 0,
+	None = 0,
+	SimpleSubstitution,
 	OneTimePad,
 	XXTEA,
 	TEA,

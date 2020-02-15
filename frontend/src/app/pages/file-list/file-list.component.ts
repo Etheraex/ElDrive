@@ -50,6 +50,8 @@ export class FileListComponent implements OnInit {
 				return this.cryptoService.TEADecrypt(file.data, this.cryptoService.SHA_2(file.encryptionKey).substr(0, 64));
 			case EncryptionAlgorithms.Knapsack:
 				return this.cryptoService.KnapsackDecrypt(file.data);
+			default:
+				return file.data;
 		}
 	}
 
