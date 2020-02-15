@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using mongo_config;
+using statistics_Service.Models;
 using statistics_Service.Repositories;
 using statistics_Service.Repositories.DataAccess;
 
@@ -37,6 +38,11 @@ namespace statistics_Service
 			var statisticsRepository = new StatisticsRepository(statisticsContext);
 			services.AddSingleton<StatisticsRepository>(statisticsRepository);
 			#endregion
+
+			var statistics = statisticsRepository.GetAll().GetAwaiter().GetResult();
+			if(statistics.Count() == 0){
+				this.seedDefaultStatisticsObject(statisticsRepository);
+			}
 
             services.AddControllers();
 
@@ -68,5 +74,19 @@ namespace statistics_Service
                 endpoints.MapControllers();
             });
         }
+
+		void seedDefaultStatisticsObject(StatisticsRepository statisticsRepository){
+			var stat = new Statistics(){
+				Id = "1",
+				DataPlans = new Dictionary<string, int>(),
+				Extensions = new Dictionary<string, int>(),
+				UploadDates = new Dictionary<string, int>(),
+				NumberOfFiles = 0,
+				NumberOfMessages = 0,
+				NumberOfUsers = 0,
+				TotalDataStored = 0,
+			};
+			statisticsRepository.Create(stat);
+		}
     }
 }
