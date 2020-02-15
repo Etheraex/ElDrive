@@ -21,7 +21,7 @@ export class StatisticsComponent implements OnInit {
 		this.statisticsService.getStatistics()
 		.subscribe((result : Statistics) => {
 			this.data = result;
-			this.drawchart("column","test",this.data.uploadDates,"Uploads");
+			this.drawchart("column","Uploads",this.data.uploadDates,"Uploads");
 		});
 	}
 	transform(data){
