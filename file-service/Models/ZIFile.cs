@@ -35,12 +35,14 @@ namespace file_service
 		public String[] HaveAccess { get; set; }
 		public byte[] GetFileBytes()
 		{
-			return Encoding.UTF8.GetBytes(this.Data);
+			return Encoding.GetEncoding(28591).GetBytes(Data);
 		}
 
 		public void SaveFileBytes(byte[] data)
 		{
-			this.Data = Encoding.UTF8.GetString(data);
+			this.Data = Encoding.GetEncoding(28591).GetString(data);
 		}
+
+	
 	}
 }
