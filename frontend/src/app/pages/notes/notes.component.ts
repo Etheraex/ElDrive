@@ -28,7 +28,6 @@ export class NotesComponent implements OnInit {
 			appUser.updateUser(user);
 			this.noteService.getNotes(appUser.noteCollecionId).subscribe(response => {
 				this.notesCollecion = response
-				console.log(this.notesCollecion);
 			});
 		});
 	}

@@ -15,7 +15,7 @@ export class PlanDialogComponent implements OnInit {
 	constructor(public dialogRef: MatDialogRef<PlanDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: String[], public planservice: PlanService) { }
 
 	ngOnInit() {
-		this.planservice.getFiles().subscribe(result => { this.plans = result });
+		this.planservice.getPlans().subscribe(result => { this.plans = result });
 	}
 
 }

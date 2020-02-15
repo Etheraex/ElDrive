@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
+import * as Highcharts  from 'highcharts';
+
 import { StatisticsService } from 'src/app/services/statistics.service';
 import { Statistics } from 'src/app/models/statistics.model';
-import * as Highcharts  from 'highcharts';
 
 @Component({
   selector: 'app-statistics',
@@ -19,7 +21,6 @@ export class StatisticsComponent implements OnInit {
 		this.statisticsService.getStatistics()
 		.subscribe((result : Statistics) => {
 			this.data = result;
-			console.log(this.data.uploadDates);
 			this.drawchart("column","test",this.data.uploadDates,"Uploads");
 		});
 	}
@@ -32,11 +33,9 @@ export class StatisticsComponent implements OnInit {
 			retval.push(obj);
 		});
 		return retval;
-		console.log(retval);
 	}
 	drawchart(type,dataName,data,title){
 		data = this.transform(data);
-		console.log(data);
 		Highcharts.chart( {
 			chart:{
 

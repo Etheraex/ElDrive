@@ -33,9 +33,8 @@ export class FileListComponent implements OnInit {
 	ngOnInit() {
 		this.authService.getUserFromName(this.cookieService.getCookie()).subscribe((user: AppUser) => {
 			appUser.updateUser(user);
-			this.fileService.getFiles(appUser.hash);
+			this.fileService.fileStream(appUser.hash);
 			this.fileService.getSharedFiles(appUser.hash).subscribe(response => {
-				console.log(response)
 				this.sharedFiles = new MatTableDataSource(response);
 			});
 		});
@@ -54,8 +53,12 @@ export class FileListComponent implements OnInit {
 		}
 	}
 
-	applyFilter(filterValue: string) {
+	myFilesFilter(filterValue: string) {
 		this.myFiles.filter = filterValue.trim().toLowerCase();
+	}
+
+	sharedFilesFilter(filterValue: string) {
+		this.sharedFiles.filter = filterValue.trim().toLowerCase();
 	}
 
 	onDownload(id: string) {
@@ -108,7 +111,7 @@ export class FileListComponent implements OnInit {
 
 	onDelete(file :ZIFile ) {
 		this.fileService.deleteFile(file.id).subscribe(() => {
-			this.fileService.getFiles(appUser.hash);
+			this.fileService.fileStream(appUser.hash);
 			this.updateUserFreeSpace(file.size);
 		});
 		this.statisticsService.deleteFile(file).subscribe();

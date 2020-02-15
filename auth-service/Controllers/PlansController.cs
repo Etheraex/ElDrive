@@ -23,16 +23,16 @@ namespace auth_service
 			return new ObjectResult(await _repo.GetAll());
 		}
 
-        [HttpPost]
-        	public async Task<ActionResult<String>> Post([FromBody] ServicePlan plan)
+		[HttpPost]
+		public async Task<ActionResult<String>> Post([FromBody] ServicePlan plan)
 		{
 			plan.InternalId = new ObjectId(Guid.NewGuid().ToString("N"));
 			plan.Id = Guid.NewGuid().ToString("N");
 			await _repo.Create(plan);
 			return new OkObjectResult(plan);
 		}
-		
-        [HttpDelete("{id}")]
+
+		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(String id)
 		{
 			var post = await _repo.Get(id);

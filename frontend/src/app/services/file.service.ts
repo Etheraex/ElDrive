@@ -16,10 +16,14 @@ export class FileService {
 	constructor(private http: HttpClient) {
 	}
 
-	getFiles(hash: string): void {
+	fileStream(hash: string): void {
+		this.getFiles(hash).subscribe(response => this.files.next(response));
+	}
+
+	getFiles(hash: string): Observable<Array<ZIFile>> {
 		const postData = new PostData();
 		postData.payload = hash;
-		this.http.post<Array<ZIFile>>(`${environment.fileController}/loadfiles`, postData).subscribe(response => this.files.next(response));
+		return this.http.post<Array<ZIFile>>(`${environment.fileController}/loadfiles`, postData);
 	}
 
 	postFile(file: ZIFile): Observable<any> {

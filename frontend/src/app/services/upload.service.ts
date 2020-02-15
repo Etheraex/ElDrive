@@ -51,15 +51,23 @@ export class UploadService {
 		const reader = new FileReader();
 		reader.readAsArrayBuffer(this.fileData);
 		reader.onloadend = () => {
+			// 20 MB
+			this.fileService.getFiles(appUser.hash).subscribe(response => {
+				if (!response.find(x => x.name == this.fileData.name)) {
+					if (this.fileData.size < 20_971_520)
+						setTimeout(() => this.upload(), 10);
+					else {
+						this.dialogRef.close();
+						setTimeout(() => alert("Only files that are less than 20MB are currently supported"), 10);
+					}
+				}
+				else {
+					this.dialogRef.close();
+					setTimeout(() => alert("File already uploaded"), 10);
+				}
+			});
 			this.byteArray = reader.result as ArrayBuffer;
 			this.dialogRef.componentInstance.data = { value: 10, title: 'Encrypting file' };
-			// 20 MB
-			if (this.fileData.size < 20_971_520)
-				setTimeout(() => this.upload(), 10);
-			else {
-				this.dialogRef.close();
-				setTimeout(() => alert("Only files that are less than 20MB are currently supported"), 10);
-			}
 		}
 	}
 
@@ -106,7 +114,7 @@ export class UploadService {
 	actualUpload(file: ZIFile) {
 		this.fileService.postFile(file)
 			.subscribe(() => {
-				this.fileService.getFiles(appUser.hash);
+				this.fileService.fileStream(appUser.hash);
 				this.authService.updateUser(appUser).subscribe();
 				file.data = "";
 				this.dialogRef.componentInstance.data = { value: 100, title: 'Upload complete' };

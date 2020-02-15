@@ -2,7 +2,7 @@
 	<br>
 	<h3>My files</h3>
 	<mat-form-field>
-		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+		<input matInput (keyup)="myFilesFilter($event.target.value)" placeholder="Filter">
 	</mat-form-field>
 	<table mat-table [dataSource]="myFiles" class="mat-elevation-z8">
 		<ng-container matColumnDef="name">
@@ -38,7 +38,7 @@
 	<br>
 	<h3>Shared with me</h3>
 	<mat-form-field>
-		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+		<input matInput (keyup)="sharedFilesFilter($event.target.value)" placeholder="Filter">
 	</mat-form-field>
 	<table mat-table [dataSource]="sharedFiles" class="mat-elevation-z8">
 		<ng-container matColumnDef="name">
