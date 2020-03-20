@@ -13,6 +13,7 @@ struct Projects {
 static char basePath[1024];
 int pids [5];
 int pid = -1;
+
 static struct Projects projectsArray[] = {
 	{"auth", "/auth-service"},
 	{"file", "/file-service"},
@@ -21,13 +22,10 @@ static struct Projects projectsArray[] = {
 	{"angular", "/frontend"}
 };
 
-void signal_handler(int signum)
-{
-    int i=0;
-    for(i;i<5;i++)
-    {
-        kill(pids[i],SIGKILL);
-    }
+void signal_handler(int signum) {
+	int i=0;
+	for(i;i<5;i++)
+		kill(pids[i],SIGKILL);
 	exit(0);
 }
 
@@ -53,35 +51,31 @@ int main(void) {
 	int mainPID = getpid();
 	int numOfProjects = sizeof(projectsArray) / sizeof(projectsArray[0]);
 
-	for (int i = 0; i < numOfProjects - 1; i++){
-		if (getpid() == mainPID){
-			 if(pid!=0)  
-			{
-        		pid = fork();
-        		pids[i] = pid;
-        	}
-			if(pid == 0)
-			{
+	for (int i = 0; i < numOfProjects - 1; i++) {
+		if (getpid() == mainPID) {
+			if (pid != 0) {
+				pid = fork();
+				pids[i] = pid;
+			}
+			if (pid == 0) {
 				sleep((rand()%100)/100*0.01);
 				startDotnetProcess(projectsArray[i].path);
-				
 				break;
 			}
 		}
-		if(getpid() == mainPID)		
-		sleep(0.2);
+		if (getpid() == mainPID)
+			sleep(0.2);
 	}
 
-	if (getpid() == mainPID)
-	{
-			 if(pid!=0)  
-			{
-        		pid = fork();
-        		pids[4] = pid;
-        	}
-			if(pid == 0)
-		startAngularProcess(numOfProjects - 1);
+	if (getpid() == mainPID) {
+		if (pid != 0) {
+			pid = fork();
+			pids[4] = pid;
+		}
+		if (pid == 0)
+			startAngularProcess(numOfProjects - 1);
 	}
-    sigsuspend(&signals);
-    return 0;
+
+	sigsuspend(&signals);
+	return 0;
 }

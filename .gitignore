@@ -64,3 +64,5 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 packages/
 App_Data/
+file-service/Files
+sensitive-data.txt

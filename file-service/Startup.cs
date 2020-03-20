@@ -35,7 +35,7 @@ namespace file_service
 				options.AddPolicy(MyAllowSpecificOrigins,
 				builder =>
 				{
-					builder.WithOrigins("http://localhost:4200", "http://localhost:7000")
+					builder.WithOrigins("http://localhost:4200")
 													.AllowAnyHeader()
 													.AllowAnyMethod();
 				});

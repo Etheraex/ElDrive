@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace mongo_config
@@ -37,8 +36,7 @@ namespace mongo_config
 
 		public async Task<bool> Update(T data)
 		{
-			ReplaceOneResult updateResult =
-				await _context.Collection
+			ReplaceOneResult updateResult = await _context.Collection
 								.ReplaceOneAsync(filter: g => g.Id == data.Id, replacement: data);
 			return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
 		}

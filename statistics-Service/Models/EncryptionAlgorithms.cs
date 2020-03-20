@@ -1,6 +1,6 @@
 namespace statistics_Service.Models
 {
- 	public enum EncryptionAlgorithms
+	public enum EncryptionAlgorithms
 	{
 		SimpleSubstitution = 0,
 		OneTimePad,

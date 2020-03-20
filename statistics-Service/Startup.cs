@@ -1,15 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using mongo_config;
 using statistics_Service.Models;
 using statistics_Service.Repositories;
@@ -17,19 +12,19 @@ using statistics_Service.Repositories.DataAccess;
 
 namespace statistics_Service
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 		readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
 			var config = new MongoDBConfig();
 			Configuration.Bind(config);
 
@@ -40,43 +35,43 @@ namespace statistics_Service
 			#endregion
 
 			var statistics = statisticsRepository.GetAll().GetAwaiter().GetResult();
-			if(statistics.Count() == 0){
+			if (statistics.Count() == 0)
+			{
 				this.seedDefaultStatisticsObject(statisticsRepository);
 			}
 
-            services.AddControllers();
-
-
-			
+			services.AddControllers();
 			services.AddCors(options =>
 			{
 				options.AddPolicy(MyAllowSpecificOrigins,
 				builder =>
 				{
-					builder.WithOrigins("http://localhost:4200", "http://localhost:7000")
+					builder.WithOrigins("http://localhost:4200")
 													.AllowAnyHeader()
 													.AllowAnyMethod();
 				});
 			});
-        }
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 			app.UseCors(MyAllowSpecificOrigins);
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+			app.UseRouting();
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+			});
+		}
 
-		void seedDefaultStatisticsObject(StatisticsRepository statisticsRepository){
-			var stat = new Statistics(){
+		void seedDefaultStatisticsObject(StatisticsRepository statisticsRepository)
+		{
+			var stat = new Statistics()
+			{
 				Id = "1",
 				DataPlans = new Dictionary<string, int>(),
 				Extensions = new Dictionary<string, int>(),
@@ -88,5 +83,5 @@ namespace statistics_Service
 			};
 			statisticsRepository.Create(stat);
 		}
-    }
+	}
 }

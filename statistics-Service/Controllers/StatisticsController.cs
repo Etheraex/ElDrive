@@ -6,23 +6,23 @@ using statistics_Service.Repositories;
 
 namespace statistics_Service.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class StatisticsController : ControllerBase
-    {
+	[ApiController]
+	[Route("[controller]")]
+	public class StatisticsController : ControllerBase
+	{
 
-        private readonly StatisticsRepository _statisticsRepository;
+		private readonly StatisticsRepository _statisticsRepository;
 
-        public StatisticsController(StatisticsRepository repository)
-        {
-            _statisticsRepository = repository;
-        }
+		public StatisticsController(StatisticsRepository repository)
+		{
+			_statisticsRepository = repository;
+		}
 
-		public async Task<ActionResult<Statistics>> Get(){
+		public async Task<ActionResult<Statistics>> Get()
+		{
 			var Statistics = await _statisticsRepository.GetAll();
 			return new ObjectResult(Statistics.FirstOrDefault());
 		}
-
 
 		// POST
 		[HttpPost]
@@ -31,39 +31,44 @@ namespace statistics_Service.Controllers
 			await _statisticsRepository.onFileUploadAsync(file);
 			return new OkObjectResult(file);
 		}
-		
+
 		// PUT /Statistics/addDataPlan/planName
 		[HttpPut("addDataPlan/{planName}")]
-		public async Task<ActionResult> AddDataPlan(string planName){
+		public async Task<ActionResult> AddDataPlan(string planName)
+		{
 			await _statisticsRepository.addDataPlan(planName);
 			return Ok();
 		}
 
 		// PUT /Statistics/removeDataPlan/planName
 		[HttpPut("removeDataPlan/{planName}")]
-		public async Task<ActionResult> RemoveDataPlan(string planName){
+		public async Task<ActionResult> RemoveDataPlan(string planName)
+		{
 			await _statisticsRepository.removeDataPlan(planName);
 			return Ok();
 		}
 
 		// PUT /incrementUserCount
 		[HttpPut("incrementUserCount")]
-		public async Task<ActionResult> incrementUserCount(){
+		public async Task<ActionResult> incrementUserCount()
+		{
 			await _statisticsRepository.AddNumberOfUsers(1);
 			return Ok();
 		}
 
 		// PUT /incrementUserCount
 		[HttpPut("decrementUserCount")]
-		public async Task<ActionResult> decrementUserCount(){
+		public async Task<ActionResult> decrementUserCount()
+		{
 			await _statisticsRepository.AddNumberOfUsers(-1);
 			return Ok();
 		}
 
 		// PUT
 		[HttpPut("{filedName}")]
-		public async Task<ActionResult> decrementUserCount(string filedName,[FromBody] int value){
-			await _statisticsRepository.addValueAsync(filedName,value);
+		public async Task<ActionResult> decrementUserCount(string filedName, [FromBody] int value)
+		{
+			await _statisticsRepository.addValueAsync(filedName, value);
 			return Ok();
 		}
 		// DELETE
@@ -73,6 +78,5 @@ namespace statistics_Service.Controllers
 			await _statisticsRepository.onFileRemoveAsync(file);
 			return new OkResult();
 		}
-
-    }
+	}
 }

@@ -12,7 +12,6 @@ namespace statistics_Service
 	{
 		[JsonIgnore]
 		[BsonId]
-		// MongoDB needs this property, with this exact name
 		public ObjectId InternalId { get; set; }
 
 		public String Id { get; set; }
@@ -30,7 +29,7 @@ namespace statistics_Service
 		public DateTime LastModified { get; set; }
 		public EncryptionAlgorithms Encryption { get; set; }
 		public String EncryptionKey { get; set; }
-		public String Extension { get { return System.IO.Path.GetExtension(this.Name);}} // returns the extensions with the . in front like .exe 
+		public String Extension { get { return System.IO.Path.GetExtension(this.Name); } } // returns the extensions with the . in front like .exe 
 
 		public byte[] GetFileBytes()
 		{
